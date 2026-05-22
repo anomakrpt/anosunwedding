@@ -1,0 +1,1031 @@
+:root {
+  --bg: #f7f2eb;
+  --bg-2: #efe5d9;
+  --white: #ffffff;
+  --text: #2d2824;
+  --muted: #6b6157;
+  --line: #e8ddd1;
+  --line-2: #e4d5c3;
+  --shadow: 0 12px 35px rgba(53, 42, 32, 0.08);
+  --radius-lg: 32px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+
+/* Intro Video */
+#intro {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#introVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#skipBtn {
+  position: absolute;
+  right: 20px;
+  bottom: 24px;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.85);
+  color: #444444;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Main hidden at first */
+#main {
+  display: none;
+}
+
+/* General */
+h1, h2, h3, .footer-title, .footer-monogram {
+  font-family: "Cormorant Garamond", serif;
+}
+
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* .hero {
+  position: relative;
+  min-height: 100vh;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background:
+    linear-gradient(rgba(247, 242, 235, 0.15), rgba(247, 242, 235, 0.75)),
+    radial-gradient(circle at top, rgba(255,255,255,0.9), rgba(247,242,235,0.55)),
+    url("https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1400&q=80");
+  background-size: cover;
+  background-position: center;
+} */ 
+
+/*
+.couple-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 52px;
+  font-weight: 500;
+  color: #6f5b53;
+  letter-spacing: 1px;
+  text-align: center;
+
+  /* เงาซ้อนแบบคม (offset ชัด ไม่มี blur) 
+  text-shadow:
+    1px 1px 0 #d8ccc5,
+    2px 2px 0 #cbbdb5,
+    3px 3px 0 #b8a9a2;
+}
+
+.couple-name span {
+  margin: 0 8px;
+  font-style: italic;
+  color: #9c847a;
+
+  text-shadow:
+    1px 1px 0 #e2d6cf,
+    2px 2px 0 #d3c6bf;
+} */
+
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  background:
+    linear-gradient(rgba(247, 242, 235, 0.85), rgba(247, 242, 235, 0.95)),
+    url("pic/bg.jpg"); /* ใส่รูปโทนผ้า/ครีม */
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-overlay {
+  font-size: clamp(48px, 8vw, 96px);
+  line-height: 1.05;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: #3e372f;
+}
+
+/*.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.28), rgba(247,242,235,0.45));
+} */
+
+.topbar {
+  position: relative;
+  z-index: 2;
+  max-width: 1180px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.menu-btn {
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(255,255,255,0.65);
+  padding: 10px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.mobile-menu {
+  position: relative;
+  z-index: 2;
+  max-width: 1180px;
+  width: 100%;
+  margin: 10px auto 0;
+  display: none;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.mobile-menu.show {
+  display: flex;
+}
+
+.mobile-menu a {
+  background: rgba(255,255,255,0.82);
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  width: 100%;
+  margin: auto;
+  text-align: center;
+  padding: 32px 16px 40px;
+}
+
+.hero-content h1,
+.couple-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 72px;
+  font-weight: 400; /* สำคัญมาก ทำให้ดูบาง elegant */
+  line-height: 1.05;
+  letter-spacing: 5px;
+  text-align: center;
+  color: #8a756c;
+   /*color: #857169;*/
+  opacity: 0.6;
+  
+  /* เงาซ้อนละมุน */
+text-shadow:
+  0.3px 0.3px 0 #fffaf7,
+  0.8px 0.8px 0 #efe5df,
+  1.4px 1.4px 0 #dccfc8,
+  2px 2px 0 #d2c4bd; /* เดิมเข้มไปนิด */
+
+  /* ทำให้เส้นดูคมขึ้น */
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.hero-content h1 span,
+.couple-name span {
+  display: inline-block;
+  margin: 0 5px; /* เพิ่มระยะให้ดู luxury */
+  font-style: italic;
+  color: #b7a39a;
+
+  text-shadow:
+    0.3px 0.3px 0 #fffaf7,
+    0.8px 0.8px 0 #f0e7e2,
+    1.3px 1.3px 0 #d8cac3;
+}
+
+
+.scroll-down {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.scroll-down span {
+  width: 24px;
+  height: 24px;
+  border-right: 2px solid #6b6157;
+  border-bottom: 2px solid #6b6157;
+  transform: rotate(45deg);
+  animation: bounce 1.6s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0) rotate(45deg);
+  }
+  50% {
+    transform: translateY(8px) rotate(45deg);
+  }
+}
+
+
+.eyebrow,
+.section-label {
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.hero h1 {
+  font-size: clamp(48px, 9vw, 108px);
+  line-height: 0.95;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.hero h1 span {
+  display: inline-block;
+  margin: 0 8px;
+}
+
+.hero-date {
+  font-size: 18px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.hero-desc {
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 17px;
+  color: #4d463f;
+}
+
+.hero-actions {
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 999px;
+  transition: 0.25s ease;
+  font-size: 14px;
+  border: 1px solid transparent;
+}
+
+.btn-dark {
+  background: var(--text);
+  color: #fff;
+}
+
+.btn-light {
+  background: rgba(255,255,255,0.78);
+  color: var(--text);
+  border-color: rgba(255,255,255,0.65);
+}
+
+.scroll-hint {
+  margin-top: 42px;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.section {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 26px 20px;
+}
+
+.card {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 34px;
+}
+
+.card.large {
+  padding: 52px 34px;
+}
+
+.card.white,
+.card.large,
+.card.quote-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+}
+
+.card.soft {
+  background: var(--bg-2);
+  border: 1px solid var(--line-2);
+}
+
+.caption-card {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+
+.card h2 {
+  font-size: 24px;        /* ปรับให้เล็กลงตามต้องการ */
+  line-height: 1.4;
+  
+  display: -webkit-box;
+  -webkit-line-clamp: 2;  /* จำกัด 2 บรรทัด */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.center {
+  text-align: center;
+}
+
+.intro-card {
+  margin-top: -72px;
+  position: relative;
+  z-index: 5;
+}
+
+.intro-card .card {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.card h2,
+.timeline-section h2,
+.gallery-section h2 {
+  font-size: clamp(24px, 4vw, 46  px);
+  line-height: 1.05;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.card p {
+  color: #554d46;
+}
+
+.split-section,
+.details-wrap {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 22px;
+  align-items: stretch;
+}
+
+.image-card {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+} 
+
+
+.placeholder-photo {
+  min-height: 470px;
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(rgba(255,255,255,0.05), rgba(255,255,255,0.05)),
+    url('pic/Doiluang1.jpg');
+  background-size: cover;
+  background-position: center;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  padding: 22px;
+  position: relative; /* เพิ่มบรรทัดนี้ */
+}
+
+/*.image-caption {
+  position: absolute;
+  bottom: 24px;
+  left: 20px;
+  right: 20px;
+
+  color: rgba(255,255,255,0.95);
+  text-align: center;
+
+  font-family: 'Cormorant Garamond', serif;
+}*/
+
+
+.image-caption {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px; /* สำคัญ: ให้จัดกลาง mobile */
+
+  color: rgba(255,255,255,0.95);
+  text-align: center;
+  font-size: 15px;
+  /*line-height: 1.6;
+  letter-spacing: 0.5px; */
+
+  font-family: 'Cormorant Garamond', serif;
+
+  /*background: rgba(0, 0, 0, 0.25);
+  padding: 12px 18px;
+  border-radius: 20px;
+
+  backdrop-filter: blur(8px);*/
+} 
+
+.caption-small {
+  font-size: 13px;
+  letter-spacing: 1.2px;
+  opacity: 0.8;
+  margin-bottom: 6px; /* ลดช่องว่าง */
+}
+
+.caption-main {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.image-caption span {
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.story-gallery {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+  width: 100%;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+.story-gallery img {
+  width: calc(50% - 6px);
+  max-width: none;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  display: block;
+}
+
+
+.placeholder-photo span {
+  background: rgba(255,255,255,0.8);
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+.timeline-section {
+  padding-top: 40px;
+}
+
+.timeline {
+  max-width: 900px;
+  margin: 30px auto 0;
+  display: grid;
+  gap: 16px;
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 18px;
+  align-items: start;
+  background: rgba(255,255,255,0.72);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 22px;
+  box-shadow: var(--shadow);
+}
+
+.timeline-no {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--bg-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 26px;
+  border: 1px solid var(--line-2);
+}
+
+.timeline-content h3 {
+  font-size: 28px;
+  margin-bottom: 4px;
+}
+
+.detail-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.detail-item {
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: rgba(247, 242, 235, 0.72);
+  border: 1px solid var(--line);
+}
+
+.detail-item span {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+
+/* start จัดตรงกลาง ceremony + wedding day */
+.ceremony-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.ceremony-header .eyebrow {
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: #8c7f76;
+  margin-bottom: 8px;
+}
+
+.ceremony-header h2 {
+  font-size: 40px;
+  font-weight: 400;
+  color: #3a3430;
+}
+
+/* end จัดตรงกลาง ceremony + wedding day */
+
+/* start ใส่ code สี*/
+.dress-code {
+  text-align: center;
+}
+
+.color-palette {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 12px;
+  flex-wrap: nowrap; /* สำคัญ */
+}
+
+.color-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.color-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  margin-bottom: 6px;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+/* 🎨 สี */
+.sage   { background: #A8BBA3; }
+.olive  { background: #7A8F7A; }
+.brown  { background: #A68A75; }
+.cream  { background: #F2EDE6; }
+.copper { background: #B87333; }
+
+.color-item small {
+  font-size: 10px;
+  color: #8c7f76;
+  letter-spacing: 0.5px;
+}
+
+.color-dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-bottom: 6px;
+}
+
+/* end ใส่ code สี*/
+
+.gallery-section {
+  padding-top: 40px;
+  transform: scale(1.02);
+  
+}
+
+.gallery-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr 0.9fr;
+  grid-template-rows: 260px 260px;
+  gap: 18px;
+ filter: brightness(0.95) contrast(1.05);
+}
+
+.gallery-item {
+  border-radius: 18px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  box-shadow: var(--shadow);
+  transition: transform 0.4s ease;
+}
+
+.gallery-item span {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  background: rgba(255,255,255,0.84);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+.gallery-item:nth-child(1) {
+  background-image: url('pic/couple1.jpg');
+}
+
+.gallery-item:nth-child(2) {
+  background-image: url('pic/couple2.jpeg');
+}
+
+.gallery-item:nth-child(3) {
+  background-image: url('pic/couple3.jpeg');
+}
+
+.gallery-item:nth-child(4) {
+  background-image: url('pic/couple4.jpeg');
+}
+
+.gallery-item.tall {
+  grid-row: span 2;
+}
+
+.gallery-item.wide {
+  grid-column: span 2;
+}
+
+.countdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 0;
+  flex-wrap: nowrap;
+}
+
+.detail-card .label {
+  display: block;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.time-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.time-box span {
+  font-size: 20px;
+  color: #d9a29a;
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.time-box small {
+  font-size: 10px;
+  color: #bfa39a;
+  letter-spacing: 1px;
+  margin-top: 4px;
+  line-height: 1;
+}
+
+.separator {
+  font-size: 20px;
+  color: #d9a29a;
+  transform: translateY(-2px);
+  line-height: 1;
+}
+
+.quote-section .quote-card {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.quote-text {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(30px, 4vw, 48px);
+  line-height: 1.2;
+  color: var(--text);
+}
+
+
+/* start function location*/
+
+.venue-info {
+  margin-top: 18px;
+}
+
+.venue-address {
+  margin: 0;
+  line-height: 1.9;
+  font-size: 15px;
+  color: #4a403a;
+}
+
+.venue-note {
+  margin: 10px 0 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #8b7d72;
+}
+
+.venue-transport {
+  margin-top: 16px;
+}
+
+.transport-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #a18f82;
+}
+
+.venue-transport p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #5a4e46;
+}
+
+/* end function location*/
+
+/* start Map */
+.btn-soft {
+  display: inline-block;
+  padding: 10px 22px;
+  border-radius: 999px;
+
+  font-size: 14px;
+  letter-spacing: 0.5px;
+
+  color: #5a4e46;
+  background-color: #f3eee8;
+  border: 1px solid #e0d6cc;
+
+  transition: all 0.3s ease;
+}
+
+.btn-soft:hover {
+  background-color: #e9dfd4;
+  border-color: #d6c8bb;
+  color: #3e342e;
+}
+/* end Map */
+
+.rsvp-info {
+  margin-top: 18px;
+}
+
+.rsvp-info p {
+  margin-bottom: 8px;
+}
+
+.center-actions {
+  margin-top: 24px;
+}
+
+/*
+.footer {
+  text-align: center;
+  padding: 42px 20px 64px;
+}
+
+.footer-monogram {
+  font-size: 52px;
+  margin-bottom: 8px;
+}
+
+.footer-title {
+  font-size: 34px;
+  margin-bottom: 6px;
+}
+
+.footer-sub {
+  color: var(--muted);
+  font-size: 14px;
+} */
+
+.sub-text {
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  color: #9c877d;
+  margin: 10px 0 25px;
+  line-height: 1.6;
+}
+
+.ending {
+  /*padding: 100px 20px 80px;*/
+  padding: 42px 20px 64px;
+  background: #f5f0eb; /* โทนอ่อนกว่าพื้นหลักนิดเดียว */
+  text-align: center;
+}
+
+.ending-inner {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* A&S */
+.ending-monogram {
+  font-family: 'Playfair Display', serif;
+  font-size: 40px;
+  color: #7a655c;
+  margin-bottom: 20px;
+}
+
+/* title */
+.ending-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1.3;
+  color: #4e403a;
+  margin-bottom: 16px;
+}
+
+/* sub text */
+.ending-sub {
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  color: #9c877d;
+  letter-spacing: 1px;
+}
+
+/* divider */
+.ending-divider {
+  margin: 30px 0 20px;
+}
+
+.ending-divider .line {
+  display: inline-block;
+  width: 60px;
+  height: 1px;
+  background: #e5ddd7;
+  margin: 0 10px;
+  vertical-align: middle;
+}
+
+.ending-divider .heart {
+  font-size: 14px;
+  color: #c7b5ad;
+  vertical-align: middle;
+}
+
+/* credit */
+.ending-credit {
+  font-family: 'Raleway', sans-serif;
+  font-size: 12px;
+  color: #a8958d;
+  letter-spacing: 1px;
+}
+
+.ending-credit a {
+  color: #7a655c;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(122,101,92,0.3);
+  transition: all 0.3s ease;
+}
+
+.ending-credit a:hover {
+  border-bottom: 1px solid #7a655c;
+}
+
+
+@media (max-width: 480px) {
+  .image-caption {
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    padding: 10px 14px;
+  }
+
+  .caption-main {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 920px) {
+  .split-section,
+  .details-wrap {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .gallery-item,
+  .gallery-item.tall,
+  .gallery-item.wide {
+    grid-column: auto;
+    grid-row: auto;
+    min-height: 260px;
+  }
+
+  .placeholder-photo {
+    min-height: 360px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    min-height: 92vh;
+    padding: 18px;
+  }
+
+  .card,
+  .card.large {
+    padding: 26px 22px;
+    border-radius: 24px;
+  }
+
+  .timeline-item {
+    grid-template-columns: 1fr;
+  }
+
+  
+  .timeline-no {
+    width: 50px;
+    height: 50px;
+    font-size: 22px;
+  }
+
+  .footer-title {
+    font-size: 28px;
+  }
+
+  .hero-desc {
+    font-size: 15px;
+  }
+
+  #skipBtn {
+    right: 14px;
+    bottom: 16px;
+  }
+}
