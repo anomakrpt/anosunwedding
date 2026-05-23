@@ -2,7 +2,7 @@ let player;
 let playerReady = false;
 
 const VIDEO_ID = "lqWP-nJF0kA"; // song
-const START_SECONDS = 41;
+const START_SECONDS = 28;
 
 window.onYouTubeIframeAPIReady = function () {
   player = new YT.Player("youtube-player", {
