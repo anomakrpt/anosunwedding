@@ -1,11 +1,10 @@
 let player;
 let playerReady = false;
 
-const VIDEO_ID = "8ImQ5XFwldg"; // BILLKIN - นับหนึ่ง
+const VIDEO_ID = "lqWP-nJF0kA"; // song
 const START_SECONDS = 28;
 
-// YouTube API
-function onYouTubeIframeAPIReady() {
+window.onYouTubeIframeAPIReady = function () {
   player = new YT.Player("youtube-player", {
     height: "1",
     width: "1",
@@ -23,7 +22,7 @@ function onYouTubeIframeAPIReady() {
       }
     }
   });
-}
+};
 
 document.addEventListener("DOMContentLoaded", () => {
   const intro = document.getElementById("intro");
@@ -35,8 +34,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const mobileMenu = document.getElementById("mobileMenu");
   const mapBtn = document.querySelector(".map-btn");
 
+  if (introVideo) {
+    introVideo.muted = true;
+    introVideo.playsInline = true;
+    introVideo.load();
+  }
+
   function startMusic() {
-    if (!playerReady) {
+    if (!playerReady || !player) {
       setTimeout(startMusic, 300);
       return;
     }
@@ -47,8 +52,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let vol = 0;
     const fade = setInterval(() => {
-      if (vol < 35) {
-        vol += 3;
+      if (vol < 30) {
+        vol += 2;
         player.setVolume(vol);
       } else {
         clearInterval(fade);
@@ -59,7 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function showMainContent() {
     if (intro) {
       intro.style.opacity = "0";
-      intro.style.transition = "opacity 0.8s ease";
 
       setTimeout(() => {
         intro.style.display = "none";
@@ -71,25 +75,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // กดปุ่ม Open Invitation = เล่นวิดีโอ + เพลง
   if (skipBtn && introVideo) {
-    skipBtn.addEventListener("click", () => {
-      skipBtn.style.opacity = "0";
-      skipBtn.style.pointerEvents = "none";
+    skipBtn.addEventListener("click", async () => {
+      skipBtn.classList.add("is-hidden");
 
-      introVideo.play();
       startMusic();
+
+      try {
+        introVideo.currentTime = 0;
+        await introVideo.play();
+      } catch (err) {
+        console.log("Video play failed:", err);
+        showMainContent();
+      }
     });
   }
 
-  // วิดีโอจบแล้วค่อยเข้าเว็บ
   if (introVideo) {
     introVideo.addEventListener("ended", showMainContent);
   } else {
     showMainContent();
   }
 
-  // Menu
   if (menuBtn && mobileMenu) {
     menuBtn.addEventListener("click", () => {
       mobileMenu.classList.toggle("show");
@@ -103,29 +110,34 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Map button
   if (mapBtn) {
     mapBtn.addEventListener("click", (e) => {
       const href = mapBtn.getAttribute("href");
       if (!href || href === "#") {
         e.preventDefault();
-        alert("ใส่ลิงก์ Google Maps ในปุ่ม Open Map ก่อน");
+        alert("ใส่ลิงก์ Google Maps ในปุ่ม View Map ก่อน");
       }
     });
   }
 
-  // Countdown
   const targetDate = new Date("2027-01-17T10:00:00").getTime();
 
   function updateCountdown() {
+    const daysEl = document.getElementById("days");
+    const hoursEl = document.getElementById("hours");
+    const minutesEl = document.getElementById("minutes");
+    const secondsEl = document.getElementById("seconds");
+
+    if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
+
     const now = new Date().getTime();
     const distance = targetDate - now;
 
     if (distance <= 0) {
-      document.getElementById("days").textContent = "00";
-      document.getElementById("hours").textContent = "00";
-      document.getElementById("minutes").textContent = "00";
-      document.getElementById("seconds").textContent = "00";
+      daysEl.textContent = "00";
+      hoursEl.textContent = "00";
+      minutesEl.textContent = "00";
+      secondsEl.textContent = "00";
       return;
     }
 
@@ -134,66 +146,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const minutes = Math.floor((distance / (1000 * 60)) % 60);
     const seconds = Math.floor((distance / 1000) % 60);
 
-    document.getElementById("days").textContent = days;
-    document.getElementById("hours").textContent = String(hours).padStart(2, "0");
-    document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
-    document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
+    daysEl.textContent = days;
+    hoursEl.textContent = String(hours).padStart(2, "0");
+    minutesEl.textContent = String(minutes).padStart(2, "0");
+    secondsEl.textContent = String(seconds).padStart(2, "0");
   }
 
   updateCountdown();
   setInterval(updateCountdown, 1000);
-});  if (skipBtn) {
-    skipBtn.addEventListener("click", showMainContent);
-  }
-
-  if (menuBtn && mobileMenu) {
-    menuBtn.addEventListener("click", () => {
-      mobileMenu.classList.toggle("show");
-    });
-  }
-
-  const menuLinks = document.querySelectorAll(".mobile-menu a");
-  menuLinks.forEach((link) => {
-    link.addEventListener("click", () => {
-      mobileMenu.classList.remove("show");
-    });
-  });
-
-  if (mapBtn) {
-    mapBtn.addEventListener("click", (e) => {
-      const href = mapBtn.getAttribute("href");
-      if (!href || href === "#") {
-        e.preventDefault();
-        alert("ใส่ลิงก์ Google Maps ในปุ่ม Open Map ก่อน");
-      }
-    });
-  }
 });
-
-
-/* start Date Countdown*/
-
-const targetDate = new Date("2027-01-17T10:00:00").getTime(); // ใส่เวลา 10:00 ไปเลย
-
-function updateCountdown() {
-  const now = new Date().getTime();
-  const distance = targetDate - now;
-
-  if (distance <= 0) return;
-
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((distance / (1000 * 60)) % 60);
-  const seconds = Math.floor((distance / 1000) % 60);
-
-  document.getElementById("days").textContent = days;
-  document.getElementById("hours").textContent = String(hours).padStart(2, "0");
-  document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
-  document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
-}
-
-updateCountdown();
-setInterval(updateCountdown, 1000); 
-
-/* end Date Countdown*/
-
