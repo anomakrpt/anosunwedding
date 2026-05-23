@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (introVideo) {
     introVideo.addEventListener("ended", showMainContent);
   } else {
-    showMainContent();
+   // showMainContent();
   }
 
   if (menuBtn && mobileMenu) {
