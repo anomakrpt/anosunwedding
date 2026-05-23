@@ -18,11 +18,12 @@
 
   <!-- Video Intro -->
   <div id="intro">
-    <video id="introVideo" autoplay muted playsinline>
+    <!--<video id="introVideo" autoplay muted playsinline> -->
+      <video id="introVideo" muted playsinline> 
       <source src="pic/cardopen.mp4" type="video/mp4" />
     </video>
   
-    <button id="skipBtn">Open Invitation</button> <!-- เปลี่ยนคำให้เข้าธีม -->
+    <button id="skipBtn">Enter Our Story</button> <!-- เปลี่ยนคำให้เข้าธีม -->
   </div>
 
 
@@ -111,7 +112,7 @@
           </p> 
 
             <div class="story-gallery">
-            <img src="pic/sun.jpg" alt="">
+            <img src="pic/sun.JPG" alt="">
             <img src="pic/ano.JPG" alt="">
             </div>
 
@@ -366,7 +367,7 @@ let player;
 let playerReady = false;
 
 const VIDEO_ID = "lqWP-nJF0kA";// song
-const START_SECONDS = 1;
+const START_SECONDS = 28;
 
 // โหลด YouTube
 function onYouTubeIframeAPIReady() {
