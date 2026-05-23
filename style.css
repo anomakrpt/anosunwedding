@@ -93,7 +93,7 @@ body {
   background: rgba(255,255,255,0.2);
 }
 
-@media (max-width: 640px) {
+/*@media (max-width: 640px) {
   #skipBtn {
     bottom: 28px;
 
@@ -101,7 +101,7 @@ body {
 
     font-size: 18px;
   }
-}
+} */
 
 /* open card end*/
 
