@@ -1,5 +1,7 @@
 let player;
 let playerReady = false;
+let introStarted = false;
+let musicStarted = false;
 
 const VIDEO_ID = "lqWP-nJF0kA"; // song
 const START_SECONDS = 28;
@@ -42,10 +44,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function startMusic() {
+    if (musicStarted) return;
+
     if (!playerReady || !player) {
       setTimeout(startMusic, 300);
       return;
     }
+
+    musicStarted = true;
 
     player.seekTo(START_SECONDS, true);
     player.setVolume(0);
@@ -78,6 +84,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (skipBtn && introVideo) {
     skipBtn.addEventListener("click", async () => {
+      if (introStarted) return;
+      introStarted = true;
+
       skipBtn.classList.add("is-hidden");
 
       try {
@@ -87,14 +96,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         await introVideo.play();
 
-        // เล่นเพลงหลัง video เริ่มแล้ว
         startMusic();
-
       } catch (err) {
         console.log("Video play failed:", err);
 
-        // ถ้า video เล่นไม่ได้ อย่าข้ามเข้าเว็บ
-        // ให้ปุ่มกลับมา เพื่อให้กดใหม่ได้
+        introStarted = false;
         skipBtn.classList.remove("is-hidden");
       }
     });
@@ -102,8 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (introVideo) {
     introVideo.addEventListener("ended", showMainContent);
-  } else {
-   // showMainContent();
   }
 
   if (menuBtn && mobileMenu) {
