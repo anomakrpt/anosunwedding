@@ -45,7 +45,8 @@ body {
   object-fit: cover;
 }
 
-#skipBtn {
+/* open card start*/
+/*#skipBtn {
   position: absolute;
   right: 20px;
   bottom: 24px;
@@ -56,7 +57,53 @@ body {
   color: #444444;
   cursor: pointer;
   font-size: 14px;
+}*/
+
+#skipBtn {
+  position: absolute;
+  bottom: 40px; /* ย้ายลงมาอยู่บนการ์ด */
+  left: 50%;
+  transform: translateX(-50%);
+
+  z-index: 3;
+
+  padding: 14px 30px;
+
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.5);
+
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+
+  color: white;
+
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  letter-spacing: 1px;
+
+  cursor: pointer;
+  transition: 0.3s ease;
+
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
 }
+
+#skipBtn:hover {
+  transform: translateX(-50%) translateY(-2px);
+
+  background: rgba(255,255,255,0.2);
+}
+
+@media (max-width: 640px) {
+  #skipBtn {
+    bottom: 28px;
+
+    padding: 12px 24px;
+
+    font-size: 18px;
+  }
+}
+
+/* open card end*/
 
 /* Main hidden at first */
 #main {
