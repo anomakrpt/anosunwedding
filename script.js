@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (introVideo) {
     introVideo.muted = true;
     introVideo.playsInline = true;
+    introVideo.preload = "auto";
     introVideo.load();
   }
 
@@ -79,14 +80,22 @@ document.addEventListener("DOMContentLoaded", () => {
     skipBtn.addEventListener("click", async () => {
       skipBtn.classList.add("is-hidden");
 
-      startMusic();
-
       try {
         introVideo.currentTime = 0;
+        introVideo.muted = true;
+        introVideo.playsInline = true;
+
         await introVideo.play();
+
+        // เล่นเพลงหลัง video เริ่มแล้ว
+        startMusic();
+
       } catch (err) {
         console.log("Video play failed:", err);
-        showMainContent();
+
+        // ถ้า video เล่นไม่ได้ อย่าข้ามเข้าเว็บ
+        // ให้ปุ่มกลับมา เพื่อให้กดใหม่ได้
+        skipBtn.classList.remove("is-hidden");
       }
     });
   }
