@@ -10,7 +10,6 @@ let musicStarted = false;
 /* ============================================================
    YOUTUBE MUSIC
    ============================================================ */
-
 /* วันครบรอบ นน */
 /*const VIDEO_ID = "lqWP-nJF0kA";   
 const START_SECONDS = 28;*/
@@ -734,13 +733,13 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ============================================================
      AUTO LOOP SETTINGS
 
-     15 คำอวยพร / 1 ชุด
-     เปลี่ยนทุก 15 วินาที
+     9 คำอวยพร / 1 ชุด
+     เปลี่ยนทุก 5 วินาที
      ============================================================ */
 
   const WISHES_PER_PAGE = 9;
 
-  const WISHES_INTERVAL = 15000;
+  const WISHES_INTERVAL = 5000;
 
   const WISH_FADE_TIME = 1;
 
@@ -1723,7 +1722,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
               <span class="wish-heart">
 
-                ♥
+                ♡
 
               </span>
 
