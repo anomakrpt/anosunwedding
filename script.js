@@ -1720,10 +1720,9 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="wish-footer">
 
 
+          
               <span class="wish-heart">
-
-                ♡
-
+                <img src="pic/icon-like.png" alt="" />
               </span>
 
 
