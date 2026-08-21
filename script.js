@@ -15,9 +15,9 @@ let musicStarted = false;
 /*const VIDEO_ID = "lqWP-nJF0kA";   
 const START_SECONDS = 28;*/
 
-/* วันครบรอบ นน */
+/* Right Here Waiting */
 const VIDEO_ID = "S_E2EHVxNAE";
-const START_SECONDS = 1.17;
+const START_SECONDS = 77;
 
 
 /* ============================================================
