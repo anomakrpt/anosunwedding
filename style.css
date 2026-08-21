@@ -133,6 +133,8 @@ a {
   background: var(--cream);
 }
 
+
+
 .image-left {
   width: 100%;
   min-height: 100svh;
@@ -142,22 +144,6 @@ a {
   justify-content: center;
   overflow: hidden;
 }
-/*
-.image-left img {
-  width: 100%;
-  height: 100%;
-  min-height: 100svh;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-}
-
-.image-left {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-} */
 
 .image-left img {
   width: 100%;
@@ -432,7 +418,7 @@ a {
     width:min(980px,88%);
     max-width:none;
     margin:0 auto;
-    font-family:var(--display);
+    font-family: var(--display);
     font-style:italic;
     font-weight:500;
     font-size:clamp(1.6rem,2.1vw,2.6rem);
@@ -463,7 +449,7 @@ a {
 
     display:block;
     margin-top:20px;
-    font-family:var(--display);
+    font-family: var(--display);
     font-style:normal;
     font-weight:500;
     font-size:clamp(.5rem,.95vw,1.05rem);
@@ -597,69 +583,6 @@ a {
 
 
 
-
-/* Story */
-/*.split-section,
-.details-wrap {
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 22px;
-  align-items: stretch;
-}
-
-.image-card {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  padding: 0;
-}
-
-.placeholder-photo {
-  min-height: 470px;
-  border-radius: var(--radius-lg);
-  background:
-    linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)),
-    url("pic/Doiluang1.jpg");
-  background-size: cover;
-  background-position: center;
-  box-shadow: var(--shadow);
-  display: flex;
-  align-items: end;
-  justify-content: center;
-  padding: 22px;
-  position: relative;
-}
-
-.image-caption {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  color: rgba(255, 255, 255, 0.95);
-  text-align: center;
-  font-size: 15px;
-  font-family: "Cormorant Garamond", serif;
-  z-index: 2;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-}
-
-.story-gallery {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 20px;
-  width: 100%;
-  padding: 0 8px;
-}
-
-.story-gallery img {
-  width: calc(50% - 6px);
-  height: 180px;
-  object-fit: cover;
-  border-radius: 16px;
-  box-shadow: var(--shadow);
-  display: block;
-} */
 
 /* ============================================================
    STORY - Full Split Image
@@ -848,6 +771,12 @@ a {
   }
 }
 
+/* ============================================================
+   CEREMONY + LOCATION
+   Desktop / iPad = 2 columns
+   Mobile = 1 column
+============================================================ */
+
 .image-card-details {
   background: transparent;
   border: none;
@@ -855,94 +784,120 @@ a {
   padding: 0;
 }
 
+/* กล่องแม่ของ Ceremony + Location */
 .split-section-details,
 .details-wrap {
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   gap: 22px;
-  align-items: stretch;
+  align-items: start;
 }
 
+/* สำคัญ: อนุญาตให้ card หดตาม grid ได้ */
+.ceremony-card,
+.location-card {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
 
-/* Details */
+/* กัน content ด้านใน Ceremony ล้นไปทับ Location */
+.ceremony-card {
+  overflow: hidden;
+}
+
+/* ---------------- Ceremony details ---------------- */
+
 .detail-list {
+  width: 100%;
+  min-width: 0;
   display: grid;
   gap: 14px;
   margin-top: 18px;
 }
 
-.detail-note{
-
-    display:block;
-
-    margin-top:2px;
-    margin-bottom:10px;
-
-    font-size:10px;
-
-    color:rgba(122,98,87,.48);
-
-    font-family:"Cormorant Garamond", serif;
-
-    font-style:italic;
-
-    letter-spacing:.05em;
-
-    line-height:1.5;
+.detail-note {
+  display: block;
+  margin: 2px 0 10px;
+  font-family: var(--display);
+  font-size: 10px;
+  font-style: italic;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  color: rgba(122, 98, 87, 0.48);
 }
 
 .detail-item,
 .detail-card {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   padding: 16px 18px;
+  border: 1px solid var(--line);
   border-radius: 18px;
   background: rgba(247, 242, 235, 0.72);
-  border: 1px solid var(--line);
 }
 
 .detail-item span,
 .detail-card .label {
   display: block;
-  font-size: 13px;
-  color: var(--muted);
   margin-bottom: 8px;
-  text-transform: uppercase;
+  font-size: 13px;
   letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---------------- Countdown ---------------- */
+
+.countdown-wrap {
+  width: 100%;
+  min-width: 0;
 }
 
 .countdown {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+  width: 100%;
+  min-width: 0;
   margin-top: 10px;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr) auto
+    minmax(0, 1fr) auto
+    minmax(0, 1fr) auto
+    minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
 }
 
 .time-box {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
 .time-box span,
 .separator {
   font-size: 20px;
-  color: #d9a29a;
-  letter-spacing: 1px;
   line-height: 1;
+  letter-spacing: 1px;
+  color: #d9a29a;
 }
 
 .time-box small {
-  font-size: 10px;
-  color: #bfa39a;
-  letter-spacing: 1px;
   margin-top: 4px;
+  font-size: 10px;
   line-height: 1;
+  letter-spacing: 1px;
+  color: #bfa39a;
 }
 
 .separator {
-  transform: translateY(-8px);
+  transform: translateY(2px);
 }
+
+/* ---------------- Location ---------------- */
 
 .venue-info {
   margin-top: 18px;
@@ -950,8 +905,8 @@ a {
 
 .venue-address {
   margin: 0;
-  line-height: 1.9;
   font-size: 15px;
+  line-height: 1.9;
   color: #4a403a;
 }
 
@@ -962,12 +917,13 @@ a {
   color: #8b7d72;
 }
 
-.venue-transport {
+.venue-transport,
+.venue-carparking {
   margin-top: 16px;
 }
 
-
-.transport-label {
+.transport-label,
+.carparking-label {
   display: block;
   margin-bottom: 8px;
   font-size: 11px;
@@ -976,26 +932,7 @@ a {
   color: #a18f82;
 }
 
-.venue-transport p {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.7;
-  color: #5a4e46;
-}
-
-.venue-carparking {
-  margin-top: 16px;
-}
-
-.carparking-label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #a18f82;
-}
-
+.venue-transport p,
 .venue-carparking p {
   margin: 0;
   font-size: 14px;
@@ -1003,123 +940,175 @@ a {
   color: #5a4e46;
 }
 
-/* Dress Code inside detail-list */
+/* ---------------- Dress Code ---------------- */
 
 .dress-card {
   text-align: center;
 }
 
-.dress-mini-grid{
-
-    margin-top:16px;
-    display:flex;
-    justify-content:center;   /* อยู่กลาง */
-    align-items:flex-start;
-    gap:10px;                 /* จากเดิม 8-10px ของ grid เปลี่ยนเป็นระยะคงที่ */
-    flex-wrap:nowrap;
-
+.dress-mini-grid {
+  width: 100%;
+  min-width: 0;
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  align-items: start;
 }
 
-
-.dress-mini-item{
-
-    width:72px;               /* ทุกช่องกว้างเท่ากัน */
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-
+.dress-mini-item {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-
-.dress-mini-item svg{
-
-    width:70px;               /* ใหญ่ขึ้น */
-    height:72px;
-    display:block;
-    fill:currentColor;
+.dress-mini-item svg {
+  width: min(70px, 100%);
+  height: auto;
+  aspect-ratio: 100 / 90;
+  display: block;
+  fill: currentColor;
 }
 
-.dress-mini-item small{
-
-    margin-top:8px;
-    text-align:center;
-    font-size:10px;
-    line-height:1.2;
-    white-space:nowrap;
-    color:currentColor;
-
+.dress-mini-item small {
+  margin-top: 8px;
+  font-size: 10px;
+  line-height: 1.2;
+  text-align: center;
+  white-space: normal;
+  color: currentColor;
 }
 
-/* colors */
-.dress-sage {
-  color: #9fad94;
-}
+/* Dress code colors */
+.dress-sage   { color: #9fad94; }
+.dress-olive  { color: #7e824c; }
+.dress-brown  { color: #a9826a; }
+.dress-cream  { color: #d7c9b5; }
+.dress-copper { color: #c06f45; }
 
-.dress-olive {
-  color: #7e824c;
-}
+/* ============================================================
+   iPAD / TABLET PORTRAIT
+   แก้ปัญหา card ฝั่งซ้ายล้นไปทับ Location
+============================================================ */
+@media (min-width: 641px) and (max-width: 1100px) {
 
-.dress-brown {
-  color: #a9826a;
-}
-
-.dress-cream {
-  color: #d7c9b5;
-}
-
-.dress-copper {
-  color: #c06f45;
-}
-
-@media (max-width:640px){
-
-  .dress-mini-grid{
-
-    display:inline-flex;      /* ให้กว้างเท่าจำนวนหัวใจ */
-    justify-content:center;
-    align-items:flex-start;
-
-    gap:6px;                  /* ระยะห่างระหว่างหัวใจ */
-
-    margin:12px auto 0;
-
-    width:fit-content;        /* อยู่กึ่งกลาง */
+  .split-section-details,
+  .details-wrap {
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+    gap: 16px;
   }
 
-  .dress-mini-item{
-
-    width:42px;               /* ลดความกว้างของแต่ละช่อง */
-
-    display:grid;
-    flex-direction:column;
-    align-items:center;
+  .ceremony-card,
+  .location-card {
+    padding: 24px 20px;
   }
 
-  .dress-mini-item svg{
-
-    width:42px;
-    height:42px;
-
-    display:block;
-
-    fill:currentColor;
+  .detail-item,
+  .detail-card {
+    padding: 14px 14px;
   }
 
-  .dress-mini-item small{
-
-    margin-top:4px;
-
-    font-size:7px;
-
-    line-height:1.2;
-
-    white-space:nowrap;
-
-    text-align:center;
+  .detail-item span,
+  .detail-card .label {
+    font-size: 11px;
   }
 
+  .detail-item strong {
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .countdown {
+    gap: 4px;
+  }
+
+  .time-box span,
+  .separator {
+    font-size: 18px;
+  }
+
+  .time-box small {
+    font-size: 8px;
+    letter-spacing: 0.6px;
+  }
+
+  .dress-mini-grid {
+    gap: 5px;
+  }
+
+  .dress-mini-item svg {
+    width: min(52px, 100%);
+  }
+
+  .dress-mini-item small {
+    margin-top: 5px;
+    font-size: 8px;
+    line-height: 1.15;
+  }
+
+  .venue-address {
+    font-size: 14px;
+  }
+
+  .venue-note,
+  .venue-transport p,
+  .venue-carparking p {
+    font-size: 12px;
+  }
 }
 
+/* ============================================================
+   MOBILE
+   Ceremony + Location เรียงลงมาเป็น 1 คอลัมน์
+============================================================ */
+@media (max-width: 640px) {
+
+  .split-section-details,
+  .details-wrap {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .ceremony-card {
+    overflow: visible;
+  }
+
+  .detail-item,
+  .detail-card {
+    padding: 14px 14px;
+  }
+
+  .countdown {
+    gap: 3px;
+  }
+
+  .time-box span,
+  .separator {
+    font-size: 17px;
+  }
+
+  .time-box small {
+    font-size: 7px;
+    letter-spacing: 0.5px;
+  }
+
+  .dress-mini-grid {
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .dress-mini-item svg {
+    width: min(42px, 100%);
+  }
+
+  .dress-mini-item small {
+    margin-top: 4px;
+    font-size: 7px;
+    line-height: 1.15;
+  }
+}
 
 /* Gallery */
 .gallery-section {
@@ -1268,69 +1257,6 @@ a {
   line-height: 1.6;
 }
 
-/*
-.ending {
-  padding: 42px 20px 64px;
-  background: #f5f0eb;
-  text-align: center;
-}
-
-.ending-inner {
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-.ending-monogram {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 40px;
-  color: #7a655c;
-  margin-bottom: 20px;
-}
-
-.ending-title {
-  font-size: 32px;
-  line-height: 1.3;
-  color: #4e403a;
-  margin-bottom: 16px;
-}
-
-.ending-sub {
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  color: #9c877d;
-  letter-spacing: 1px;
-}
-
-.ending-divider {
-  margin: 30px 0 20px;
-}
-
-.ending-divider .line {
-  display: inline-block;
-  width: 60px;
-  height: 1px;
-  background: #e5ddd7;
-  margin: 0 10px;
-  vertical-align: middle;
-}
-
-.ending-divider .heart {
-  font-size: 14px;
-  color: #c7b5ad;
-  vertical-align: middle;
-}
-
-.ending-credit {
-  font-family: "Inter", sans-serif;
-  font-size: 12px;
-  color: #a8958d;
-  letter-spacing: 1px;
-}
-
-.ending-credit a {
-  color: #7a655c;
-  border-bottom: 1px solid rgba(122, 101, 92, 0.3);
-} */
 
 /* ============================================================
    Final Ending / Contact Footer
@@ -1361,7 +1287,7 @@ a {
 
     margin:0 auto 18px;
 
-    font-family:var(--display);
+    font-family: var(--display);
 
     font-size:2rem;
 
@@ -1408,14 +1334,15 @@ a {
   font-family: var(--display, "Cormorant Garamond", serif);
   font-size: 1.45rem;
   line-height: 1;
-  color: rgba(122, 98, 87, 0.38);
+  color: var(--olive);
+  opacity: 0.62;
 }
 
 .footer-label{
 
     margin-bottom:28px;
 
-    font-family:var(--display);
+    font-family: var(--display);
 
     font-size:1.5rem;
 
@@ -1541,7 +1468,7 @@ a {
 .ending-credit a,
 .website-credit span{
 
-    font-family:var(--display);
+    font-family: var(--display);
 
     font-size:1.05rem;
 
@@ -1721,8 +1648,8 @@ a {
     margin-top: 18px;
   }
 
-  .split-section,
-  .details-wrap {
+  /* Story เปลี่ยนเป็น 1 คอลัมน์บน tablet */
+  .split-section {
     grid-template-columns: 1fr;
   }
 
