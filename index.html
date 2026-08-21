@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <title>Wedding Invitation</title>
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+
+  <!-- =========================================================
+       GOOGLE FONTS
+  ========================================================== -->
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Noto+Serif+Thai:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+
+  <!-- =========================================================
+       MAIN CSS
+  ========================================================== -->
+
+  <link
+    rel="stylesheet"
+    href="style.css?v=20260820-1"
+  />
+
+
+  <!-- =========================================================
+       BOTTOM NAVIGATION OVERRIDE
+
+       ปรับเฉพาะ Bottom Navigation
+       ให้เหมือน wishes.html / photos.html
+
+       ใส่ไว้หลัง style.css
+       เพื่อให้ CSS ชุดนี้ทับค่าเก่า
+  ========================================================== -->
+
+  <style>
+
+    :root {
+
+      --nav-cream: #fbf8f1;
+
+      --nav-olive: #777747;
+
+      --nav-olive-dark: #5f6037;
+
+      --nav-muted: #8c8878;
+
+      --nav-height: 72px;
+    }
+
+
+    /* =========================================================
+       BOTTOM NAV
+    ========================================================== */
+
+    .bottom-nav {
+
+      position: fixed;
+
+      left: 50%;
+
+      bottom: 0;
+
+      transform: translateX(-50%);
+
+      width: min(100%, 760px);
+
+      min-height: var(--nav-height);
+
+      padding:
+        8px 12px
+        calc(8px + env(safe-area-inset-bottom));
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(6, 1fr);
+
+      align-items: center;
+
+      gap: 2px;
+
+      background:
+        rgba(251, 248, 241, .93);
+
+      border-top:
+        1px solid
+        rgba(112, 106, 81, .13);
+
+      box-shadow:
+        0 -8px 30px
+        rgba(79, 73, 53, .08);
+
+      backdrop-filter:
+        blur(16px);
+
+      -webkit-backdrop-filter:
+        blur(16px);
+
+      z-index: 9999;
+    }
+
+
+    /* =========================================================
+       NAV ITEM
+    ========================================================== */
+
+    .bottom-nav .nav-item {
+
+      position: relative;
+
+      min-width: 0;
+
+      color: var(--nav-muted);
+
+      text-decoration: none;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 4px;
+
+      padding: 4px 2px;
+
+      background: transparent;
+
+      border: 0;
+
+      border-radius: 0;
+
+      box-shadow: none;
+
+      transition:
+        color .2s ease,
+        opacity .2s ease;
+
+      -webkit-tap-highlight-color:
+        transparent;
+    }
+
+
+    /* กัน style.css เก่าใส่พื้นหลังให้ปุ่ม */
+
+    .bottom-nav .nav-item::after {
+
+      display: none;
+    }
+
+
+    /* =========================================================
+       ICON
+    ========================================================== */
+
+    .bottom-nav .nav-item svg {
+
+      display: block;
+
+      width: 21px;
+
+      height: 21px;
+
+      fill: none;
+
+      stroke: currentColor;
+
+      stroke-width: 1.7;
+
+      stroke-linecap: round;
+
+      stroke-linejoin: round;
+
+      margin: 0;
+
+      padding: 0;
+    }
+
+
+    /* =========================================================
+       TEXT
+    ========================================================== */
+
+    .bottom-nav .nav-item span {
+
+      display: block;
+
+      margin: 0;
+
+      padding: 0;
+
+      font-family:
+        "Inter",
+        sans-serif;
+
+      font-size: 10px;
+
+      font-weight: 400;
+
+      line-height: 1;
+
+      letter-spacing: 0;
+
+      white-space: nowrap;
+
+      color: inherit;
+    }
+
+
+    /* =========================================================
+       HOVER
+    ========================================================== */
+
+    .bottom-nav .nav-item:hover {
+
+      color: var(--nav-olive);
+
+      background: transparent;
+    }
+
+
+    /* =========================================================
+       ACTIVE
+    ========================================================== */
+
+    .bottom-nav .nav-item.active {
+
+      color: var(--nav-olive-dark);
+
+      background: transparent;
+
+      font-weight: 500;
+    }
+
+
+    /*
+       เส้น olive บนเมนูที่ active
+       เหมือนหน้า wishes / photos
+    */
+
+    .bottom-nav .nav-item.active::before {
+
+      content: "";
+
+      position: absolute;
+
+      top: -8px;
+
+      left: 50%;
+
+      transform: translateX(-50%);
+
+      width: 34px;
+
+      height: 3px;
+
+      border-radius: 999px;
+
+      background:
+        var(--nav-olive-dark);
+    }
+
+
+    .bottom-nav .nav-item.active svg {
+
+      stroke-width: 2;
+    }
+
+
+    .bottom-nav .nav-item.active span {
+
+      font-weight: 500;
+    }
+
+
+    /* =========================================================
+       MOBILE
+    ========================================================== */
+
+    @media (max-width: 700px) {
+
+      .bottom-nav {
+
+        width: 100%;
+
+        border-radius: 0;
+      }
+
+
+      .bottom-nav .nav-item svg {
+
+        width: 20px;
+
+        height: 20px;
+      }
+
+
+      .bottom-nav .nav-item span {
+
+        font-size: 9px;
+      }
+
+    }
+
+
+    /* =========================================================
+       SMALL MOBILE
+    ========================================================== */
+
+    @media (max-width: 420px) {
+
+      .bottom-nav {
+
+        padding-left: 5px;
+
+        padding-right: 5px;
+      }
+
+
+      .bottom-nav .nav-item span {
+
+        font-size: 8.5px;
+      }
+
+    }
+
+
+
+    /* =========================================================
+       EVENT + LOCATION RESPONSIVE LAYOUT
+
+       Mobile:
+       - Ceremony อยู่ด้านบน
+       - Location อยู่ด้านล่าง
+       - คงหน้าตาเดิม
+
+       iPad / Desktop (>= 768px):
+       - Ceremony อยู่ฝั่งซ้าย
+       - Location อยู่ฝั่งขวา
+       ========================================================= */
+
+    #details.details-wrap {
+      display: block;
+    }
+
+    #details > .ceremony-card,
+    #details > .location-card {
+      width: 100%;
+      max-width: none;
+      margin-left: 0;
+      margin-right: 0;
+      box-sizing: border-box;
+    }
+
+    #details > .location-card {
+      margin-top: 20px;
+    }
+
+
+    /* =========================================================
+       iPad + Desktop
+       ========================================================= */
+
+    @media (min-width: 768px) {
+
+      #details.details-wrap {
+        display: grid !important;
+        grid-template-columns:
+          minmax(0, 1fr)
+          minmax(0, 1fr);
+
+        gap: 28px;
+        align-items: start;
+
+        width: min(1180px, calc(100% - 40px)) !important;
+        max-width: 1180px !important;
+
+        margin-left: auto !important;
+        margin-right: auto !important;
+
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+
+      /* Ceremony ฝั่งซ้าย */
+
+      #details > .ceremony-card {
+        grid-column: 1;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+      }
+
+
+      /* Location ฝั่งขวา */
+
+      #details > .location-card {
+        grid-column: 2;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+      }
+
+
+      /* ป้องกัน card ภายในโดน CSS เก่าบังคับความกว้าง */
+
+      #details .detail-list,
+      #details .venue-info {
+        width: 100%;
+        max-width: none;
+      }
+
+    }
+
+
+    /* =========================================================
+       Desktop ใหญ่
+       เพิ่มช่องว่างระหว่าง 2 ฝั่ง
+       ========================================================= */
+
+    @media (min-width: 1200px) {
+
+      #details.details-wrap {
+        gap: 40px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+
+<body>
+
+
+  <!-- =========================================================
+       VIDEO INTRO
+  ========================================================== -->
+
+  <div id="intro">
+
+    <video
+      id="introVideo"
+      muted
+      playsinline
+      preload="metadata"
+    >
+
+      <source
+        src="pic/cardopen.mp4"
+        type="video/mp4"
+      />
+
+    </video>
+
+
+    <button id="skipBtn">
+      Enter Our Story
+    </button>
+
+  </div>
+
+
+
+  <!-- =========================================================
+       MAIN CONTENT
+  ========================================================== -->
+
+  <div
+    id="main"
+    style="display:none;"
+  >
+
+
+
+    <!-- =======================================================
+         HOME
+    ======================================================== -->
+
+    <section
+      id="home"
+      class="hero-layout"
+    >
+
+
+      <div class="hero-left image-left">
+
+        <img
+          src="pic/WELCOME.png"
+          alt="Wedding invitation cover"
+        />
+
+      </div>
+
+
+
+      <div class="hero-right">
+
+
+        <p class="script-title">
+          A Golden Renewal
+        </p>
+
+
+        <h1>
+
+          Anoma
+
+          <span>
+            &amp;
+          </span>
+
+          <br />
+
+          Saranurat
+
+        </h1>
+
+
+        <div class="hero-line"></div>
+
+
+        <p class="hero-desc">
+
+          ขอเชิญคุณร่วมเป็นส่วนหนึ่งในวันพิเศษ
+
+          <br />
+
+          และจุดเริ่มต้นการเดินทางครั้งใหม่ของเรา
+
+        </p>
+
+
+        <a
+          href="#story"
+          class="scroll-down"
+          aria-label="Scroll to story"
+        >
+
+          <span></span>
+
+        </a>
+
+
+        <div class="scroll-hint">
+          Scroll to begin
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+
+
+    <main>
+
+
+
+      <!-- =====================================================
+           BLESSING
+      ====================================================== -->
+
+      <section
+        class="blessing observe"
+        id="blessing"
+      >
+
+
+        <div
+          class="wrap thread"
+          aria-hidden="true"
+        >
+
+          <svg
+            viewBox="0 0 64 36"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+
+            <path
+              d="M32 18 C24 6,6 6,8 18 C6 30,24 30,32 18 Z"
+            />
+
+            <path
+              d="M32 18 C40 6,58 6,56 18 C58 30,40 30,32 18 Z"
+            />
+
+            <circle
+              cx="32"
+              cy="18"
+              r="3"
+              fill="currentColor"
+              stroke="none"
+            />
+
+            <path
+              d="M28 21 L22 30 M36 21 L42 30"
+            />
+
+          </svg>
+
+
+          <span class="line"></span>
+
+        </div>
+
+
+
+        <blockquote class="reveal">
+
+
+          <span class="quote-en">
+
+            It is written that He placed between two hearts a quiet love and a
+            mercy that asks for nothing — only a home, built gently, together.
+
+          </span>
+
+
+          <span class="quote-th">
+
+            “พระองค์ทรงลิขิตให้หัวใจสองดวง ได้พบกับความรักอันสงบ และความเมตตาที่ไม่เรียกร้องสิ่งใด
+            นอกจากการร่วมสร้างบ้านหลังหนึ่งไปด้วยกัน อย่างอ่อนโยน”
+
+          </span>
+
+
+          <cite class="caption">
+
+            — after Qur'an, Ar-Rūm 30:21
+
+          </cite>
+
+
+        </blockquote>
+
+
+      </section>
+
+
+
+      <!-- =====================================================
+           STORY
+      ====================================================== -->
+
+      <section
+        class="section split-section"
+        id="story"
+      >
+
+
+        <div class="card image-card">
+
+          <div class="placeholder-photo">
+
+            <div class="image-caption">
+
+              Where our story began
+
+              <br />
+
+              Doi Luang Chiang Dao
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="card soft">
+
+
+          <h2>
+
+            Once upon a time,
+
+            <br />
+
+            Ausamah met Mizahasan.
+
+          </h2>
+
+
+          <div class="story-gallery">
+
+
+            <img
+              src="pic/sun.JPG"
+              alt="Groom portrait"
+            />
+
+
+            <img
+              src="pic/ano.JPG"
+              alt="Bride portrait"
+            />
+
+
+          </div>
+
+
+        </div>
+
+
+      </section>
+
+
+
+      <!-- =====================================================
+           QURAN BLESSING
+      ====================================================== -->
+
+      <section
+        class="blessing observe"
+        id="blessing"
+      >
+
+
+        <div
+          class="wrap thread"
+          aria-hidden="true"
+        >
+
+
+          <svg
+            viewBox="0 0 64 36"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+
+            <path
+              d="M32 18 C24 6,6 6,8 18 C6 30,24 30,32 18 Z"
+            />
+
+            <path
+              d="M32 18 C40 6,58 6,56 18 C58 30,40 30,32 18 Z"
+            />
+
+            <circle
+              cx="32"
+              cy="18"
+              r="3"
+              fill="currentColor"
+              stroke="none"
+            />
+
+            <path
+              d="M28 21 L22 30 M36 21 L42 30"
+            />
+
+          </svg>
+
+
+          <span class="line"></span>
+
+
+        </div>
+
+
+
+        <blockquote class="reveal">
+
+
+          <span class="quote-en">
+
+            "And We created you in pairs."
+
+          </span>
+
+
+          <span class="quote-th">
+
+            "และเราได้สร้างพวกเจ้าให้เป็นคู่ ๆ"
+
+          </span>
+
+
+          <cite class="caption">
+
+            — after Qur'an, An-Naba' 78:8
+
+          </cite>
+
+
+        </blockquote>
+
+
+      </section>
+
+
+
+      <!-- =====================================================
+           EVENT DETAILS
+           Mobile  : Ceremony บน / Location ล่าง
+           iPad/PC : Ceremony ซ้าย / Location ขวา
+      ====================================================== -->
+
+      <section
+        class="section details-wrap"
+        id="details"
+      >
+
+
+        <!-- =================================================
+             CEREMONY - LEFT COLUMN ON iPad / DESKTOP
+        ================================================== -->
+
+        <div class="card white ceremony-card">
+
+
+          <h2>
+            Ceremony
+          </h2>
+
+
+          <div class="detail-list">
+
+
+
+            <!-- BLESSING DAY -->
+
+            <div class="detail-item">
+
+              <span>
+                Blessing Day (Bride's)
+              </span>
+
+              <strong>
+
+                Saturday, 16 January 2027
+
+                <br>
+
+                15:00 onwards
+
+              </strong>
+
+            </div>
+
+
+
+            <!-- NIKAH DAY -->
+
+            <div class="detail-item">
+
+              <span>
+                Nikah Day
+              </span>
+
+              <strong>
+
+                Sunday, 17 January 2027
+
+                <br>
+
+                09:00 onwards
+
+              </strong>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 COUNTDOWN
+            ================================================== -->
+
+            <div class="detail-card countdown-card">
+
+
+              <span class="label">
+                UNTIL OUR DAY
+              </span>
+
+
+              <div class="countdown-wrap">
+
+
+                <div
+                  id="countdown"
+                  class="countdown"
+                >
+
+
+                  <div class="time-box">
+
+                    <span id="days">
+                      0
+                    </span>
+
+                    <small>
+                      DAYS
+                    </small>
+
+                  </div>
+
+
+                  <div class="separator">
+                    :
+                  </div>
+
+
+                  <div class="time-box">
+
+                    <span id="hours">
+                      00
+                    </span>
+
+                    <small>
+                      HOURS
+                    </small>
+
+                  </div>
+
+
+                  <div class="separator">
+                    :
+                  </div>
+
+
+                  <div class="time-box">
+
+                    <span id="minutes">
+                      00
+                    </span>
+
+                    <small>
+                      MINUTES
+                    </small>
+
+                  </div>
+
+
+                  <div class="separator">
+                    :
+                  </div>
+
+
+                  <div class="time-box">
+
+                    <span id="seconds">
+                      00
+                    </span>
+
+                    <small>
+                      SECONDS
+                    </small>
+
+                  </div>
+
+
+                </div>
+
+
+              </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 DRESS CODE
+            ================================================== -->
+
+            <div class="detail-card dress-card">
+
+
+              <span class="label">
+                DRESS CODE
+              </span>
+
+
+              <div class="dress-mini-grid">
+
+
+
+                <!-- SAGE -->
+
+                <div class="dress-mini-item dress-sage">
+
+                  <svg
+                    viewBox="0 0 100 90"
+                    aria-hidden="true"
+                  >
+
+                    <path
+                      d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z"
+                    />
+
+                  </svg>
+
+                  <small>
+                    Sage Green
+                  </small>
+
+                </div>
+
+
+
+                <!-- OLIVE -->
+
+                <div class="dress-mini-item dress-olive">
+
+                  <svg
+                    viewBox="0 0 100 90"
+                    aria-hidden="true"
+                  >
+
+                    <path
+                      d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z"
+                    />
+
+                  </svg>
+
+                  <small>
+                    Olive
+                  </small>
+
+                </div>
+
+
+
+                <!-- BROWN -->
+
+                <div class="dress-mini-item dress-brown">
+
+                  <svg
+                    viewBox="0 0 100 90"
+                    aria-hidden="true"
+                  >
+
+                    <path
+                      d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z"
+                    />
+
+                  </svg>
+
+                  <small>
+                    Soft Brown
+                  </small>
+
+                </div>
+
+
+
+                <!-- CREAM -->
+
+                <div class="dress-mini-item dress-cream">
+
+                  <svg
+                    viewBox="0 0 100 90"
+                    aria-hidden="true"
+                  >
+
+                    <path
+                      d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z"
+                    />
+
+                  </svg>
+
+                  <small>
+                    Cream
+                  </small>
+
+                </div>
+
+
+
+                <!-- COPPER -->
+
+                <div class="dress-mini-item dress-copper">
+
+                  <svg
+                    viewBox="0 0 100 90"
+                    aria-hidden="true"
+                  >
+
+                    <path
+                      d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z"
+                    />
+
+                  </svg>
+
+                  <small>
+                    Copper
+                  </small>
+
+                </div>
+
+
+              </div>
+
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             LOCATION - RIGHT COLUMN ON iPad / DESKTOP
+
+             IMPORTANT:
+             ย้าย Location ออกจาก Ceremony card แล้ว
+             เพื่อให้ CSS Grid วางอยู่คนละฝั่งได้
+        ================================================== -->
+
+        <div
+          class="card soft location-card"
+          id="location"
+        >
+
+
+          <h2>
+            Location
+          </h2>
+
+
+          <div class="venue-info">
+
+
+            <p class="venue-address">
+
+              ณ บ้านเลขที่ 484 ถ.ติวานนท์ ต.ท่าทราย
+
+              <br />
+
+              อ.เมือง จ.นนทบุรี 11000
+
+            </p>
+
+
+            <p class="venue-note">
+
+              (หน้ามัสยิด ดารุ้ลมุตตากีน บางตลาด)
+
+            </p>
+
+
+            <a
+              href="https://maps.app.goo.gl/DfpnS1SKZsE2Bukp9"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-soft map-btn"
+            >
+
+              แผนที่
+
+            </a>
+
+
+
+            <div class="venue-transport">
+
+              <span class="transport-label">
+                Getting There
+              </span>
+
+              <p>
+
+                รถไฟฟ้าสายสีชมพู
+                สถานีสามัคคี (ทางออก 3)
+
+              </p>
+
+            </div>
+
+
+
+            <div class="venue-carparking">
+
+              <span class="carparking-label">
+                Car Parking
+              </span>
+
+              <p>
+
+                ซอยติวานนท์ 45
+                (ตรงข้ามบ้าน)
+
+              </p>
+
+
+              <a
+                href="https://maps.app.goo.gl/KECYud568TQF1uZS6"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-soft map-btn"
+              >
+
+                ที่จอดรถ
+
+              </a>
+
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+      </section>
+
+
+
+      <!-- =====================================================
+           GALLERY
+      ====================================================== -->
+
+      <section
+        class="section gallery-section"
+        id="gallery"
+      >
+
+
+        <div
+          class="gallery-camera"
+          aria-hidden="true"
+        >
+
+          <svg
+            viewBox="0 0 64 44"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+
+            <path
+              d="M8 16h10l4-6h20l4 6h10c3 0 5 2 5 5v17c0 3-2 5-5 5H8c-3 0-5-2-5-5V21c0-3 2-5 5-5Z"
+            />
+
+            <circle
+              cx="32"
+              cy="30"
+              r="9"
+            />
+
+            <circle
+              cx="32"
+              cy="30"
+              r="4"
+            />
+
+            <path
+              d="M47 23h6"
+            />
+
+            <circle
+              cx="13"
+              cy="25"
+              r="1.6"
+            />
+
+          </svg>
+
+        </div>
+
+
+        <p class="section-label center">
+          Gallery
+        </p>
+
+
+        <h2 class="center">
+          A Glimpse of Us
+        </h2>
+
+
+        <div class="gallery-grid">
+
+          <div class="gallery-item tall"></div>
+
+          <div class="gallery-item"></div>
+
+          <div class="gallery-item"></div>
+
+          <div class="gallery-item wide"></div>
+
+        </div>
+
+
+      </section>
+
+
+
+      <!-- =====================================================
+           END BLESSING
+      ====================================================== -->
+
+      <section
+        class="blessing observe"
+        id="blessing"
+      >
+
+
+        <div
+          class="gallery-leaf"
+          aria-hidden="true"
+        >
+
+          <svg
+            viewBox="0 0 64 40"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.3"
+            stroke-linecap="round"
+          >
+
+            <path
+              d="M32 34C32 20 32 12 32 6"
+            />
+
+            <path
+              d="M32 20C22 16 17 10 15 5C24 6 30 12 32 20Z"
+            />
+
+            <path
+              d="M32 25C43 21 49 14 51 8C41 9 34 16 32 25Z"
+            />
+
+            <path
+              d="M32 30C24 29 18 25 14 20C22 19 29 23 32 30Z"
+            />
+
+          </svg>
+
+        </div>
+
+
+
+        <blockquote class="reveal">
+
+          <p class="quote-text">
+
+            “No matter how far two hearts may be,
+            what is written will always find its way.”
+
+          </p>
+
+        </blockquote>
+
+
+      </section>
+
+
+    </main>
+
+
+
+    <!-- =========================================================
+         ENDING / CONTACT
+    ========================================================== -->
+
+    <section
+      class="ending final-ending"
+      id="contact"
+    >
+
+
+      <div class="ending-inner">
+
+
+        <img
+          src="pic/logo.png"
+          alt="Ausamah & Mizahasan Logo"
+          class="brand-logo"
+        >
+
+
+        <h2 class="ending-title">
+
+          We look forward to celebrating with you
+
+        </h2>
+
+
+        <p class="ending-sub">
+
+          Made with love for our dearest family and friends
+
+        </p>
+
+
+
+        <div class="ending-divider">
+
+          <span class="line"></span>
+
+          <span class="heart">
+            ♡
+          </span>
+
+          <span class="line"></span>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             CONTACT
+        ====================================================== -->
+
+        <div class="footer-contact">
+
+
+          <p class="footer-label">
+            For any enquiries
+          </p>
+
+
+          <div class="footer-contact-list">
+
+
+
+            <div class="contact-person">
+
+              <span class="contact-name">
+                Ano
+              </span>
+
+              <a
+                href="tel:0917387140"
+                class="contact-phone"
+              >
+
+                091-738-7140
+
+              </a>
+
+            </div>
+
+
+
+            <div class="contact-person">
+
+              <span class="contact-name">
+                Sun
+              </span>
+
+              <a
+                href="tel:0929417967"
+                class="contact-phone"
+              >
+
+                092-941-7967
+
+              </a>
+
+            </div>
+
+
+
+            <div class="contact-person">
+
+              <span class="contact-name">
+                Bride's Father
+              </span>
+
+              <a
+                href="tel:0962649740"
+                class="contact-phone"
+              >
+
+                096-264-9740
+
+              </a>
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+
+        <div class="ending-divider small">
+
+          <span class="line"></span>
+
+          <span class="heart">
+            ♡
+          </span>
+
+          <span class="line"></span>
+
+        </div>
+
+
+
+        <p class="ending-credit">
+
+
+          <span class="credit-name">
+
+
+            <a
+              href="https://facebook.com/yourpage"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+
+              P'Nueng
+
+            </a>
+
+
+            <span class="dot">
+              ·
+            </span>
+
+
+            <a
+              href="https://facebook.com/yourpage"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+
+              Nat
+
+            </a>
+
+
+          </span>
+
+
+        </p>
+
+
+
+        <p class="website-credit">
+
+          <span>
+
+            Designed &amp; Handcrafted by Ano
+
+          </span>
+
+        </p>
+
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- =========================================================
+         BOTTOM NAVIGATION
+
+         ✅ ปรับใหม่ให้เหมือน Wishes / Photos
+         ✅ Home เป็น Active
+         ✅ 6 เมนูเท่ากัน
+         ✅ สี Olive เหมือนหน้าอื่น
+         ✅ ใช้ SVG ชุดเดียวกัน
+    ========================================================== -->
+
+    <nav class="bottom-nav">
+
+
+      <!-- =====================================================
+           HOME
+           หน้าปัจจุบันจึงเป็น ACTIVE
+      ====================================================== -->
+
+      <a
+        href="#home"
+        class="nav-item active"
+        aria-current="page"
+      >
+
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+
+          <path
+            d="M3 11L12 4l9 7v8a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"
+          />
+
+        </svg>
+
+
+        <span>
+          Home
+        </span>
+
+
+      </a>
+
+
+
+      <!-- =====================================================
+           STORY
+      ====================================================== -->
+
+      <a
+        href="#story"
+        class="nav-item"
+      >
+
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+
+          <path
+            d="M12 21s-7-4.6-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 11c0 5.4-7 10-7 10z"
+          />
+
+        </svg>
+
+
+        <span>
+          Story
+        </span>
+
+
+      </a>
+
+
+
+      <!-- =====================================================
+           EVENT
+      ====================================================== -->
+
+      <a
+        href="#details"
+        class="nav-item"
+      >
+
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+
+          <path
+            d="M7 2v3M17 2v3M4 8h16M5 5h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"
+          />
+
+        </svg>
+
+
+        <span>
+          Event
+        </span>
+
+
+      </a>
+
+
+
+      <!-- =====================================================
+           WISHES
+      ====================================================== -->
+
+      <a
+        href="wishes.html"
+        class="nav-item"
+      >
+
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+
+          <path
+            d="M3 6l9 7 9-7M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"
+          />
+
+        </svg>
+
+
+        <span>
+          Wishes
+        </span>
+
+
+      </a>
+
+
+
+      <!-- =====================================================
+           LOCATION
+      ====================================================== -->
+
+      <a
+        href="#location"
+        class="nav-item"
+      >
+
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+
+          <path
+            d="M12 21s6-5.3 6-10a6 6 0 0 0-12 0c0 4.7 6 10 6 10z"
+          />
+
+          <circle
+            cx="12"
+            cy="11"
+            r="2.5"
+          />
+
+        </svg>
+
+
+        <span>
+          Location
+        </span>
+
+
+      </a>
+
+
+
+      <!-- =====================================================
+           PHOTOS
+      ====================================================== -->
+
+      <a
+        href="photos.html"
+        class="nav-item"
+      >
+
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+
+          <path
+            d="M4 7h3l2-2h6l2 2h3v12H4z"
+          />
+
+          <circle
+            cx="12"
+            cy="13"
+            r="3.5"
+          />
+
+        </svg>
+
+
+        <span>
+          Photos
+        </span>
+
+
+      </a>
+
+
+    </nav>
+
+
+  </div>
+
+
+
+  <!-- =========================================================
+       YOUTUBE PLAYER
+  ========================================================== -->
+
+  <div
+    id="youtube-player"
+    style="
+      position:fixed;
+      left:-9999px;
+    "
+  ></div>
+
+
+
+  <!-- =========================================================
+       JAVASCRIPT
+  ========================================================== -->
+
+  <script src="script.js?v=20260820-1"></script>
+
+
+  <script
+    src="https://www.youtube.com/iframe_api"
+  ></script>
+
+
+</body>
+
+</html>

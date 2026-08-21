@@ -1,0 +1,2883 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
+
+  <meta
+    name="theme-color"
+    content="#f8f4ec"
+  />
+
+  <title>Our Photos — Ausamah & Mizahasan</title>
+
+
+  <!-- =========================================================
+       GOOGLE FONTS
+       ใช้เหมือน wishes.html
+  ========================================================== -->
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Noto+Sans+Thai:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <style>
+
+    /* =========================================================
+       ROOT
+    ========================================================== */
+
+    :root {
+
+      --cream: #f8f4ec;
+
+      --cream-light: #fbf8f1;
+
+      --paper: rgba(255, 255, 255, .72);
+
+      --olive: #777747;
+
+      --olive-dark: #5f6037;
+
+      --olive-soft: #9b9870;
+
+      --text: #403e31;
+
+      --muted: #918c7e;
+
+      --line: #ddd5c6;
+
+      --shadow:
+        0 12px 35px rgba(85, 76, 54, .11);
+
+      --radius: 26px;
+
+      --nav-height: 72px;
+    }
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+
+    body {
+
+      margin: 0;
+
+      color: var(--text);
+
+      background: var(--cream);
+
+      font-family:
+        "Noto Sans Thai",
+        sans-serif;
+
+      overflow-x: hidden;
+
+      padding-bottom:
+        calc(
+          var(--nav-height)
+          + env(safe-area-inset-bottom)
+        );
+    }
+
+
+    button,
+    a {
+
+      font: inherit;
+
+      -webkit-tap-highlight-color:
+        transparent;
+    }
+
+
+    button {
+      cursor: pointer;
+    }
+
+
+    img {
+      display: block;
+    }
+
+
+
+    /* =========================================================
+       HEADER
+       ใช้โครงเดียวกับ wishes.html
+    ========================================================== */
+
+    .topbar {
+
+      min-height: 170px;
+
+      padding:
+        26px 28px
+        24px;
+
+      display: grid;
+
+      grid-template-columns:
+        60px 1fr 60px;
+
+      align-items: start;
+
+      position: relative;
+
+      z-index: 5;
+
+      background: #fbf8f1;
+
+      border-bottom:
+        1px solid
+        rgba(126, 119, 92, .08);
+    }
+
+
+    .header-space {
+
+      width: 46px;
+
+      height: 46px;
+
+      margin-top: 12px;
+    }
+
+
+    .brand {
+
+      text-align: center;
+
+      line-height: 1.2;
+    }
+
+
+    .brand-logo {
+
+      display: block;
+
+      width: 74px;
+
+      height: auto;
+
+      max-height: 82px;
+
+      object-fit: contain;
+
+      margin:
+        0 auto 10px;
+    }
+
+
+    .brand h1 {
+
+      margin:
+        8px 0 3px;
+
+      font:
+        600 18px/1.1
+        "Cormorant Garamond",
+        serif;
+
+      letter-spacing: .18em;
+    }
+
+
+
+    /* =========================================================
+       PHOTO PAGE
+    ========================================================== */
+
+    .photo-page {
+
+      max-width: 980px;
+
+      margin: 0 auto;
+
+      padding:
+        48px 22px 60px;
+
+      background:
+        radial-gradient(
+          circle at 20% 0%,
+          rgba(255,255,255,.9),
+          transparent 34%
+        ),
+        linear-gradient(
+          180deg,
+          #fbf8f1 0%,
+          #f8f4ec 100%
+        );
+    }
+
+
+
+    /* =========================================================
+       PAGE TITLE
+    ========================================================== */
+
+    .photo-heading {
+
+      text-align: center;
+
+      margin-bottom: 30px;
+    }
+
+
+    .photo-heading-icon {
+
+      width: 38px;
+
+      height: 38px;
+
+      object-fit: contain;
+
+      margin:
+        0 auto 7px;
+
+      opacity: .72;
+    }
+
+
+    .photo-heading h2 {
+
+      margin:
+        5px 0 3px;
+
+      font:
+        600 clamp(30px,5vw,40px)/1.1
+        "Cormorant Garamond",
+        serif;
+
+      letter-spacing: .12em;
+    }
+
+
+    .photo-heading p {
+
+      margin: 0;
+
+      font-size: 19px;
+
+      font-weight: 300;
+
+      color: #575344;
+    }
+
+
+    .photo-heart {
+
+      margin-top: 7px;
+
+      color: #aaa783;
+
+      font-size: 17px;
+    }
+
+
+
+    /* =========================================================
+       MAIN GALLERY CARD
+    ========================================================== */
+
+    .gallery-wrap {
+
+      width: 100%;
+
+      max-width: 850px;
+
+      margin:
+        0 auto;
+    }
+
+
+    .main-slider {
+
+      position: relative;
+
+      width: 100%;
+
+      overflow: hidden;
+
+      border-radius: 28px;
+
+      background:
+        #e8e3d8;
+
+      box-shadow:
+        0 14px 38px
+        rgba(83, 74, 52, .14);
+
+      touch-action: pan-y;
+    }
+
+
+    /*
+       ตัว slider เป็น track
+       เวลาสไลด์จะเลื่อนทั้งรูปจริง
+       จึง smooth กว่าเปลี่ยน src
+    */
+
+    .main-slider-track {
+
+      display: flex;
+
+      width: 100%;
+
+      transition:
+        transform
+        .65s
+        cubic-bezier(.22,.61,.36,1);
+
+      will-change: transform;
+    }
+
+
+    .main-slide {
+
+      flex:
+        0 0 100%;
+
+      width: 100%;
+
+      aspect-ratio:
+        4 / 3;
+
+      overflow: hidden;
+    }
+
+
+    .main-slide img {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+    }
+
+
+
+    /* =========================================================
+       ARROWS
+    ========================================================== */
+
+    .slider-arrow {
+
+      position: absolute;
+
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      z-index: 5;
+
+      width: 50px;
+
+      height: 50px;
+
+      padding: 0;
+
+      border: 0;
+
+      border-radius: 50%;
+
+      display: grid;
+
+      place-items: center;
+
+      color: var(--olive-dark);
+
+      background:
+        rgba(255, 252, 246, .92);
+
+      box-shadow:
+        0 5px 15px
+        rgba(55, 48, 35, .13);
+
+      backdrop-filter:
+        blur(6px);
+
+      -webkit-backdrop-filter:
+        blur(6px);
+
+      transition:
+        transform .2s ease,
+        background .2s ease;
+    }
+
+
+    .slider-arrow:hover {
+
+      background:
+        rgba(255,255,255,.98);
+    }
+
+
+    .slider-arrow:active {
+
+      transform:
+        translateY(-50%)
+        scale(.94);
+    }
+
+
+    .slider-arrow.prev {
+      left: 16px;
+    }
+
+
+    .slider-arrow.next {
+      right: 16px;
+    }
+
+
+    .slider-arrow svg {
+
+      width: 20px;
+
+      height: 20px;
+
+      fill: none;
+
+      stroke: currentColor;
+
+      stroke-width: 2;
+
+      stroke-linecap: round;
+
+      stroke-linejoin: round;
+    }
+
+
+
+    /* =========================================================
+       DOTS
+    ========================================================== */
+
+    .photo-dots {
+
+      position: absolute;
+
+      left: 50%;
+
+      bottom: 15px;
+
+      transform:
+        translateX(-50%);
+
+      z-index: 5;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      max-width:
+        calc(100% - 120px);
+
+      overflow: hidden;
+    }
+
+
+    .photo-dot {
+
+      flex:
+        0 0 auto;
+
+      width: 9px;
+
+      height: 9px;
+
+      padding: 0;
+
+      border:
+        1.5px solid
+        rgba(255,255,255,.95);
+
+      border-radius: 50%;
+
+      background:
+        rgba(255,255,255,.28);
+
+      transition:
+        .25s ease;
+    }
+
+
+    .photo-dot.active {
+
+      background: #fff;
+
+      transform:
+        scale(1.15);
+    }
+
+
+
+    /* =========================================================
+       THUMBNAILS
+    ========================================================== */
+
+    .thumbnail-viewport {
+
+      position: relative;
+
+      width: 100%;
+
+      margin-top: 18px;
+
+      overflow: hidden;
+    }
+
+
+    .thumbnail-track {
+
+      width: 100%;
+
+      display: flex;
+
+      gap: 11px;
+
+      overflow-x: auto;
+
+      padding:
+        2px 2px 8px;
+
+      scroll-behavior: smooth;
+
+      scrollbar-width: none;
+
+      -webkit-overflow-scrolling:
+        touch;
+    }
+
+
+    .thumbnail-track::-webkit-scrollbar {
+      display: none;
+    }
+
+
+    .thumbnail {
+
+      flex:
+        0 0 92px;
+
+      width: 92px;
+
+      height: 78px;
+
+      padding: 0;
+
+      border:
+        1.5px solid transparent;
+
+      border-radius: 15px;
+
+      overflow: hidden;
+
+      background: transparent;
+
+      opacity: .68;
+
+      transition:
+        opacity .25s ease,
+        transform .25s ease,
+        border-color .25s ease;
+    }
+
+
+    .thumbnail img {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+    }
+
+
+    .thumbnail.active {
+
+      opacity: 1;
+
+      border-color:
+        var(--olive);
+
+      transform:
+        scale(1.02);
+
+      box-shadow:
+        0 4px 12px
+        rgba(82, 78, 49, .12);
+    }
+
+
+
+    /* =========================================================
+       DIVIDER
+    ========================================================== */
+
+    .photo-divider {
+
+      width: 100%;
+
+      max-width: 850px;
+
+      margin:
+        30px auto;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 14px;
+
+      color: #aaa783;
+    }
+
+
+    .photo-divider::before,
+    .photo-divider::after {
+
+      content: "";
+
+      flex: 1;
+
+      height: 1px;
+
+      background:
+        var(--line);
+    }
+
+
+    .photo-divider span {
+
+      font-family:
+        "Cormorant Garamond",
+        serif;
+
+      font-size: 22px;
+    }
+
+
+
+    /* =========================================================
+       GOOGLE DRIVE CARDS
+    ========================================================== */
+
+    .drive-cards {
+
+      width: 100%;
+
+      max-width: 850px;
+
+      margin:
+        0 auto;
+
+      display: grid;
+
+      gap: 18px;
+    }
+
+
+    .drive-card {
+
+      position: relative;
+
+      min-height: 190px;
+
+      overflow: hidden;
+
+      display: grid;
+
+      grid-template-columns:
+        145px 1fr;
+
+      align-items: center;
+
+      gap: 24px;
+
+      padding:
+        30px 38px;
+
+      background:
+        rgba(255,255,255,.67);
+
+      border:
+        1px solid
+        rgba(216,207,191,.82);
+
+      border-radius:
+        var(--radius);
+
+      box-shadow:
+        var(--shadow);
+
+      backdrop-filter:
+        blur(8px);
+
+      -webkit-backdrop-filter:
+        blur(8px);
+    }
+
+ /*
+      ===============================
+      BOW ICON
+      ===============================
+      ใช้ไฟล์ PNG แทนตัวอักษรโบว์
+      path: pic/bow-icon.png
+    */
+    .bow-icon{
+      display:block;
+      width:32px;
+      height:32px;
+      object-fit:contain;
+      margin:0 auto 5px;
+      opacity:.72;
+    }
+
+    .bow-icon.small{
+      width:28px;
+      height:28px;
+      margin:0;
+    }
+
+    /* =========================================================
+       CARD ICON
+    ========================================================== */
+
+    .drive-icon-wrap {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+    }
+
+
+    .drive-icon-circle {
+
+      width: 116px;
+
+      height: 116px;
+
+      border:
+        1.5px dashed
+        #b3aa83;
+
+      border-radius: 50%;
+
+      display: grid;
+
+      place-items: center;
+
+      color:
+        var(--olive-dark);
+    }
+
+
+    .drive-icon-circle svg {
+
+      width: 50px;
+
+      height: 50px;
+
+      fill: none;
+
+      stroke: currentColor;
+
+      stroke-width: 1.55;
+
+      stroke-linecap: round;
+
+      stroke-linejoin: round;
+    }
+
+
+
+    /* =========================================================
+       CARD CONTENT
+    ========================================================== */
+
+    .drive-content {
+
+      position: relative;
+
+      z-index: 2;
+
+      min-width: 0;
+    }
+
+
+    .drive-content h3 {
+
+      margin:
+        0 0 4px;
+
+      font-size: 22px;
+
+      font-weight: 500;
+
+      color: #514e3e;
+    }
+
+
+    .drive-content p {
+
+      margin:
+        0 0 15px;
+
+      font-size: 15px;
+
+      line-height: 1.6;
+
+      font-weight: 300;
+
+      color: #666253;
+    }
+
+
+    .drive-button {
+
+      width: min(100%, 280px);
+
+      min-height: 51px;
+
+      padding:
+        10px 22px;
+
+      border-radius:
+        999px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 10px;
+
+      text-decoration: none;
+
+      color: #fff;
+
+      font-size: 16px;
+
+      background:
+        linear-gradient(
+          90deg,
+          #747544,
+          #85864e
+        );
+
+      box-shadow:
+        0 8px 20px
+        rgba(103, 102, 57, .16);
+
+      transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+    }
+
+
+    .drive-button:hover {
+
+      transform:
+        translateY(-1px);
+
+      box-shadow:
+        0 10px 23px
+        rgba(103, 102, 57, .19);
+    }
+
+
+    .drive-button svg {
+
+      width: 20px;
+
+      height: 20px;
+
+      fill: none;
+
+      stroke: currentColor;
+
+      stroke-width: 1.8;
+
+      stroke-linecap: round;
+
+      stroke-linejoin: round;
+    }
+
+
+    .drive-note {
+
+      margin-top: 8px;
+
+      font-size: 13px;
+
+      color: #8b8678;
+    }
+
+
+    .drive-note span {
+
+      color: #9b8e48;
+
+      font-weight: 500;
+    }
+
+
+
+    /* =========================================================
+       DECORATION
+       ใช้ CSS อย่างเดียว ไม่ต้องมีรูปเพิ่ม
+    ========================================================== */
+
+    .drive-decoration {
+
+      position: absolute;
+
+      right: -22px;
+
+      bottom: -35px;
+
+      width: 145px;
+
+      height: 145px;
+
+      border:
+        1px solid
+        rgba(143, 137, 89, .15);
+
+      border-radius:
+        50%;
+
+      pointer-events: none;
+    }
+
+
+    .drive-decoration::before {
+
+      content: "";
+
+      position: absolute;
+
+      width: 90px;
+
+      height: 90px;
+
+      left: 25px;
+
+      top: 18px;
+
+      border:
+        1px solid
+        rgba(143, 137, 89, .13);
+
+      border-radius:
+        50%;
+    }
+
+
+
+    /* =========================================================
+       THANK YOU
+    ========================================================== */
+
+    .photo-thanks {
+
+      padding:
+        32px 15px 8px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 10px;
+
+      text-align: center;
+
+      color: #716d5d;
+
+      font-size: 14px;
+    }
+
+
+    .photo-thanks span {
+
+      color: #aaa783;
+
+      font-size: 14px;
+    }
+
+
+    .photo-thanks p {
+      margin: 0;
+    }
+
+
+
+
+    /* =========================================================
+       BOTTOM NAVIGATION
+       ใช้ชุดเดียวกับ wishes.html
+    ========================================================== */
+
+    .bottom-nav {
+
+      position: fixed;
+
+      left: 50%;
+
+      bottom: 0;
+
+      transform:
+        translateX(-50%);
+
+      width:
+        min(100%,760px);
+
+      min-height:
+        var(--nav-height);
+
+      padding:
+        8px 12px
+        calc(
+          8px
+          + env(safe-area-inset-bottom)
+        );
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(6,1fr);
+
+      align-items: center;
+
+      gap: 2px;
+
+      background:
+        rgba(251,248,241,.93);
+
+      border-top:
+        1px solid
+        rgba(112,106,81,.13);
+
+      box-shadow:
+        0 -8px 30px
+        rgba(79,73,53,.08);
+
+      backdrop-filter:
+        blur(16px);
+
+      -webkit-backdrop-filter:
+        blur(16px);
+
+      z-index: 9999;
+    }
+
+
+    .nav-item {
+
+      min-width: 0;
+
+      color: #8c8878;
+
+      text-decoration: none;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 4px;
+
+      padding:
+        4px 2px;
+
+      transition:
+        .2s ease;
+    }
+
+
+    .nav-item svg {
+
+      width: 21px;
+
+      height: 21px;
+
+      fill: none;
+
+      stroke: currentColor;
+
+      stroke-width: 1.7;
+
+      stroke-linecap: round;
+
+      stroke-linejoin: round;
+    }
+
+
+    .nav-item span {
+
+      font-size: 10px;
+
+      line-height: 1;
+
+      white-space: nowrap;
+    }
+
+
+    .nav-item:hover {
+
+      color:
+        var(--olive);
+    }
+
+
+    .nav-item.active {
+
+      position: relative;
+
+      color:
+        var(--olive-dark);
+
+      font-weight: 500;
+    }
+
+
+    .nav-item.active::before {
+
+      content: "";
+
+      position: absolute;
+
+      top: -8px;
+
+      width: 34px;
+
+      height: 3px;
+
+      border-radius:
+        999px;
+
+      background:
+        var(--olive-dark);
+    }
+
+
+    .nav-item.active svg {
+
+      stroke-width: 2;
+    }
+
+
+
+    /* =========================================================
+       TABLET / MOBILE
+    ========================================================== */
+
+    @media (max-width: 700px) {
+
+      .topbar {
+
+        min-height: 142px;
+
+        padding:
+          18px 14px 18px;
+
+        grid-template-columns:
+          46px 1fr 46px;
+      }
+
+
+      .header-space {
+
+        width: 40px;
+
+        height: 40px;
+
+        margin-top: 8px;
+      }
+
+
+      .brand-logo {
+
+        width: 58px;
+
+        max-height: 66px;
+
+        margin-bottom: 7px;
+      }
+
+
+      .brand h1 {
+
+        font-size: 14px;
+
+        margin-top: 7px;
+      }
+
+
+      .photo-page {
+
+        padding:
+          37px 14px 45px;
+      }
+
+
+      .photo-heading {
+
+        margin-bottom: 24px;
+      }
+
+
+      .photo-heading-icon {
+
+        width: 34px;
+
+        height: 34px;
+      }
+
+
+      .photo-heading h2 {
+
+        font-size: 29px;
+
+        letter-spacing: .09em;
+      }
+
+
+      .photo-heading p {
+
+        font-size: 16px;
+      }
+
+
+      .main-slider {
+
+        border-radius: 22px;
+      }
+
+
+      .main-slide {
+
+        /*
+          มือถือให้สูงขึ้นนิดหนึ่ง
+          เพื่อให้ภาพพรีเวดดิ้งดูเต็มกว่า
+        */
+
+        aspect-ratio:
+          1 / .82;
+      }
+
+
+      .slider-arrow {
+
+        width: 44px;
+
+        height: 44px;
+      }
+
+
+      .slider-arrow.prev {
+        left: 12px;
+      }
+
+
+      .slider-arrow.next {
+        right: 12px;
+      }
+
+
+      .slider-arrow svg {
+
+        width: 17px;
+
+        height: 17px;
+      }
+
+
+      .thumbnail {
+
+        flex-basis: 76px;
+
+        width: 76px;
+
+        height: 68px;
+
+        border-radius: 13px;
+      }
+
+
+      .thumbnail-track {
+
+        gap: 9px;
+      }
+
+
+      .photo-divider {
+
+        margin:
+          24px auto;
+      }
+
+
+      .drive-card {
+
+        min-height: 0;
+
+        grid-template-columns:
+          94px 1fr;
+
+        gap: 18px;
+
+        padding:
+          24px 20px;
+
+        border-radius:
+          24px;
+      }
+
+
+      .drive-icon-circle {
+
+        width: 84px;
+
+        height: 84px;
+      }
+
+
+      .drive-icon-circle svg {
+
+        width: 38px;
+
+        height: 38px;
+      }
+
+
+      .drive-content h3 {
+
+        font-size: 19px;
+      }
+
+
+      .drive-content p {
+
+        font-size: 13px;
+
+        margin-bottom: 12px;
+      }
+
+
+      .drive-button {
+
+        min-height: 46px;
+
+        font-size: 14px;
+
+        padding:
+          8px 16px;
+      }
+
+
+      .drive-note {
+
+        font-size: 12px;
+      }
+
+
+      .bottom-nav {
+
+        width: 100%;
+
+        border-radius: 0;
+      }
+
+
+      .nav-item svg {
+
+        width: 20px;
+
+        height: 20px;
+      }
+
+
+      .nav-item span {
+
+        font-size: 9px;
+      }
+    }
+
+
+
+    /* =========================================================
+       SMALL MOBILE
+    ========================================================== */
+
+    @media (max-width: 430px) {
+
+      .photo-page {
+
+        padding-left: 12px;
+
+        padding-right: 12px;
+      }
+
+
+      .main-slider {
+
+        border-radius: 19px;
+      }
+
+
+      .main-slide {
+
+        aspect-ratio:
+          1 / .88;
+      }
+
+
+      .thumbnail {
+
+        flex-basis: 70px;
+
+        width: 70px;
+
+        height: 62px;
+      }
+
+
+      .drive-card {
+
+        grid-template-columns:
+          76px 1fr;
+
+        gap: 14px;
+
+        padding:
+          21px 16px;
+      }
+
+
+      .drive-icon-circle {
+
+        width: 70px;
+
+        height: 70px;
+      }
+
+
+      .drive-icon-circle svg {
+
+        width: 31px;
+
+        height: 31px;
+      }
+
+
+      .drive-content h3 {
+
+        font-size: 17px;
+      }
+
+
+      .drive-content p {
+
+        font-size: 12.5px;
+
+        line-height: 1.55;
+      }
+
+
+      .drive-button {
+
+        width: 100%;
+
+        font-size: 13px;
+      }
+
+
+      .photo-thanks {
+
+        font-size: 12px;
+
+        gap: 7px;
+      }
+
+
+      .bottom-nav {
+
+        padding-left: 5px;
+
+        padding-right: 5px;
+      }
+
+
+      .nav-item span {
+
+        font-size: 8.5px;
+      }
+    }
+
+
+
+    /* =========================================================
+       REDUCE MOTION
+    ========================================================== */
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+
+        animation: none !important;
+
+        transition: none !important;
+
+        scroll-behavior: auto !important;
+      }
+    }
+
+  </style>
+
+</head>
+
+
+
+<body>
+
+
+  <!-- =========================================================
+       HEADER
+       เหมือน wishes.html
+  ========================================================== -->
+
+  <header class="topbar">
+
+    <div class="header-space"></div>
+
+
+    <div class="brand">
+
+      <!--
+        ใช้ logo เดียวกับ wishes.html
+        path:
+        pic/logo.png
+      -->
+
+      <img
+        src="pic/logo.png"
+        alt="Ausamah & Mizahasan Logo"
+        class="brand-logo"
+      >
+
+      <h1>
+        AUSAMAH &amp; MIZAHASAN
+      </h1>
+
+    </div>
+
+
+    <div class="header-space"></div>
+
+  </header>
+
+
+
+  <!-- =========================================================
+       MAIN
+  ========================================================== -->
+
+  <main class="photo-page">
+
+
+    <!-- =======================================================
+         TITLE
+    ======================================================== -->
+
+    <section class="photo-heading">
+
+      <!--
+        ใช้ icon bow เดียวกับหน้า Wishes
+      -->
+
+      <img
+        src="pic/icon-bow.png"
+        alt=""
+        class="photo-heading-icon"
+      >
+
+      <h2>
+        OUR PHOTOS
+      </h2>
+
+      <p>
+        เก็บทุกความทรงจำอันแสนพิเศษของเรา
+      </p>
+
+      <div class="photo-heart">
+        ♥
+      </div>
+
+    </section>
+
+
+
+    <!-- =======================================================
+         PHOTO GALLERY
+    ======================================================== -->
+
+    <section class="gallery-wrap">
+
+
+      <!-- =====================================================
+           MAIN SLIDER
+      ====================================================== -->
+
+      <div
+        class="main-slider"
+        id="mainSlider"
+      >
+
+
+        <!--
+          JavaScript จะสร้างรูปทั้งหมด
+          จาก array ด้านล่างให้อัตโนมัติ
+        -->
+
+        <div
+          class="main-slider-track"
+          id="mainSliderTrack"
+        ></div>
+
+
+
+        <!-- Previous -->
+
+        <button
+          class="slider-arrow prev"
+          id="photoPrev"
+          type="button"
+          aria-label="Previous photo"
+        >
+
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M15 5l-7 7 7 7"></path>
+          </svg>
+
+        </button>
+
+
+
+        <!-- Next -->
+
+        <button
+          class="slider-arrow next"
+          id="photoNext"
+          type="button"
+          aria-label="Next photo"
+        >
+
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M9 5l7 7-7 7"></path>
+          </svg>
+
+        </button>
+
+
+
+        <!-- Dots -->
+
+        <div
+          class="photo-dots"
+          id="photoDots"
+        ></div>
+
+      </div>
+
+
+
+      <!-- =====================================================
+           THUMBNAILS
+      ====================================================== -->
+
+      <div class="thumbnail-viewport">
+
+        <div
+          class="thumbnail-track"
+          id="thumbnailTrack"
+        ></div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =======================================================
+         DIVIDER
+    ======================================================== -->
+
+    <div class="photo-divider">
+     <!-- <span>✦</span> -->
+      <img
+            src="pic/icon-bow.png"
+            alt=""
+            class="bow-icon small"
+          >
+    </div> 
+
+        <!--<div class="divider">
+
+          <img
+            src="pic/icon-bow.png"
+            alt=""
+            class="bow-icon small"
+          >
+
+        </div> -->
+
+
+
+    <!-- =======================================================
+         GOOGLE DRIVE
+    ======================================================== -->
+
+    <section class="drive-cards">
+
+
+      <!-- =====================================================
+           UPLOAD PHOTO
+      ====================================================== -->
+
+      <article class="drive-card">
+
+        <div class="drive-icon-wrap">
+
+          <div class="drive-icon-circle">
+
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+
+              <path
+                d="M7 18H5.5A3.5 3.5 0 0 1 5 11.04 5.5 5.5 0 0 1 15.7 9.2 4 4 0 0 1 18 16.7"
+              ></path>
+
+              <path
+                d="M12 20V11"
+              ></path>
+
+              <path
+                d="M8.8 14.2 12 11l3.2 3.2"
+              ></path>
+
+            </svg>
+
+          </div>
+
+        </div>
+
+
+        <div class="drive-content">
+
+          <h3>
+            อัปโหลดภาพของคุณ
+          </h3>
+
+          <p>
+            แชร์ภาพความทรงจำในวันพิเศษของเรา
+          </p>
+
+
+          <!--
+            ===================================================
+            GOOGLE DRIVE LINK สำหรับแขกอัปโหลดรูป
+
+            เปลี่ยน href ตรงนี้
+            ===================================================
+          -->
+
+          <a
+            href="https://drive.google.com/drive/folders/1OrO7rjlWH7S7kwReh6VTaQnHgbOzxsTW?usp=share_link"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="drive-button"
+          >
+
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+
+              <path
+                d="M12 16V5"
+              ></path>
+
+              <path
+                d="M8 9l4-4 4 4"
+              ></path>
+
+              <path
+                d="M5 14v5h14v-5"
+              ></path>
+
+            </svg>
+
+            <span>
+              อัปโหลดภาพ
+            </span>
+
+          </a>
+
+
+          <div class="drive-note">
+
+            อัปโหลดได้ที่
+
+            <span>
+              Google Drive
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="drive-decoration"></div>
+
+      </article>
+
+
+
+      <!-- =====================================================
+           PHOTOGRAPHER PHOTO
+      ====================================================== -->
+
+      <article class="drive-card">
+
+        <div class="drive-icon-wrap">
+
+          <div class="drive-icon-circle">
+
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+
+              <path
+                d="M3 7h6l2 2h10v10H3z"
+              ></path>
+
+              <path
+                d="M3 7V5h6l2 2"
+              ></path>
+
+            </svg>
+
+          </div>
+
+        </div>
+
+
+        <div class="drive-content">
+
+          <h3>
+            ดูภาพจากช่างภาพ
+          </h3>
+
+          <p>
+            รวมภาพบรรยากาศงานแต่งทั้งหมด
+            จากทีมช่างภาพของเรา
+          </p>
+
+
+          <!--
+            ===================================================
+            GOOGLE DRIVE LINK ของช่างภาพ
+
+            เปลี่ยน href ตรงนี้
+            ===================================================
+          -->
+
+          <a
+            href="https://drive.google.com/drive/folders/15unxTpqt11C5gHwPavCAvX5eJGuQ-Dy6?usp=share_link"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="drive-button"
+          >
+
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+
+              <path
+                d="M3 7h6l2 2h10v10H3z"
+              ></path>
+
+              <path
+                d="M3 7V5h6l2 2"
+              ></path>
+
+            </svg>
+
+
+            <span>
+              ดูภาพทั้งหมด
+            </span>
+
+          </a>
+
+
+          <div class="drive-note">
+
+            เปิดผ่าน
+
+            <span>
+              Google Drive
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="drive-decoration"></div>
+
+      </article>
+
+    </section>
+
+
+
+    <!-- =======================================================
+         THANK YOU
+    ======================================================== -->
+
+    <section class="photo-thanks">
+
+      <span>♥</span>
+
+      <p>
+        ขอบคุณที่ร่วมเป็นส่วนหนึ่งในวันพิเศษของเรา
+      </p>
+
+      <span>♥</span>
+
+    </section>
+
+
+  </main>
+
+
+
+  <!-- =========================================================
+       BOTTOM NAVIGATION
+       เหมือน wishes.html
+  ========================================================== -->
+
+  <nav class="bottom-nav">
+
+
+    <!-- HOME -->
+
+    <a
+      href="index.html?skipIntro=1#home"
+      class="nav-item"
+    >
+
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+
+        <path
+          d="M3 11L12 4l9 7v8a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"
+        ></path>
+
+      </svg>
+
+      <span>
+        Home
+      </span>
+
+    </a>
+
+
+
+    <!-- STORY -->
+
+    <a
+      href="index.html?skipIntro=1#story"
+      class="nav-item"
+    >
+
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+
+        <path
+          d="M12 21s-7-4.6-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 11c0 5.4-7 10-7 10z"
+        ></path>
+
+      </svg>
+
+      <span>
+        Story
+      </span>
+
+    </a>
+
+
+
+    <!-- EVENT -->
+
+    <a
+      href="index.html?skipIntro=1#details"
+      class="nav-item"
+    >
+
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+
+        <path
+          d="M7 2v3M17 2v3M4 8h16M5 5h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"
+        ></path>
+
+      </svg>
+
+      <span>
+        Event
+      </span>
+
+    </a>
+
+
+
+    <!-- WISHES -->
+
+    <a
+      href="wishes.html"
+      class="nav-item"
+    >
+
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+
+        <path
+          d="M3 6l9 7 9-7M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"
+        ></path>
+
+      </svg>
+
+      <span>
+        Wishes
+      </span>
+
+    </a>
+
+
+
+    <!-- LOCATION -->
+
+    <a
+      href="index.html?skipIntro=1#location"
+      class="nav-item"
+    >
+
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+
+        <path
+          d="M12 21s6-5.3 6-10a6 6 0 0 0-12 0c0 4.7 6 10 6 10z"
+        ></path>
+
+        <circle
+          cx="12"
+          cy="11"
+          r="2.5"
+        ></circle>
+
+      </svg>
+
+      <span>
+        Location
+      </span>
+
+    </a>
+
+
+
+    <!-- PHOTOS : ACTIVE -->
+
+    <a
+      href="photos.html"
+      class="nav-item active"
+      aria-current="page"
+    >
+
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+
+        <path
+          d="M4 7h3l2-2h6l2 2h3v12H4z"
+        ></path>
+
+        <circle
+          cx="12"
+          cy="13"
+          r="3.5"
+        ></circle>
+
+      </svg>
+
+      <span>
+        Photos
+      </span>
+
+    </a>
+
+  </nav>
+
+
+
+  <!-- =========================================================
+       PHOTO JAVASCRIPT
+
+       ไม่ใช้ script.js ของหน้า Wishes
+       เพื่อไม่ให้ระบบสองหน้าชนกัน
+
+       รูป Gallery อยู่ที่:
+
+       pic/photo/photo-01.jpg
+       pic/photo/photo-02.jpg
+       ...
+  ========================================================== -->
+
+  <script>
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function () {
+
+
+        /* =====================================================
+           PHOTO LIST
+
+           เพิ่มหรือลดรูปตรงนี้ได้เลย
+
+           ตัวอย่าง:
+           "pic/photo/photo-11.jpg"
+           "pic/photo/photo-12.jpg"
+        ====================================================== */
+
+        const photos = [
+
+          "pic/photo/photo-01.jpg",
+
+          "pic/photo/photo-02.jpg",
+
+          "pic/photo/photo-03.jpg",
+
+          "pic/photo/photo-04.jpg",
+
+          "pic/photo/photo-05.jpg",
+
+          "pic/photo/photo-06.jpg",
+
+          "pic/photo/photo-07.jpg",
+
+          "pic/photo/photo-08.jpg",
+
+          "pic/photo/photo-09.jpg",
+
+          "pic/photo/photo-10.jpg",
+
+          "pic/photo/photo-11.jpg"
+
+        ];
+
+
+
+        /* =====================================================
+           GET ELEMENTS
+        ====================================================== */
+
+        const slider =
+          document.getElementById(
+            "mainSlider"
+          );
+
+
+        const track =
+          document.getElementById(
+            "mainSliderTrack"
+          );
+
+
+        const thumbnailTrack =
+          document.getElementById(
+            "thumbnailTrack"
+          );
+
+
+        const dotsContainer =
+          document.getElementById(
+            "photoDots"
+          );
+
+
+        const prevButton =
+          document.getElementById(
+            "photoPrev"
+          );
+
+
+        const nextButton =
+          document.getElementById(
+            "photoNext"
+          );
+
+
+
+        let currentIndex = 0;
+
+
+
+        /* =====================================================
+           CREATE MAIN SLIDES
+        ====================================================== */
+
+        photos.forEach(
+          function (photo, index) {
+
+
+            const slide =
+              document.createElement(
+                "div"
+              );
+
+
+            slide.className =
+              "main-slide";
+
+
+            const image =
+              document.createElement(
+                "img"
+              );
+
+
+            image.src =
+              photo;
+
+
+            image.alt =
+              "Wedding photo " +
+              (index + 1);
+
+
+            /*
+              รูปแรกโหลดก่อน
+              รูปอื่น lazy load
+            */
+
+            if (index === 0) {
+
+              image.loading =
+                "eager";
+
+            } else {
+
+              image.loading =
+                "lazy";
+
+            }
+
+
+            image.draggable =
+              false;
+
+
+            slide.appendChild(
+              image
+            );
+
+
+            track.appendChild(
+              slide
+            );
+
+          }
+        );
+
+
+
+        /* =====================================================
+           CREATE THUMBNAILS
+        ====================================================== */
+
+        photos.forEach(
+          function (photo, index) {
+
+
+            const button =
+              document.createElement(
+                "button"
+              );
+
+
+            button.type =
+              "button";
+
+
+            button.className =
+              "thumbnail";
+
+
+            button.setAttribute(
+              "aria-label",
+              "View photo " +
+              (index + 1)
+            );
+
+
+            const image =
+              document.createElement(
+                "img"
+              );
+
+
+            image.src =
+              photo;
+
+
+            image.alt = "";
+
+
+            image.loading =
+              "lazy";
+
+
+            image.draggable =
+              false;
+
+
+            button.appendChild(
+              image
+            );
+
+
+            button.addEventListener(
+              "click",
+              function () {
+
+                goToPhoto(
+                  index
+                );
+
+              }
+            );
+
+
+            thumbnailTrack.appendChild(
+              button
+            );
+
+          }
+        );
+
+
+
+        /* =====================================================
+           CREATE DOTS
+        ====================================================== */
+
+        photos.forEach(
+          function (_, index) {
+
+
+            const dot =
+              document.createElement(
+                "button"
+              );
+
+
+            dot.type =
+              "button";
+
+
+            dot.className =
+              "photo-dot";
+
+
+            dot.setAttribute(
+              "aria-label",
+              "View photo " +
+              (index + 1)
+            );
+
+
+            dot.addEventListener(
+              "click",
+              function () {
+
+                goToPhoto(
+                  index
+                );
+
+              }
+            );
+
+
+            dotsContainer.appendChild(
+              dot
+            );
+
+          }
+        );
+
+
+
+        const thumbnails =
+          thumbnailTrack.querySelectorAll(
+            ".thumbnail"
+          );
+
+
+        const dots =
+          dotsContainer.querySelectorAll(
+            ".photo-dot"
+          );
+
+
+
+        /* =====================================================
+           GO TO PHOTO
+        ====================================================== */
+
+        function goToPhoto(index) {
+
+
+          /*
+            ถ้าเลื่อนก่อนรูปแรก
+            ให้ไปท้ายสุด
+          */
+
+          if (index < 0) {
+
+            index =
+              photos.length - 1;
+
+          }
+
+
+
+          /*
+            ถ้าเกินรูปสุดท้าย
+            ให้กลับรูปแรก
+          */
+
+          if (
+            index >=
+            photos.length
+          ) {
+
+            index = 0;
+
+          }
+
+
+          currentIndex =
+            index;
+
+
+
+          /* เลื่อนรูปใหญ่ */
+
+          track.style.transform =
+            "translateX(-" +
+            (
+              currentIndex *
+              100
+            ) +
+            "%)";
+
+
+
+          /* Thumbnail active */
+
+          thumbnails.forEach(
+            function (
+              thumbnail,
+              thumbIndex
+            ) {
+
+              thumbnail.classList.toggle(
+                "active",
+                thumbIndex ===
+                currentIndex
+              );
+
+            }
+          );
+
+
+
+          /* Dot active */
+
+          dots.forEach(
+            function (
+              dot,
+              dotIndex
+            ) {
+
+              dot.classList.toggle(
+                "active",
+                dotIndex ===
+                currentIndex
+              );
+
+            }
+          );
+
+
+
+          /*
+            ===================================================
+            เลื่อนแถว thumbnail ตามรูปใหญ่
+
+            behavior smooth
+            inline center
+
+            ทำให้ thumbnail ที่ active
+            เลื่อนมาอยู่กลางหน้าจออัตโนมัติ
+            ===================================================
+          */
+
+          const activeThumbnail =
+            thumbnails[
+              currentIndex
+            ];
+
+
+          if (
+            activeThumbnail
+          ) {
+
+            activeThumbnail.scrollIntoView(
+              {
+
+                behavior:
+                  "smooth",
+
+                inline:
+                  "center",
+
+                block:
+                  "nearest"
+
+              }
+            );
+
+          }
+
+        }
+
+
+
+        /* =====================================================
+           NEXT
+        ====================================================== */
+
+        nextButton.addEventListener(
+          "click",
+          function () {
+
+            goToPhoto(
+              currentIndex + 1
+            );
+
+          }
+        );
+
+
+
+        /* =====================================================
+           PREVIOUS
+        ====================================================== */
+
+        prevButton.addEventListener(
+          "click",
+          function () {
+
+            goToPhoto(
+              currentIndex - 1
+            );
+
+          }
+        );
+
+
+
+        /* =====================================================
+           SWIPE MOBILE
+        ====================================================== */
+
+        let pointerStartX = 0;
+
+        let pointerStartY = 0;
+
+        let dragging = false;
+
+
+
+        slider.addEventListener(
+          "pointerdown",
+          function (event) {
+
+
+            /*
+              ไม่จับ click
+              ที่เกิดจาก arrow
+            */
+
+            if (
+              event.target.closest(
+                ".slider-arrow"
+              )
+            ) {
+
+              return;
+
+            }
+
+
+            dragging = true;
+
+
+            pointerStartX =
+              event.clientX;
+
+
+            pointerStartY =
+              event.clientY;
+
+          }
+        );
+
+
+
+        slider.addEventListener(
+          "pointerup",
+          function (event) {
+
+
+            if (
+              !dragging
+            ) {
+
+              return;
+
+            }
+
+
+            dragging =
+              false;
+
+
+            const diffX =
+              event.clientX -
+              pointerStartX;
+
+
+            const diffY =
+              event.clientY -
+              pointerStartY;
+
+
+
+            /*
+              ถ้าเป็นการ scroll แนวตั้ง
+              จะไม่เปลี่ยนรูป
+            */
+
+            if (
+              Math.abs(diffY) >
+              Math.abs(diffX)
+            ) {
+
+              return;
+
+            }
+
+
+
+            /*
+              swipe ขั้นต่ำ 45px
+            */
+
+            if (
+              Math.abs(diffX) <
+              45
+            ) {
+
+              return;
+
+            }
+
+
+
+            /*
+              swipe ซ้าย
+              = รูปถัดไป
+            */
+
+            if (
+              diffX < 0
+            ) {
+
+              goToPhoto(
+                currentIndex + 1
+              );
+
+            }
+
+
+
+            /*
+              swipe ขวา
+              = รูปก่อนหน้า
+            */
+
+            else {
+
+              goToPhoto(
+                currentIndex - 1
+              );
+
+            }
+
+          }
+        );
+
+
+
+        slider.addEventListener(
+          "pointercancel",
+          function () {
+
+            dragging =
+              false;
+
+          }
+        );
+
+
+
+        /* =====================================================
+           KEYBOARD
+        ====================================================== */
+
+        document.addEventListener(
+          "keydown",
+          function (event) {
+
+
+            if (
+              event.key ===
+              "ArrowLeft"
+            ) {
+
+              goToPhoto(
+                currentIndex - 1
+              );
+
+            }
+
+
+            if (
+              event.key ===
+              "ArrowRight"
+            ) {
+
+              goToPhoto(
+                currentIndex + 1
+              );
+
+            }
+
+          }
+        );
+
+
+
+        /* =====================================================
+           INITIAL
+        ====================================================== */
+
+        goToPhoto(0);
+
+      }
+    );
+
+  </script>
+
+
+</body>
+
+</html>

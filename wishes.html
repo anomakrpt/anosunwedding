@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f8f4ec" />
+
+  <title>Wedding Wishes — Ausamah & Mizahasan</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Noto+Sans+Thai:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --cream:#f8f4ec;
+      --paper:rgba(255,255,255,.74);
+      --olive:#777747;
+      --olive-dark:#5f6037;
+      --text:#403e31;
+      --muted:#9c9789;
+      --line:#d9d1c2;
+      --shadow:0 12px 35px rgba(85,76,54,.13);
+      --radius:26px;
+      --nav-height:72px;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      margin:0;
+      color:var(--text);
+      background:#f8f4ec;
+      font-family:"Noto Sans Thai",sans-serif;
+      overflow-x:hidden;
+
+      /* เว้นพื้นที่ให้ bottom navigation */
+      padding-bottom:calc(var(--nav-height) + env(safe-area-inset-bottom));
+    }
+
+    button,
+    input,
+    textarea{
+      font:inherit;
+    }
+
+    button{
+      cursor:pointer;
+    }
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .topbar{
+      min-height:170px;
+      padding:26px 28px 24px;
+      display:grid;
+      grid-template-columns:60px 1fr 60px;
+      align-items:start;
+      border-bottom:1px solid rgba(126,119,92,.08);
+      position:relative;
+      z-index:5;
+      background:#fbf8f1;
+    }
+
+    .header-space{
+      width:46px;
+      height:46px;
+      margin-top:12px;
+    }
+
+    .music-btn{
+      width:46px;
+      height:46px;
+      border:0;
+      border-radius:999px;
+      background:var(--olive);
+      color:#fff;
+      justify-self:end;
+      margin-top:12px;
+      display:grid;
+      place-items:center;
+      font-size:22px;
+      box-shadow:0 6px 18px rgba(92,90,52,.18);
+    }
+
+    .brand{
+      text-align:center;
+      line-height:1.2;
+    }
+
+    /*
+      ===============================
+      LOGO PNG
+      ===============================
+      เปลี่ยนชื่อไฟล์ได้ที่ HTML:
+      src="pic/logo.png"
+
+      Desktop = 74px
+      Mobile  = 58px
+    */
+    .brand-logo{
+      display:block;
+      width:74px;
+      height:auto;
+      max-height:82px;
+      object-fit:contain;
+      margin:0 auto 10px;
+    }
+
+    .brand h1{
+      margin:8px 0 3px;
+      font:600 18px/1.1 "Cormorant Garamond",serif;
+      letter-spacing:.18em;
+    }
+
+    .brand p{
+      margin:0;
+      font:600 15px/1.2 "Cormorant Garamond",serif;
+      letter-spacing:.17em;
+    }
+
+    /* =========================================================
+       FORM SECTION
+       ========================================================= */
+
+    .form-section{
+      max-width:980px;
+      margin:auto;
+      padding:52px 22px 56px;
+      text-align:center;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255,255,255,.92), transparent 36%),
+        linear-gradient(180deg,#fbf8f1 0%,#f8f4ec 100%);
+    }
+
+    /* Wish card*/ 
+    .wishes-grid{
+  transition:
+    opacity .5s ease,
+    transform .5s ease;
+}
+
+.wishes-grid.changing{
+  opacity:0;
+  transform:translateY(8px);
+}
+
+    /*
+      ===============================
+      BOW ICON
+      ===============================
+      ใช้ไฟล์ PNG แทนตัวอักษรโบว์
+      path: pic/bow-icon.png
+    */
+    .bow-icon{
+      display:block;
+      width:32px;
+      height:32px;
+      object-fit:contain;
+      margin:0 auto 5px;
+      opacity:.72;
+    }
+
+    .bow-icon.small{
+      width:28px;
+      height:28px;
+      margin:0;
+    }
+
+    /*
+      ===============================
+      BOW ICON
+      ===============================
+      ใช้ไฟล์ PNG แทนตัวอักษรโบว์
+      path: pic/wish-icon.png
+    */
+    .wish-icon{
+      display:block;
+      width:62px;
+      height:62px;
+      object-fit:contain;
+      margin:0 auto 5px;
+      opacity:.72;
+    }
+
+    .wish-icon.small{
+      width:28px;
+      height:28px;
+      margin:0;
+    }
+
+
+    .section-title{
+      margin:10px 0 2px;
+      font:600 clamp(28px,5vw,38px)/1.1 "Cormorant Garamond",serif;
+      letter-spacing:.12em;
+    }
+
+    .section-subtitle{
+      margin:0;
+      font-size:20px;
+      font-weight:300;
+    }
+
+    .heart{
+      margin:8px 0 22px;
+      color:#b2ad92;
+      font-size:19px;
+    }
+
+    .wish-form{
+      max-width:790px;
+      margin:0 auto;
+      padding:38px 38px 34px;
+      text-align:left;
+      background:var(--paper);
+      border:1px solid rgba(216,207,191,.9);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(8px);
+    }
+
+    .field{
+      margin-bottom:24px;
+    }
+
+    label.field-label{
+      display:block;
+      margin:0 0 8px 4px;
+      font:600 17px/1.1 "Cormorant Garamond",serif;
+      letter-spacing:.1em;
+    }
+
+    input[type="text"],
+    textarea{
+      width:100%;
+      border:1px solid #d4cbb8;
+      border-radius:22px;
+      background:rgba(255,255,255,.38);
+      padding:15px 20px;
+      outline:none;
+      color:var(--text);
+      transition:.2s ease;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus{
+      border-color:#9e9a72;
+      box-shadow:0 0 0 3px rgba(126,126,74,.08);
+    }
+
+    input[type="text"]{
+      height:54px;
+    }
+
+    textarea{
+      min-height:135px;
+      resize:vertical;
+      line-height:1.65;
+    }
+
+    ::placeholder{
+      color:#aaa69a;
+    }
+
+    .counter{
+      margin-top:5px;
+      padding-right:8px;
+      text-align:right;
+      color:#999586;
+      font-size:14px;
+    }
+
+    .consent-row{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      margin:4px 4px 24px;
+      font-size:14px;
+      color:#696657;
+    }
+
+    .consent-row input{
+      appearance:none;
+      -webkit-appearance:none;
+      width:20px;
+      height:20px;
+      min-width:20px;
+      margin:1px 0 0;
+      border:1px solid #8d8c65;
+      border-radius:4px;
+      background:#fff;
+      display:grid;
+      place-items:center;
+    }
+
+    .consent-row input:checked{
+      background:var(--olive);
+      border-color:var(--olive);
+    }
+
+    .consent-row input:checked::after{
+      content:"✓";
+      color:white;
+      font-size:14px;
+      line-height:1;
+    }
+
+    .divider{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:#aca88b;
+      margin:4px 0 20px;
+    }
+
+    .divider::before,
+    .divider::after{
+      content:"";
+      height:1px;
+      background:#ddd6c6;
+      flex:1;
+    }
+
+    .submit-btn{
+      width:100%;
+      height:58px;
+      border:0;
+      border-radius:999px;
+      background:linear-gradient(90deg,#747544,#85864e);
+      color:#fff;
+      font-size:18px;
+      box-shadow:0 8px 20px rgba(103,102,57,.16);
+      transition:.2s ease;
+    }
+
+    .submit-btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .submit-btn:disabled{
+      opacity:.6;
+      cursor:not-allowed;
+      transform:none;
+    }
+
+    .message{
+      display:none;
+      margin-top:15px;
+      text-align:center;
+      font-size:14px;
+    }
+
+    .message.show{
+      display:block;
+    }
+
+    .message.ok{
+      color:#5f6f42;
+    }
+
+    .message.error{
+      color:#9b514d;
+    }
+
+    /* =========================================================
+       WISHES SECTION
+       ไม่มีวงกลมขาว / ไม่มีเมฆวงกลม
+       ========================================================= */
+
+    .cloud-section{
+      position:relative;
+      min-height:980px;
+      overflow:hidden;
+      padding:58px 20px 105px;
+
+      background:
+        linear-gradient(
+          180deg,
+          #e2dfcf 0%,
+          #e6e2d6 44%,
+          #ece7dd 100%
+        );
+
+      isolation:isolate;
+      
+    }
+
+    /* ปิด pseudo elements ที่เคยทำให้เกิดวงกลมขาว */
+    .cloud-section::before,
+    .cloud-section::after{
+      display:none;
+    }
+
+    .sparkles{
+      position:absolute;
+      inset:0;
+      z-index:-1;
+      pointer-events:none;
+
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,.9) 0 1.3px, transparent 1.8px),
+        radial-gradient(circle, rgba(255,255,255,.5) 0 .9px, transparent 1.5px);
+
+      background-size:
+        120px 150px,
+        180px 210px;
+
+      background-position:
+        18px 28px,
+        75px 96px;
+
+      opacity:.65;
+    }
+
+    .cloud-header{
+      text-align:center;
+      max-width:850px;
+      margin:0 auto 34px;
+    }
+
+    .sparkle-icon{
+      font-size:22px;
+      color:#aaa781;
+    }
+
+    .cloud-header h2{
+      margin:10px 0 4px;
+      font:600 clamp(28px,5vw,38px)/1.15 "Cormorant Garamond",serif;
+      letter-spacing:.12em;
+    }
+
+    .cloud-header p{
+      margin:0;
+      font-size:20px;
+      font-weight:300;
+    }
+
+    .wishes-grid{
+      position:relative;
+      width:min(100%,960px);
+      min-height:690px;
+      margin:0 auto;
+    }
+
+    /* =========================================================
+       WISH CARD ALIGNMENT
+       คำอวยพรอยู่กลางการ์ดทั้งแนวตั้ง + แนวนอน
+       quote ยังอยู่มุมซ้ายบน
+       ชื่อ + หัวใจยังอยู่ด้านล่าง
+       ========================================================= */
+    .wish-card{
+      position:absolute;
+      width:240px;
+      min-height:145px;
+      padding:42px 24px 42px;
+
+      border-radius:20px;
+      background:rgba(255,252,246,.82);
+      border:1px solid rgba(255,255,255,.55);
+      box-shadow:0 10px 30px rgba(82,78,55,.08);
+      backdrop-filter:blur(3px);
+
+      animation:floatCard 7s ease-in-out infinite;
+
+      /* จัดคำอวยพรให้อยู่กลางการ์ดทั้งแนวตั้งและแนวนอน */
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .wish-card.size-lg{
+      width:320px;
+      min-height:195px;
+      padding:48px 30px 48px;
+    }
+
+    .wish-card.size-sm{
+      width:200px;
+      min-height:125px;
+      padding:38px 20px 38px;
+    }
+
+    .wish-card .quote{
+      position:absolute;
+      left:18px;
+      top:12px;
+      font:600 40px/1 "Cormorant Garamond",serif;
+      color:#bdb99f;
+    }
+
+    .wish-text{
+      width:100%;
+      margin:0;
+
+      text-align:center;
+      white-space:pre-wrap;
+      overflow-wrap:anywhere;
+
+      line-height:1.65;
+      font-size:14px;
+      color:#4d4a3d;
+    }
+
+    .size-lg .wish-text{
+      margin:0;
+      font-size:18px;
+      text-align:center;
+    }
+
+    .wish-footer{
+      position:absolute;
+      left:20px;
+      right:20px;
+      bottom:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      color:#777362;
+      font-size:12px;
+    }
+
+    .wish-heart{
+      color:#aaa783;
+    }
+
+    .wish-name{
+      margin-left:auto;
+      text-align:right;
+    }
+
+    @keyframes floatCard{
+      0%,100%{
+        transform:translateY(0);
+      }
+
+      50%{
+        transform:translateY(-8px);
+      }
+    }
+
+    .load-btn-wrap{
+      text-align:center;
+      margin-top:24px;
+    }
+
+    .load-btn{
+      border:1px solid rgba(130,124,95,.15);
+      background:rgba(255,252,246,.82);
+      color:#585641;
+      padding:11px 22px;
+      border-radius:999px;
+      box-shadow:0 6px 18px rgba(80,75,54,.08);
+    }
+
+
+    /* =========================================================
+       EMPTY / ERROR MESSAGE FOR WISHES
+       ใช้โดย script.js เวลายังไม่มีข้อมูล หรือโหลดไม่สำเร็จ
+       ========================================================= */
+    .no-wishes{
+      width:100%;
+      padding:90px 20px;
+      text-align:center;
+      color:#77735f;
+      font-size:14px;
+    }
+
+    /* =========================================================
+       BOTTOM NAVIGATION
+       ========================================================= */
+
+    .bottom-nav{
+      position:fixed;
+      left:50%;
+      bottom:0;
+      transform:translateX(-50%);
+
+      width:min(100%,760px);
+      min-height:var(--nav-height);
+
+      padding:
+        8px 12px
+        calc(8px + env(safe-area-inset-bottom));
+
+      display:grid;
+      grid-template-columns:repeat(6,1fr);
+      align-items:center;
+      gap:2px;
+
+      background:rgba(251,248,241,.93);
+      border-top:1px solid rgba(112,106,81,.13);
+      box-shadow:0 -8px 30px rgba(79,73,53,.08);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+
+      z-index:9999;
+    }
+
+    .nav-item{
+      min-width:0;
+      color:#8c8878;
+      text-decoration:none;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:4px;
+      padding:4px 2px;
+      transition:.2s ease;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    .nav-item svg{
+      width:21px;
+      height:21px;
+      fill:none;
+      stroke:currentColor;
+      stroke-width:1.7;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    .nav-item span{
+      font-size:10px;
+      line-height:1;
+      white-space:nowrap;
+    }
+
+    .nav-item:hover{
+      color:var(--olive);
+    }
+
+    /* Wishes เป็นหน้าปัจจุบัน */
+    .nav-item.active{
+      color:var(--olive-dark);
+      font-weight:500;
+    }
+
+    .nav-item.active svg{
+      stroke-width:2;
+    }
+
+    /* =========================================================
+       TOAST
+       ========================================================= */
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:calc(var(--nav-height) + 20px);
+      transform:translate(-50%,30px);
+      background:#4f5133;
+      color:#fff;
+      padding:11px 18px;
+      border-radius:999px;
+      font-size:14px;
+      opacity:0;
+      pointer-events:none;
+      transition:.25s;
+      z-index:10000;
+      max-width:calc(100% - 32px);
+      text-align:center;
+    }
+
+    .toast.show{
+      opacity:1;
+      transform:translate(-50%,0);
+    }
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width:700px){
+
+      .topbar{
+        min-height:142px;
+        padding:18px 14px 18px;
+        grid-template-columns:46px 1fr 46px;
+      }
+
+      .header-space{
+        width:40px;
+        height:40px;
+        margin-top:8px;
+      }
+
+      .music-btn{
+        width:40px;
+        height:40px;
+        margin-top:8px;
+        font-size:18px;
+      }
+
+      .brand-logo{
+        width:58px;
+        max-height:66px;
+        margin-bottom:7px;
+      }
+
+      .brand h1{
+        font-size:14px;
+        margin-top:7px;
+      }
+
+      .brand p{
+        font-size:12px;
+      }
+
+      .form-section{
+        padding:38px 14px 36px;
+      }
+
+      .bow-icon{
+        width:34px;
+        height:34px;
+      }
+
+      .bow-icon.small{
+        width:24px;
+        height:24px;
+      }
+
+      .section-title{
+        font-size:28px;
+        letter-spacing:.09em;
+      }
+
+      .section-subtitle{
+        font-size:18px;
+      }
+
+      .wish-form{
+        padding:26px 20px 24px;
+        border-radius:24px;
+      }
+
+      label.field-label{
+        font-size:16px;
+      }
+
+      input[type="text"]{
+        height:52px;
+      }
+
+      textarea{
+        min-height:130px;
+      }
+
+      .submit-btn{
+        height:54px;
+      }
+
+      .cloud-section{
+        min-height:1120px;
+        padding:48px 12px 90px;
+      }
+
+      .cloud-header h2{
+        font-size:27px;
+        letter-spacing:.08em;
+      }
+
+      .cloud-header p{
+        font-size:18px;
+      }
+
+      .wishes-grid{
+        min-height:880px;
+        width:100%;
+      }
+
+      .wish-card{
+        width:46%;
+        min-height:145px;
+        padding:38px 16px 38px;
+      }
+
+      .wish-card.size-lg{
+        width:62%;
+        min-height:185px;
+        padding:42px 20px 42px;
+      }
+
+      .wish-card.size-sm{
+        width:42%;
+        min-height:125px;
+        padding:36px 14px 36px;
+      }
+
+      .wish-text{
+        margin:0;
+        font-size:12px;
+        line-height:1.6;
+        text-align:center;
+      }
+
+      .size-lg .wish-text{
+        margin:0;
+        font-size:15px;
+        text-align:center;
+      }
+
+      .wish-footer{
+        left:14px;
+        right:14px;
+        bottom:12px;
+        font-size:11px;
+      }
+
+      .bottom-nav{
+        width:100%;
+        border-radius:0;
+      }
+
+      .nav-item svg{
+        width:20px;
+        height:20px;
+      }
+
+      .nav-item span{
+        font-size:9px;
+      }
+    }
+
+    @media (max-width:420px){
+
+      .wish-card{
+        border-radius:17px;
+      }
+
+      .cloud-section{
+        min-height:1180px;
+      }
+
+      .bottom-nav{
+        padding-left:5px;
+        padding-right:5px;
+      }
+
+      .nav-item span{
+        font-size:8.5px;
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce){
+
+      *,
+      *::before,
+      *::after{
+        animation:none!important;
+        scroll-behavior:auto!important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+
+    <!-- ฝั่งซ้ายเว้นว่าง เพราะใช้ Bottom Navigation ด้านล่างแทน -->
+    <div class="header-space"></div>
+
+    <div class="brand">
+
+      <!--
+        =====================================================
+        LOGO PNG
+        =====================================================
+        ใส่ไฟล์โลโก้ไว้ที่:
+        pic/logo.png
+
+        ถ้าชื่อไฟล์ไม่ใช่ logo.png ให้แก้ src ด้านล่าง
+      -->
+      <img
+        src="pic/logo.png"
+        alt="Ausamah & Mizahasan Logo"
+        class="brand-logo"
+      >
+
+      <h1>AUSAMAH &amp; MIZAHASAN</h1>
+      <!-- <p>17-01-2027</p> -->
+    </div>
+
+    <!--<button
+      class="music-btn"
+      id="musicBtn"
+      type="button"
+      aria-label="Toggle music"
+    >
+      ♫
+    </button> -->
+
+  </header>
+
+
+  <main>
+
+    <section class="form-section">
+
+      <!--
+        ไอคอนโบว์ PNG
+        ใส่ไฟล์ไว้ที่:
+        pic/bow-icon.png
+      -->
+      <img
+        src="pic/icon-wish.png"
+        alt=""
+        class="wish-icon"
+      >
+
+      <h2 class="section-title">
+        LEAVE US YOUR WISHES
+      </h2>
+
+      <p class="section-subtitle">
+        ฝากคำอวยพรถึงเรา 
+      </p><br>
+
+      <!--<div class="heart">
+        ♥
+      </div> -->
+
+
+      <!--
+        =========================================================
+        WISH FORM
+
+        JavaScript ของฟอร์มนี้อยู่ในไฟล์:
+        script.js
+
+        ไม่ต้องใส่ API URL หรือ JavaScript ซ้ำใน wishes.html
+        =========================================================
+      -->
+
+      <form
+        id="wishForm"
+        class="wish-form"
+      >
+
+
+        <div class="field">
+           <img
+        src="pic/icon-bow.png"
+        alt=""
+        class="bow-icon"
+      >
+          <label
+            class="field-label"
+            for="name"
+          >
+            YOUR NAME
+          </label>
+
+          <input
+            id="name"
+            name="name"
+            type="text"
+            maxlength="60"
+            placeholder="ชื่อของคุณ"
+            required
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label
+            class="field-label"
+            for="wish"
+          >
+            YOUR WISHES
+          </label>
+
+          <textarea
+            id="wish"
+            name="wish"
+            maxlength="200"
+            placeholder="เขียนคำอวยพรของคุณที่นี่..."
+            required
+          ></textarea>
+
+          <div class="counter">
+            <span id="count">0</span>/200
+          </div>
+
+        </div>
+
+
+        <label class="consent-row">
+
+          <input
+            id="allowDisplay"
+            name="allowDisplay"
+            type="checkbox"
+          >
+
+          <span>
+            อนุญาตให้แสดงคำอวยพรของคุณบนเว็บไซต์
+          </span>
+
+        </label>
+
+
+        <div class="divider">
+
+          <img
+            src="pic/icon-bow.png"
+            alt=""
+            class="bow-icon small"
+          >
+
+        </div>
+
+
+        <button
+          id="submitBtn"
+          class="submit-btn"
+          type="submit"
+        >
+          ➤ &nbsp; ส่งคำอวยพร
+        </button>
+
+
+        <div
+          id="formMessage"
+          class="message"
+          aria-live="polite"
+        ></div>
+
+      </form>
+
+    </section>
+
+
+    <section class="cloud-section">
+
+      <div class="sparkles"></div>
+
+
+      <div class="cloud-header">
+
+        <div class="sparkle-icon">
+          ✦
+        </div>
+
+        <h2>
+          WISHES FROM OUR LOVED ONES
+        </h2>
+
+        <p>
+          คำอวยพรจากทุกคน
+        </p>
+
+        <div class="heart">
+          ♥
+        </div>
+
+      </div>
+
+
+      <div
+        id="wishesGrid"
+        class="wishes-grid"
+        aria-live="polite"
+      ></div>
+
+
+      <div class="load-btn-wrap">
+
+        <button
+          id="reloadBtn"
+          class="load-btn"
+          type="button"
+        >
+          ↻ &nbsp; โหลดคำอวยพรใหม่
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================================================
+       BOTTOM NAVIGATION
+       =========================================================
+
+       สำคัญ:
+       wishes.html เป็น "คนละหน้า" กับ index.html
+
+       เพราะฉะนั้น Home / Story / Event / Location
+       ต้องลิงก์กลับไป index.html ก่อน เช่น:
+       index.html#home
+
+       ถ้าใช้แค่ #home จะหา section #home ใน wishes.html
+       ซึ่งจะไม่เจอ
+  -->
+
+  <nav class="bottom-nav">
+
+    <a
+      href="index.html?skipIntro=1#home"
+      class="nav-item"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path d="M3 11L12 4l9 7v8a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" />
+      </svg>
+
+      <span>Home</span>
+    </a>
+
+
+    <a
+      href="index.html?skipIntro=1#story"
+      class="nav-item"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path d="M12 21s-7-4.6-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 11c0 5.4-7 10-7 10z" />
+      </svg>
+
+      <span>Story</span>
+    </a>
+
+
+    <a
+      href="index.html?skipIntro=1#details"
+      class="nav-item"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path d="M7 2v3M17 2v3M4 8h16M5 5h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" />
+      </svg>
+
+      <span>Event</span>
+    </a>
+
+
+    <!-- หน้าปัจจุบัน = Wishes -->
+    <a
+      href="wishes.html"
+      class="nav-item active"
+      aria-current="page"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path d="M3 6l9 7 9-7M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/>
+      </svg>
+
+      <span>Wishes</span>
+    </a>
+
+
+    <a
+      href="index.html?skipIntro=1#location"
+      class="nav-item"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path d="M12 21s6-5.3 6-10a6 6 0 0 0-12 0c0 4.7 6 10 6 10z" />
+        <circle cx="12" cy="11" r="2.5" />
+      </svg>
+
+      <span>Location</span>
+    </a>
+
+
+    <!--
+    ถ้าจะเปิด Car Parking ให้เอา comment ออก
+
+    <a
+      href="https://maps.app.goo.gl/ใส่ลิงก์ที่จอดรถ"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="nav-item"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <rect
+          x="4"
+          y="4"
+          width="16"
+          height="16"
+          rx="3"
+        ></rect>
+
+        <path d="M5 11l1.2-3.4A2 2 0 0 1 8.1 6h7.8a2 2 0 0 1 1.9 1.6L19 11"></path>
+      </svg>
+
+      <span>Car Parking</span>
+    </a>
+    -->
+
+
+    <a
+      href="photos.html"
+      class="nav-item"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path d="M4 7h3l2-2h6l2 2h3v12H4z" />
+        <circle cx="12" cy="13" r="3.5" />
+      </svg>
+
+      <span>Photos</span>
+    </a>
+
+  </nav>
+
+
+  <div
+    id="toast"
+    class="toast"
+  ></div>
+
+  <!-- =========================================================
+       JAVASCRIPT
+
+       IMPORTANT:
+       - หน้า wishes.html นี้ไม่มี JavaScript สำหรับ Wishes ฝังอยู่แล้ว
+       - ระบบส่ง/โหลดคำอวยพรทั้งหมดอยู่ใน script.js
+       - Google Apps Script Web App URL ให้แก้ใน script.js เท่านั้น
+       - ?v=20260820-3 ใช้บังคับ browser โหลดไฟล์ JS เวอร์ชันใหม่
+         ป้องกัน cache ของ script.js เก่า
+       ========================================================= -->
+  <script src="script.js?v=20260820-4"></script>
+
+</body>
+</html>
