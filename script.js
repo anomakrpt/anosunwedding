@@ -17,7 +17,7 @@ const START_SECONDS = 28;*/
 
 /* Right Here Waiting */
 const VIDEO_ID = "S_E2EHVxNAE";
-const START_SECONDS = 77;
+const START_SECONDS = 135;
 
 
 /* ============================================================
