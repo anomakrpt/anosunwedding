@@ -1138,15 +1138,15 @@ a {
 }
 
 .gallery-item:nth-child(2) {
-  background-image: url("pic/couple2.jpeg");
+  background-image: url("pic/photo/photo-02.jpg");
 }
 
 .gallery-item:nth-child(3) {
-  background-image: url("pic/couple3.jpeg");
+  background-image: url("pic/photo/photo-01.jpg");
 }
 
 .gallery-item:nth-child(4) {
-  background-image: url("pic/couple4.jpeg");
+  background-image: url("pic/photo/photo-07.jpg");
 }
 
 .gallery-item.tall {
@@ -3122,15 +3122,15 @@ a {
 }
 
 .gallery-item:nth-child(2) {
-  background-image: url("pic/couple2.jpeg");
+  background-image: url("pic/photo/photo-02.jpg");
 }
 
 .gallery-item:nth-child(3) {
-  background-image: url("pic/couple3.jpeg");
+  background-image: url("pic/photo/photo-01.jpg");
 }
 
 .gallery-item:nth-child(4) {
-  background-image: url("pic/couple4.jpeg");
+  background-image: url("pic/photo/photo-07.jpg");
 }
 
 .gallery-item.tall {

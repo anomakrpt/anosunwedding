@@ -2402,8 +2402,9 @@
               );
 
 
+            /* thumbnail ใช้ไฟล์ย่อใน pic/photo/thumb/ แทนไฟล์เต็ม */
             image.src =
-              photo;
+              photo.replace("pic/photo/", "pic/photo/thumb/");
 
 
             image.alt = "";

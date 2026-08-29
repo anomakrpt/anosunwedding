@@ -522,7 +522,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const targetDate =
 
     new Date(
-      "2027-01-17T10:00:00"
+      "2027-01-17T10:00:00+07:00" /* ระบุ timezone ไทย กัน countdown เพี้ยนตามเครื่องแขก */
     ).getTime();
 
 
@@ -680,13 +680,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-  updateCountdown();
+  /* ติดตั้ง interval เฉพาะหน้าที่มี countdown จริง
+     (กัน interval วิ่งเปล่าตลอดไปบน wishes.html) */
+  if (document.getElementById("days")) {
+
+    updateCountdown();
 
 
-  setInterval(
-    updateCountdown,
-    1000
-  );
+    setInterval(
+      updateCountdown,
+      1000
+    );
+
+  }
 
 
 });
@@ -741,7 +747,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const WISHES_INTERVAL = 5000;
 
-  const WISH_FADE_TIME = 1;
+  const WISH_FADE_TIME = 500; /* ให้ตรงกับ CSS transition .5s */
 
 
 
@@ -1177,30 +1183,31 @@ document.addEventListener("DOMContentLoaded", () => {
   ) {
 
 
+    /* ใช้ .replace(/…/g) แทน replaceAll เพื่อรองรับ Safari เก่า */
     return String(value)
 
-      .replaceAll(
-        "&",
+      .replace(
+        /&/g,
         "&amp;"
       )
 
-      .replaceAll(
-        "<",
+      .replace(
+        /</g,
         "&lt;"
       )
 
-      .replaceAll(
-        ">",
+      .replace(
+        />/g,
         "&gt;"
       )
 
-      .replaceAll(
-        '"',
+      .replace(
+        /"/g,
         "&quot;"
       )
 
-      .replaceAll(
-        "'",
+      .replace(
+        /'/g,
         "&#039;"
       );
 
