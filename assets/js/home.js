@@ -84,7 +84,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function startMusic() {
 
-    if (musicStarted) return;
+    /* ดูสถานะจริงจาก player ไม่ใช่ธงที่อาจค้างไว้
+       (resumeMusic อาจถูกบล็อกโดยนโยบาย autoplay มาก่อน) */
+    if (
+      typeof isMusicPlaying === "function" &&
+      isMusicPlaying()
+    ) {
+
+      return;
+
+    }
 
 
     if (
@@ -103,6 +112,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     musicStarted = true;
+
+    if (typeof seekedToStart !== "undefined") {
+
+      seekedToStart = true;
+
+    }
 
 
     player.seekTo(

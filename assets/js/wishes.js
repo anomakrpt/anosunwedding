@@ -609,7 +609,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const TREE_FULL_AT = 40;
 
   /* ระหว่างฉายเต็มจอ ดึงคำอวยพรใหม่ทุก 45 วินาที */
-  const FULLSCREEN_POLL_MS = 45000;
+  /* ตอนฉายบนจอในงาน ต้องเห็นคำอวยพรใหม่ไว ๆ
+     มีแค่จอเดียวที่ poll ไม่ใช่ทุกเครื่องของแขก */
+  const FULLSCREEN_POLL_MS = 10000;
 
   let fullscreenPollTimer = null;
 
@@ -1477,10 +1479,22 @@ document.addEventListener("DOMContentLoaded", () => {
         ") scale(" + scale.toFixed(3) + ")"
       );
 
-      g.style.setProperty(
-        "--pop-delay",
-        (i * 26) + "ms"
-      );
+      /* ดวงเดิมไม่ต้องเด้งใหม่ทุกครั้งที่ดึงข้อมูล
+         เด้งเฉพาะดวงที่เพิ่งเข้ามา ให้เห็นว่ามีคนส่งมาเพิ่ม */
+      const fresh =
+        firstLoadDone === false ||
+        newQueue.some((w) => wishKey(w) === wishKey(wish));
+
+      if (fresh) {
+
+        g.classList.add("is-fresh");
+
+        g.style.setProperty(
+          "--pop-delay",
+          (i * 26) + "ms"
+        );
+
+      }
 
 
       const path =
@@ -1570,7 +1584,7 @@ document.addEventListener("DOMContentLoaded", () => {
      SPOTLIGHT — คำอวยพรที่กำลังฉาย
      ============================================================ */
 
-  function showSpotlight(wish) {
+  function showSpotlight(wish, isNew) {
 
     const textEl =
       document.getElementById("spotlightText");
@@ -1599,6 +1613,8 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("wishSpotlight");
 
     if (box) {
+
+      box.classList.toggle("is-new", Boolean(isNew));
 
       box.classList.remove("is-in");
 
@@ -1840,6 +1856,129 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
+  /* ============================================================
+     ROTATION — สองเลน
+
+     เลนหลัก  : วนคำอวยพรทั้งหมดตามลำดับ ดวงละ WISHES_INTERVAL
+     เลนแทรก  : คำอวยพรที่เพิ่งส่งเข้ามา แทรกขึ้นทันที ค้างนานกว่าปกติ
+                แล้วคืนเลนหลักที่ตำแหน่งเดิม (ไม่รีเซ็ตรอบ)
+
+     กันจอค้าง: ถ้าคนส่งพร้อมกันหลายคน จะแทรกติดกันได้ไม่เกิน
+                NEW_STREAK_MAX ครั้ง แล้วต้องคั่นด้วยของเก่า 1 อัน
+     ============================================================ */
+
+  const NEW_HOLD_MS = 7000;      /* คำอวยพรใหม่ค้างนานกว่า ให้ทันอ่าน */
+
+  const NEW_STREAK_MAX = 3;      /* แทรกติดกันได้ไม่เกินกี่ครั้ง */
+
+  const seenKeys = new Set();
+
+  let newQueue = [];
+
+  let newStreak = 0;
+
+  let firstLoadDone = false;
+
+
+  function wishKey(wish) {
+
+    return String(wish.name || "") +
+      "|" + String(wish.timestamp || "") +
+      "|" + String(wish.wish || "").slice(0, 24);
+
+  }
+
+
+  function collectNewWishes() {
+
+    const fresh = [];
+
+    allWishes.forEach((wish) => {
+
+      const key = wishKey(wish);
+
+      if (!seenKeys.has(key)) {
+
+        seenKeys.add(key);
+
+        fresh.push(wish);
+
+      }
+
+    });
+
+
+    /* โหลดครั้งแรกไม่ใช่ของใหม่ — ไม่งั้นจะประกาศรัวทั้ง 20 ข้อ */
+    if (!firstLoadDone) {
+
+      firstLoadDone = true;
+
+      return;
+
+    }
+
+
+    if (fresh.length === 0) return;
+
+
+    /* ของที่เพิ่งเข้ามาให้เรียงเก่า→ใหม่ คนที่ส่งก่อนได้ขึ้นก่อน */
+    newQueue = newQueue.concat(fresh.slice().reverse());
+
+  }
+
+
+  /* เลือกว่ารอบถัดไปจะโชว์อะไร */
+  function pickNext() {
+
+    const canInterrupt =
+      newQueue.length > 0 &&
+      newStreak < NEW_STREAK_MAX;
+
+
+    if (canInterrupt) {
+
+      newStreak++;
+
+      return { wish: newQueue.shift(), isNew: true };
+
+    }
+
+
+    newStreak = 0;
+
+
+    if (allWishes.length === 0) return null;
+
+
+    spotlightIndex =
+      (spotlightIndex + 1) % allWishes.length;
+
+    return { wish: allWishes[spotlightIndex], isNew: false };
+
+  }
+
+
+  function scheduleNext(delay) {
+
+    stopSpotlight();
+
+    spotlightTimer = setTimeout(() => {
+
+      const next = pickNext();
+
+      if (!next) return;
+
+      showSpotlight(next.wish, next.isNew);
+
+      scheduleNext(
+        next.isNew ? NEW_HOLD_MS : WISHES_INTERVAL
+      );
+
+    }, delay);
+
+  }
+
+
   function startSpotlight() {
 
     stopSpotlight();
@@ -1848,20 +1987,31 @@ document.addEventListener("DOMContentLoaded", () => {
     if (allWishes.length === 0) return;
 
 
-    showSpotlight(allWishes[spotlightIndex % allWishes.length]);
+    /* ถ้ามีของใหม่รออยู่ ให้ขึ้นทันทีเลย ไม่ต้องรอรอบ */
+    if (newQueue.length > 0) {
+
+      newStreak = 1;
+
+      const first = newQueue.shift();
+
+      showSpotlight(first, true);
+
+      scheduleNext(NEW_HOLD_MS);
+
+      return;
+
+    }
+
+
+    showSpotlight(
+      allWishes[spotlightIndex % allWishes.length]
+    );
 
 
     if (allWishes.length < 2) return;
 
 
-    spotlightTimer = setInterval(() => {
-
-      spotlightIndex =
-        (spotlightIndex + 1) % allWishes.length;
-
-      showSpotlight(allWishes[spotlightIndex]);
-
-    }, WISHES_INTERVAL);
+    scheduleNext(WISHES_INTERVAL);
 
   }
 
@@ -1870,7 +2020,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (spotlightTimer) {
 
-      clearInterval(spotlightTimer);
+      clearTimeout(spotlightTimer);
 
       spotlightTimer = null;
 
@@ -2033,6 +2183,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       /* โหลดผ่านแล้ว รีเซ็ตตัวนับ retry */
       wishesRetry = 0;
+
+
+      /* หาคำอวยพรที่เพิ่งเข้ามาใหม่ เพื่อเอาไปแทรกคิวโชว์ */
+      collectNewWishes();
 
 
       /* ต้นไม้โตตามจำนวนคำอวยพรที่เพิ่งโหลดมา */

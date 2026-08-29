@@ -342,6 +342,10 @@
   cursor:pointer;
   transform-box:fill-box;
   transform-origin:center;
+}
+
+/* ผลิเฉพาะดวงที่เพิ่งส่งเข้ามา ดวงเดิมอยู่นิ่ง ๆ ตอนดึงข้อมูลรอบใหม่ */
+.wish-heart.is-fresh{
   animation:heartPop .6s cubic-bezier(.34,1.4,.5,1) both;
   animation-delay:var(--pop-delay,0ms);
 }
@@ -1368,5 +1372,71 @@ body.wish-fs-lock{
   .wish-heart path{ transition:none; }
 
   .wish-heart.is-active{ animation:none; }
+
+}
+
+
+
+/* =========================================================
+   คำอวยพรที่เพิ่งส่งเข้ามา — แทรกขึ้นจอทันที
+========================================================= */
+
+.wish-new-badge{
+  display:none;
+}
+
+.tree-stage:fullscreen .wish-spotlight.is-new,
+.tree-stage.is-pseudo-fullscreen .wish-spotlight.is-new{
+  border-color:rgba(119,119,71,.5);
+  box-shadow:0 20px 50px rgba(85,76,54,.2),
+             0 0 0 3px rgba(119,119,71,.16);
+  animation:newWishIn .8s cubic-bezier(.22,.61,.36,1);
+}
+
+@keyframes newWishIn{
+  0%   { transform:translateY(14px) scale(.985); }
+  60%  { transform:translateY(0) scale(1.008); }
+  100% { transform:none; }
+}
+
+.tree-stage:fullscreen .wish-spotlight.is-new .wish-new-badge,
+.tree-stage.is-pseudo-fullscreen .wish-spotlight.is-new .wish-new-badge{
+  display:inline-block;
+  position:absolute;
+  top:-13px;
+  left:clamp(24px, 3vw, 44px);
+  padding:5px 15px;
+  border-radius:999px;
+  background:var(--olive);
+  color:#fdfbf4;
+  font-size:clamp(11px,1.05vw,14px);
+  letter-spacing:.06em;
+  box-shadow:0 6px 16px rgba(85,76,54,.24);
+  animation:badgePulse 1.6s ease-in-out infinite;
+}
+
+@keyframes badgePulse{
+  0%, 100% { opacity:1; }
+  50%      { opacity:.74; }
+}
+
+.tree-stage:fullscreen .wish-spotlight,
+.tree-stage.is-pseudo-fullscreen .wish-spotlight{
+  position:relative;
+}
+
+/* รายการในแถบขวาที่เพิ่งเข้ามา ก็ให้สังเกตเห็น */
+.wish-feed-item.is-active.is-new-entry{
+  background:rgba(119,119,71,.22);
+}
+
+@media (prefers-reduced-motion:reduce){
+
+  .tree-stage:fullscreen .wish-spotlight.is-new,
+  .tree-stage.is-pseudo-fullscreen .wish-spotlight.is-new{
+    animation:none;
+  }
+
+  .wish-new-badge{ animation:none !important; }
 
 }

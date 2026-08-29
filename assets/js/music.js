@@ -7,6 +7,9 @@ let player;
 let playerReady = false;
 let musicStarted = false;
 
+/* เคย seek ไปยังท่อนที่กำหนดแล้วหรือยัง (คนละเรื่องกับ "กำลังเล่นอยู่") */
+let seekedToStart = false;
+
 
 /* ============================================================
    YOUTUBE MUSIC
@@ -139,12 +142,14 @@ function resumeMusic() {
   if (!playerReady || !player) return;
 
 
-  /* ถ้ายังไม่เคยเริ่ม ให้ไปเริ่มที่ท่อนที่กำหนดไว้ */
-  if (!musicStarted) {
+  /* เริ่มที่ท่อนที่กำหนดไว้ ครั้งแรกครั้งเดียว
+     ห้ามใช้ตัวแปรนี้เป็นเงื่อนไขว่า "เล่นแล้ว"
+     เพราะเบราว์เซอร์อาจบล็อก playVideo() อยู่ (ยังไม่มีการกดของผู้ใช้) */
+  if (!seekedToStart) {
 
     player.seekTo(START_SECONDS, true);
 
-    musicStarted = true;
+    seekedToStart = true;
 
   }
 
@@ -154,6 +159,44 @@ function resumeMusic() {
   player.playVideo();
 
   updateSoundBtn();
+
+}
+
+
+/* ============================================================
+   เบราว์เซอร์ไม่ยอมให้เล่นเสียงเองถ้ายังไม่มีการกดของผู้ใช้
+   จึงดักการกดครั้งแรกบนหน้า (ที่ไหนก็ได้) แล้วค่อยเริ่มเพลง
+   ถ้าแขกตั้งค่าไว้ว่าให้เปิดเสียง
+   ============================================================ */
+
+function armFirstGesture() {
+
+  const kick = () => {
+
+    if (soundWanted() && !isMusicPlaying()) {
+
+      resumeMusic();
+
+    }
+
+    /* ถ้าเล่นได้แล้วก็เลิกดัก */
+    setTimeout(() => {
+
+      if (isMusicPlaying()) {
+
+        document.removeEventListener("pointerdown", kick, true);
+
+        document.removeEventListener("keydown", kick, true);
+
+      }
+
+    }, 500);
+
+  };
+
+  document.addEventListener("pointerdown", kick, true);
+
+  document.addEventListener("keydown", kick, true);
 
 }
 
@@ -217,6 +260,9 @@ document.addEventListener("DOMContentLoaded", () => {
   updateSoundBtn();
 
 });
+
+
+armFirstGesture();
 
 
 /* ============================================================
