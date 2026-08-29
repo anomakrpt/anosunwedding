@@ -3,8 +3,8 @@
 ============================================================ */
 
 /* เพลงพื้นหลัง (YouTube) */
-const VIDEO_ID = "S_E2EHVxNAE";
-const START_SECONDS = 136;
+const VIDEO_ID = "yIlKu9q_zJ4";
+const START_SECONDS = 95;   /* 1:35 */
 
 /* วันเวลางาน (เวลาไทย) — ใช้กับ countdown */
 const WEDDING_DATE = "2027-01-17T10:00:00+07:00";

@@ -1691,6 +1691,14 @@ document.addEventListener("DOMContentLoaded", () => {
   /* กันยิงซ้ำระหว่างที่คำขอเก่ายังไม่จบ */
   let wishesLoading = false;
 
+  /* Apps Script ตอบ 503 ได้เมื่อมีคนเรียกพร้อมกันเยอะ (เช่นวันงาน)
+     ถ้าโหลดรอบแรกไม่ผ่าน ให้ลองใหม่เองอัตโนมัติ ไม่ต้องรอแขกกดปุ่ม */
+  const WISHES_MAX_RETRY = 3;
+
+  const WISHES_RETRY_DELAYS = [2000, 5000, 11000];
+
+  let wishesRetry = 0;
+
 
   async function loadWishes() {
 
@@ -1804,6 +1812,10 @@ document.addEventListener("DOMContentLoaded", () => {
       currentWishPage = 0;
 
 
+      /* โหลดผ่านแล้ว รีเซ็ตตัวนับ retry */
+      wishesRetry = 0;
+
+
       /* ต้นไม้โตตามจำนวนคำอวยพรที่เพิ่งโหลดมา */
       updateTree();
 
@@ -1848,6 +1860,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+      /* ----------------------------------------------------------
+         ลองใหม่อัตโนมัติ ก่อนจะยอมแพ้และขึ้นข้อความ error
+         (ส่วนใหญ่เป็น 503 ชั่วคราวจาก Apps Script)
+         ---------------------------------------------------------- */
+
+      if (wishesRetry < WISHES_MAX_RETRY) {
+
+        const delay =
+          WISHES_RETRY_DELAYS[wishesRetry] || 11000;
+
+        wishesRetry++;
+
+
+        /* ระหว่างรอ ยังไม่ต้องขึ้นข้อความ error ให้แขกเห็น */
+        setTimeout(() => {
+          loadWishes();
+        }, delay);
+
+
+        return;
+
+      }
+
+
       if (wishesGrid) {
 
 
@@ -1860,6 +1896,17 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
 
         `;
+
+      }
+
+
+      const spotFail =
+        document.getElementById("spotlightText");
+
+      if (spotFail && !spotFail.textContent) {
+
+        spotFail.textContent =
+          "โหลดคำอวยพรไม่สำเร็จ — กดปุ่มด้านล่างเพื่อลองใหม่";
 
       }
 
@@ -1902,7 +1949,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       "click",
 
-      loadWishes
+      () => {
+
+        /* กดเองแล้วให้เริ่มนับ retry ใหม่ */
+        wishesRetry = 0;
+
+        loadWishes();
+
+      }
 
     );
 
