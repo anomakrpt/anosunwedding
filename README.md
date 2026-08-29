@@ -77,12 +77,19 @@ python3 -m http.server 8765
 4. ชีทชื่อ `RSVP` จะถูกสร้างอัตโนมัติเมื่อมีคนตอบรับครั้งแรก
    คอลัมน์: Timestamp | Fullname | Attending | Guests | Side
 
+## สถานะ Backend
+
+**RSVP ใช้งานได้จริงแล้ว** — deploy Version 3 เมื่อ 30 ส.ค. 2026 บน deployment
+"Wishes" เดิม (Deployment ID ไม่เปลี่ยน เว็บจึงไม่ต้องแก้ config)
+ทดสอบแล้วบันทึกลงชีท `RSVP` ได้ และระบบคำอวยพรเดิมไม่กระทบ
+
+หมายเหตุ: ในโปรเจกต์ Apps Script มี deployment ชื่อ "add RSVP" (Version 2) ค้างอยู่
+ตัวนั้นเว็บไม่ได้ใช้ — archive ทิ้งได้ถ้าต้องการความเรียบร้อย
+
 ## งานที่ยังค้าง
 
-1. **Deploy Apps Script สำหรับ RSVP** — หน้า rsvp.html ส่งข้อมูลได้แล้ว แต่ฝั่ง backend
-   ต้องเพิ่ม handler ตาม `apps-script/Code.gs` ก่อน (ดูหัวข้อ Deploy ด้านบน)
-2. **ลิงก์เครดิต P'Nueng / Nat** ในหน้าแรกยังเป็น `facebook.com/yourpage`
-3. **รูป/Avatar ผู้เขียนคำอวยพร** — ยังไม่ได้ทำ (แผนคือให้เลือกเซลฟี่หรือ avatar
+1. **ลิงก์เครดิต P'Nueng / Nat** ในหน้าแรกยังเป็น `facebook.com/yourpage`
+2. **รูป/Avatar ผู้เขียนคำอวยพร** — ยังไม่ได้ทำ (แผนคือให้เลือกเซลฟี่หรือ avatar
    นักเดินป่าชาย/หญิง แล้วแสดงคู่กับคำอวยพร)
 
 ## หมายเหตุ
