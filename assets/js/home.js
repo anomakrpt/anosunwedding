@@ -1475,3 +1475,226 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+/* ============================================================
+   TYPEWRITER — ประโยคภาษาอังกฤษในฉาก blessing
+
+   ตัดข้อความเป็นตัวอักษรทีละตัวไว้ล่วงหน้า แล้วค่อยไล่เปิดทีละตัว
+   ตัวอักษรถูกจัดหน้าครบตั้งแต่แรก (แค่โปร่งใสอยู่) ข้อความจึงไม่ขยับ
+   ระหว่างพิมพ์ — ไม่มี layout shift และตัดบรรทัดถูกตำแหน่งตั้งแต่ต้น
+
+   ทำงานตามสัญญาณ reveal:change จาก main.js
+   เลื่อนเข้ามา = พิมพ์ใหม่, เลื่อนพ้น = รีเซ็ต
+============================================================ */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const scenes = document.querySelectorAll(".is-typewriter");
+
+  if (!scenes.length) {
+    return;
+  }
+
+  /* ms ต่อหนึ่งตัวอักษร */
+  const TYPE_SPEED = 26;
+
+  /* รอโบว์กับสายริบบิ้นลงมาให้จบก่อนค่อยเริ่มพิมพ์ */
+  const TYPE_START_DELAY = 900;
+
+  const noMotion =
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+    !("IntersectionObserver" in window);
+
+
+  scenes.forEach((scene) => {
+
+    const target = scene.querySelector(".quote-en");
+
+    if (!target) {
+      return;
+    }
+
+    /* ไม่มีอนิเมชัน → ปล่อยข้อความไว้อย่างเดิม แล้วเปิดส่วนที่เหลือเลย */
+    if (noMotion) {
+      scene.classList.add("is-typed");
+      return;
+    }
+
+
+    const text = target.textContent.replace(/\s+/g, " ").trim();
+
+    if (!text) {
+      return;
+    }
+
+
+    /* ---- สร้างตัวอักษร ----
+       ห่อเป็นคำ (.tw-w, nowrap) เพื่อไม่ให้ตัดกลางคำตอนขึ้นบรรทัดใหม่
+       ช่องว่างระหว่างคำอยู่นอกห่อ เพื่อให้ยังตัดบรรทัดตรงช่องว่างได้ */
+
+    const words = text.split(" ");
+    const chars = [];
+
+    target.textContent = "";
+
+    words.forEach((word, wi) => {
+
+      const wrap = document.createElement("span");
+      wrap.className = "tw-w";
+
+      Array.from(word).forEach((ch) => {
+        const s = document.createElement("span");
+        s.className = "tw-c";
+        s.textContent = ch;
+        wrap.appendChild(s);
+        chars.push(s);
+      });
+
+      target.appendChild(wrap);
+
+      if (wi < words.length - 1) {
+        const sp = document.createElement("span");
+        sp.className = "tw-c";
+        sp.textContent = " ";
+        target.appendChild(sp);
+        chars.push(sp);
+      }
+
+    });
+
+
+    const caret = document.createElement("span");
+    caret.className = "tw-caret";
+    target.appendChild(caret);
+
+
+    let rafId = null;
+    let startTimer = null;
+    let startedAt = 0;
+    let typed = 0;
+
+
+    function reset() {
+
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+
+      if (startTimer) {
+        clearTimeout(startTimer);
+        startTimer = null;
+      }
+
+      typed = 0;
+      scene.classList.remove("is-typed");
+
+      chars.forEach((c) => c.classList.remove("on"));
+
+      /* พักหัวพิมพ์ไว้หน้าตัวแรก */
+      if (chars[0]) {
+        chars[0].before(caret);
+      }
+
+    }
+
+
+    function step(now) {
+
+      const want = Math.min(
+        chars.length,
+        Math.floor((now - startedAt) / TYPE_SPEED)
+      );
+
+      while (typed < want) {
+        chars[typed].classList.add("on");
+        typed += 1;
+      }
+
+      if (typed > 0) {
+        chars[typed - 1].after(caret);
+      }
+
+      if (typed >= chars.length) {
+        rafId = null;
+        scene.classList.add("is-typed");
+        return;
+      }
+
+      rafId = requestAnimationFrame(step);
+
+    }
+
+
+    function play() {
+
+      reset();
+
+      startTimer = setTimeout(() => {
+
+        startTimer = null;
+
+        /* เลื่อนพ้นไปแล้วระหว่างรอ → ไม่ต้องพิมพ์ */
+        if (!scene.classList.contains("in-view")) {
+          return;
+        }
+
+        startedAt = performance.now();
+        rafId = requestAnimationFrame(step);
+
+      }, TYPE_START_DELAY);
+
+    }
+
+
+    reset();
+
+    scene.addEventListener("reveal:change", (e) => {
+
+      if (e.detail && e.detail.inView) {
+        play();
+      } else {
+        reset();
+      }
+
+    });
+
+    /* เผื่อกรณีที่ฉากอยู่ในจอตั้งแต่แรก */
+    if (scene.classList.contains("in-view")) {
+      play();
+    }
+
+  });
+
+});
+
+/* ============================================================
+   HERO MONOGRAM — วัดความยาวเส้นทางปลายปากกา
+
+   ค่า stroke-dasharray/​dashoffset ต้องเท่ากับความยาวจริงของเส้นโค้ง
+   ถ้าฝังตัวเลขไว้ใน CSS แล้ววันหลังมีคนแก้ path เส้นจะเปิดไม่หมด
+   จึงวัดด้วย getTotalLength() ตอนโหลด แล้วส่งเข้า custom property
+============================================================ */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const strokes = document.querySelectorAll(".pen-stroke");
+
+  strokes.forEach((p) => {
+
+    let len = 0;
+
+    try {
+      len = p.getTotalLength();
+    } catch (e) {
+      /* browser เก่าวัดไม่ได้ → ปล่อยให้ค่าสำรองใน CSS ทำงาน */
+      return;
+    }
+
+    if (len > 0) {
+      p.style.setProperty("--len", String(Math.ceil(len)));
+    }
+
+  });
+
+});

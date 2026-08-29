@@ -443,19 +443,8 @@ a {
     color:rgba(111,127,93,.58);
 }
 
-/* animation */
-.blessing.observe .reveal {
-  opacity: 0;
-  transform: translateY(14px);
-  animation: blessingFadeUp 0.9s ease forwards;
-}
-
-@keyframes blessingFadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* จังหวะการเผยของ blessing ย้ายไปอยู่ในบล็อก SECTION CHOREOGRAPHY
+   ท้ายไฟล์ — ของเดิมเล่นทันทีที่โหลดหน้า ไม่ได้รอให้เลื่อนมาถึง */
 
 /* Tablet */
 @media (max-width: 900px) {
@@ -2117,8 +2106,8 @@ a {
   display: block;
 }
 
-#details > .ceremony-card,
-#details > .location-card {
+.details-panel > .ceremony-card,
+.details-panel > .location-card {
   width: 100%;
   max-width: none;
   margin-left: 0;
@@ -2126,8 +2115,8 @@ a {
   box-sizing: border-box;
 }
 
-#details > .location-card {
-  margin-top: 20px;
+.details-panel > .location-card {
+  margin-top: 0;
 }
 
 #details > .countdown-banner {
@@ -2142,14 +2131,7 @@ a {
 @media (min-width: 768px) {
 
   #details.details-wrap {
-    display: grid !important;
-    grid-template-columns:
-      minmax(0, 1fr)
-      minmax(0, 1fr);
-
-    gap: 28px;
-    /* stretch = การ์ด Ceremony กับ Location สูงเท่ากันเสมอ */
-    align-items: stretch;
+    display: block;
 
     width: min(1180px, calc(100% - 40px)) !important;
     max-width: 1180px !important;
@@ -2162,23 +2144,24 @@ a {
   }
 
 
-  /* Countdown เต็มความกว้างด้านบนสุด */
+  /* Ceremony ซ้าย / Location ขวา / Dress Code เต็มแถวล่าง
+     ทั้งหมดอยู่ในแผงเดียว จึงไม่มี gap มาคั่นให้ดูเป็นคนละก้อน */
 
-  #details > .countdown-banner {
+  .details-panel {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(0, 1fr);
+
+    /* stretch = Ceremony กับ Location สูงเท่ากันเสมอ */
+    align-items: stretch;
+  }
+
+  .details-panel > .countdown-banner {
     grid-column: 1 / -1;
   }
 
-
-  /* Dress Code เต็มความกว้างด้านล่างสุด */
-
-  #details > .dress-section {
-    grid-column: 1 / -1;
-  }
-
-
-  /* Ceremony ฝั่งซ้าย */
-
-  #details > .ceremony-card {
+  .details-panel > .ceremony-card {
     grid-column: 1;
     width: 100% !important;
     max-width: none !important;
@@ -2186,17 +2169,13 @@ a {
     height: 100%;
   }
 
-
-  /* Location ฝั่งขวา */
-
-  #details > .location-card {
+  .details-panel > .location-card {
     grid-column: 2;
     width: 100% !important;
     max-width: none !important;
     margin: 0 !important;
     height: 100%;
   }
-
 
   /* ป้องกัน card ภายในโดน CSS เก่าบังคับความกว้าง */
 
@@ -2216,8 +2195,9 @@ a {
 
 @media (min-width: 1200px) {
 
-  #details.details-wrap {
-    gap: 40px;
+  .details-panel > .ceremony-card,
+  .details-panel > .location-card {
+    padding: 40px;
   }
 
 }
@@ -2304,24 +2284,85 @@ a {
 }
 
 #main.enter .image-left {
-  animation: heroImageIn 1.3s cubic-bezier(.22, .61, .36, 1) both;
+  animation: heroImageIn 1.5s cubic-bezier(.22, .61, .36, 1) both;
 }
 
-#main.enter .hero-right > * {
-  animation: heroFadeUp .9s cubic-bezier(.22, .61, .36, 1) both;
+/* ลำดับการอ่าน: ชื่องาน → ชื่อคู่ → เส้นคั่น → คำเชิญ → ลูกศร → Scroll
+   แต่ละบรรทัดใช้ท่าที่ต่างกัน ไม่ใช่จางขึ้นเหมือนกันหมด
+   เพื่อให้ชื่อคู่บ่าวสาวเป็นจุดที่สายตาหยุดจริง ๆ */
+
+#main.enter .script-title {
+  animation: heroTrackIn 1.1s cubic-bezier(.22, .61, .36, 1) 1.2s both;
 }
 
-/* ไล่จังหวะทีละบรรทัด: ชื่องาน → ชื่อคู่ → เส้น → คำเชิญ → ลูกศร */
-#main.enter .hero-right > *:nth-child(1) { animation-delay: .35s; }
-#main.enter .hero-right > *:nth-child(2) { animation-delay: .55s; }
-#main.enter .hero-right > *:nth-child(3) { animation-delay: .75s; }
-#main.enter .hero-right > *:nth-child(4) { animation-delay: .9s; }
-#main.enter .hero-right > *:nth-child(5) { animation-delay: 1.05s; }
-#main.enter .hero-right > *:nth-child(6) { animation-delay: 1.2s; }
+#main.enter .hero-right h1 {
+  animation: heroNameIn 1.5s cubic-bezier(.22, .61, .36, 1) 1.45s both;
+}
+
+#main.enter .hero-line {
+  animation: heroLineGrow 1s cubic-bezier(.22, .61, .36, 1) 2.1s both;
+}
+
+#main.enter .hero-desc {
+  animation: heroFadeUp 1s cubic-bezier(.22, .61, .36, 1) 2.35s both;
+}
+
+#main.enter .scroll-down,
+#main.enter .scroll-hint {
+  animation: heroFadeUp .9s cubic-bezier(.22, .61, .36, 1) 2.6s both;
+}
+
+/* ชื่องาน: ตัวอักษรค่อย ๆ บีบเข้าที่ ให้ความรู้สึกเหมือนวางตัวลงบนกระดาษ */
+@keyframes heroTrackIn {
+  from {
+    opacity: 0;
+    letter-spacing: .5em;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    letter-spacing: inherit;
+    transform: none;
+  }
+}
+
+/* ชื่อคู่บ่าวสาว: ลอยขึ้นพร้อมคลายความเบลอ — ท่าที่หนักแน่นกว่าบรรทัดอื่น */
+@keyframes heroNameIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(9px);
+  }
+  60% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+/* เส้นคั่น: ลากออกจากกึ่งกลาง */
+@keyframes heroLineGrow {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   #main.enter .image-left,
-  #main.enter .hero-right > * {
+  #main.enter .script-title,
+  #main.enter .hero-right h1,
+  #main.enter .hero-line,
+  #main.enter .hero-desc,
+  #main.enter .scroll-down,
+  #main.enter .scroll-hint {
     animation: none;
   }
 }
@@ -2575,5 +2616,1288 @@ a {
   }
 
   .story-spark { display: none; }
+
+}
+
+
+/* =========================================================
+   SECTION CHOREOGRAPHY
+
+   ทุกฉากในหน้าแรกใช้ไวยากรณ์การเคลื่อนไหวชุดเดียวกัน
+   เพื่อให้การเลื่อนอ่านทั้งหน้ารู้สึกเป็นเรื่องเดียวกัน
+
+     • easing เดียวกันทั้งหมด  cubic-bezier(.22,.61,.36,1)
+     • ระยะขยับ 18–26px  ไม่กระโดด
+     • ของในกลุ่มเดียวกันไล่กันทีละ 90–110ms
+     • เส้นคั่นทุกเส้นลากออกจากกึ่งกลาง ไม่ใช่จางขึ้น
+
+   ทุกฉากทำงานด้วย .in-view ที่ main.js ใส่ให้ตอนเลื่อนถึง
+   และถอดออกเมื่อเลื่อนพ้น → เลื่อนกลับมาได้ดูใหม่ทุกครั้ง
+========================================================= */
+
+:root {
+  --ease-scene: cubic-bezier(.22, .61, .36, 1);
+}
+
+
+/* ---------------------------------------------------------
+   ท่ามาตรฐานที่ใช้ซ้ำทั้งไฟล์
+--------------------------------------------------------- */
+
+@keyframes sceneRise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes sceneFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ของเล็ก ๆ ที่ควรมี "น้ำหนัก" ตอนลง เช่น หัวใจ ไอคอน */
+@keyframes sceneDrop {
+  from {
+    opacity: 0;
+    transform: translateY(-14px) scale(.86);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(2px) scale(1.03);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes sceneGrowX {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+
+/* =========================================================
+   ฉาก 2 / 4 / 8 — BLESSING
+
+   ลำดับ: โบว์ลงมา → สายริบบิ้นไหลลง → ประโยคอังกฤษ
+          → คำแปลไทย → ที่มาของข้อความ
+========================================================= */
+
+.blessing:not(.in-view) .wrap.thread svg,
+.blessing:not(.in-view) .quote-en,
+.blessing:not(.in-view) .quote-th,
+.blessing:not(.in-view) .quote-text,
+.blessing:not(.in-view) .caption,
+.blessing:not(.in-view) .gallery-leaf {
+  opacity: 0;
+}
+
+.blessing:not(.in-view) .wrap.thread .line {
+  transform: translateX(-50%) scaleY(0);
+}
+
+/* โบว์ / ใบไม้ ที่เป็นหัวฉาก */
+.blessing.in-view .wrap.thread svg,
+.blessing.in-view .gallery-leaf {
+  animation: sceneDrop .9s var(--ease-scene) both;
+}
+
+/* สายริบบิ้นไหลลงจากโบว์ */
+.blessing.in-view .wrap.thread .line {
+  transform-origin: 50% 0;
+  animation: threadDrop .8s var(--ease-scene) .35s both;
+}
+
+@keyframes threadDrop {
+  from { transform: translateX(-50%) scaleY(0); }
+  to   { transform: translateX(-50%) scaleY(1); }
+}
+
+.blessing.in-view .quote-en,
+.blessing.in-view .quote-text {
+  animation: sceneRise 1.1s var(--ease-scene) .75s both;
+}
+
+.blessing.in-view .quote-th {
+  animation: sceneRise 1s var(--ease-scene) 1.15s both;
+}
+
+.blessing.in-view .caption {
+  animation: sceneFade 1s ease 1.5s both;
+}
+
+
+/* ---------------------------------------------------------
+   ฉากที่กินพื้นที่เต็มจอ
+
+   ให้แต่ละฉากได้เล่นจนจบก่อนที่ฉากถัดไปจะโผล่ขึ้นมา
+   ใช้ svh เพื่อไม่ให้แถบ URL บนมือถือดันเนื้อหาล้น
+--------------------------------------------------------- */
+
+.blessing.is-fullscreen {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: clamp(60px, 9vh, 110px);
+  padding-bottom: clamp(60px, 9vh, 110px);
+}
+
+.blessing.is-fullscreen .wrap.thread {
+  flex: 0 0 auto;
+}
+
+
+/* =========================================================
+   ฉาก 2 — พิมพ์ดีด
+
+   home.js ตัดข้อความอังกฤษเป็นตัวอักษรทีละตัว (.tw-c)
+   แล้วไล่ใส่ .on ทีละตัว โดยตัวอักษรถูกจัดหน้าไว้ครบตั้งแต่แรก
+   → ข้อความไม่ขยับ ไม่มี layout shift ระหว่างพิมพ์
+
+   คำแปลไทยกับที่มา รอจนพิมพ์จบ (.is-typed) ค่อยขึ้น
+========================================================= */
+
+.is-typewriter .quote-en .tw-w {
+  /* กันไม่ให้คำถูกตัดกลางคำตอนขึ้นบรรทัดใหม่ */
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.is-typewriter .quote-en .tw-c {
+  opacity: 0;
+}
+
+.is-typewriter .quote-en .tw-c.on {
+  opacity: 1;
+}
+
+/* หัวพิมพ์ */
+.is-typewriter .tw-caret {
+  display: inline-block;
+  width: 2px;
+  height: .95em;
+  margin-left: .04em;
+  vertical-align: -.12em;
+  background: currentColor;
+  opacity: .75;
+  animation: caretBlink 1s steps(1, end) infinite;
+}
+
+@keyframes caretBlink {
+  0%, 49%   { opacity: .75; }
+  50%, 100% { opacity: 0; }
+}
+
+/* พิมพ์จบแล้วเก็บหัวพิมพ์ */
+.is-typewriter.is-typed .tw-caret {
+  opacity: 0;
+  animation: none;
+}
+
+/* ระหว่างที่ยังพิมพ์อยู่ ให้ข้างล่างเงียบไว้ก่อน */
+.is-typewriter.in-view .quote-en {
+  animation: sceneFade .5s ease .55s both;
+}
+
+.is-typewriter:not(.is-typed) .quote-th,
+.is-typewriter:not(.is-typed) .caption {
+  opacity: 0;
+  animation: none;
+}
+
+.is-typewriter.is-typed .quote-th {
+  animation: sceneRise 1s var(--ease-scene) .1s both;
+}
+
+.is-typewriter.is-typed .caption {
+  animation: sceneFade .9s ease .5s both;
+}
+
+
+/* =========================================================
+   ฉาก 4 — "สร้างมาเป็นคู่ ๆ"
+
+   อินโฟกราฟิกเดินเข้าหากัน:
+     1.4s  ทั้งคู่ปรากฏที่ขอบสองข้าง แล้วเดินเข้ามา (ขาสลับ 3 ก้าว)
+     3.3s  ถึงกลางจอ ขยับชิดกันอีกนิด
+     3.5s  แขนด้านในโอบกอด ตัวเอียงเข้าหากันเล็กน้อย
+     4.2s  หัวใจผุดขึ้นเหนือศีรษะ
+========================================================= */
+
+.pair-scene {
+  width: min(360px, 80%);
+  margin: clamp(26px, 4vh, 46px) auto 0;
+  color: var(--olive);
+}
+
+.pair-scene svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  /* ตัดขอบ เพื่อให้ทั้งคู่ "เดินเข้ามา" จากนอกเฟรมจริง ๆ */
+  overflow: hidden;
+}
+
+/* ทุกส่วนที่ขยับ อ้างอิงกรอบของตัวเอง เพื่อให้หมุนที่ข้อต่อได้ตรงจุด */
+.pair-figure,
+.fig-leg,
+.fig-arm,
+.fig-body {
+  transform-box: fill-box;
+}
+
+.fig-leg,
+.fig-arm {
+  transform-box: fill-box;
+}
+
+/* ข้อต่อ: สะโพกและหัวไหล่ อยู่ที่มุมบนของกรอบเส้นนั้น ๆ
+   ด้านไหนขึ้นกับว่าเส้นลากไปทางซ้ายหรือขวา */
+.him-leg-back  { transform-origin: 100% 0%; }
+.him-leg-front { transform-origin: 0% 0%; }
+.her-leg-back  { transform-origin: 0% 0%; }
+.her-leg-front { transform-origin: 100% 0%; }
+.him-arm-near  { transform-origin: 0% 0%; }
+.him-arm-far   { transform-origin: 100% 0%; }
+.her-arm-near  { transform-origin: 100% 0%; }
+.her-arm-far   { transform-origin: 0% 0%; }
+
+/* เป้สะพายหลังเคลื่อนไปพร้อมลำตัว ไม่ต้องขยับเอง */
+.fig-pack {
+  fill: none;
+}
+
+/* เอียงตัวตอนกอด ให้หมุนที่ปลายเท้า ไม่ใช่กลางลำตัว */
+.pair-him,
+.pair-her {
+  transform-origin: 50% 100%;
+}
+
+/* สถานะพัก — ยังไม่เลื่อนมาถึง */
+.is-pairs:not(.in-view) .pair-figure,
+.is-pairs:not(.in-view) .pair-heart,
+.is-pairs:not(.in-view) .pair-ground {
+  opacity: 0;
+}
+
+/* เส้นพื้นลากออกจากกึ่งกลาง */
+.is-pairs.in-view .pair-ground {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation:
+    sceneFade .6s ease 1.2s both,
+    sceneGrowX 1.1s var(--ease-scene) 1.2s both;
+}
+
+/* เดินเข้ามาแล้วขยับชิดกันตอนกอด */
+.is-pairs.in-view .pair-him {
+  animation: pairWalkHim 3.1s var(--ease-scene) 1.4s both;
+}
+
+.is-pairs.in-view .pair-her {
+  animation: pairWalkHer 3.1s var(--ease-scene) 1.4s both;
+}
+
+/* หมายเหตุระยะ: การเอียงตัวหมุนที่ปลายเท้า หัวจึงขยับข้างเพิ่มอีก
+   ราว 5 หน่วยต่อการเอียง 2.5 องศา — ระยะเข้าหากันตอนท้ายเผื่อไว้แล้ว
+   ถ้าเพิ่มมากกว่านี้หัวทั้งสองจะทับกัน */
+@keyframes pairWalkHim {
+  0%   { opacity: 0; transform: translateX(-96px); }
+  10%  { opacity: 1; }
+  62%  { opacity: 1; transform: translateX(-6px); }
+  100% { opacity: 1; transform: translateX(5px) rotate(2.5deg); }
+}
+
+@keyframes pairWalkHer {
+  0%   { opacity: 0; transform: translateX(96px); }
+  10%  { opacity: 1; }
+  62%  { opacity: 1; transform: translateX(6px); }
+  100% { opacity: 1; transform: translateX(-5px) rotate(-2.5deg); }
+}
+
+/* ขาสลับ 3 ก้าว แล้วหยุดตรงท่ายืน (คีย์เฟรมเริ่มและจบที่ 0 องศา) */
+.is-pairs.in-view .him-leg-front,
+.is-pairs.in-view .her-leg-front {
+  animation: legStrideFront .62s ease-in-out 1.45s 3 both;
+}
+
+.is-pairs.in-view .him-leg-back,
+.is-pairs.in-view .her-leg-back {
+  animation: legStrideBack .62s ease-in-out 1.45s 3 both;
+}
+
+@keyframes legStrideFront {
+  0%   { transform: rotate(0deg); }
+  25%  { transform: rotate(-15deg); }
+  50%  { transform: rotate(0deg); }
+  75%  { transform: rotate(15deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes legStrideBack {
+  0%   { transform: rotate(0deg); }
+  25%  { transform: rotate(15deg); }
+  50%  { transform: rotate(0deg); }
+  75%  { transform: rotate(-15deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* แขนด้านนอกแกว่งสวนทางกับขาข้างเดียวกัน */
+.is-pairs.in-view .him-arm-far,
+.is-pairs.in-view .her-arm-far {
+  animation: armSwing .62s ease-in-out 1.45s 3 both;
+}
+
+@keyframes armSwing {
+  0%   { transform: rotate(0deg); }
+  25%  { transform: rotate(11deg); }
+  50%  { transform: rotate(0deg); }
+  75%  { transform: rotate(-11deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* ตัวโยกเบา ๆ ตามจังหวะก้าว */
+.is-pairs.in-view .pair-figure .fig-body {
+  animation: pairBob .31s ease-in-out 1.45s 6 both;
+}
+
+@keyframes pairBob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2.2px); }
+}
+
+/* แขนด้านใน: แกว่งตามจังหวะเดินก่อน แล้วจึงยกขึ้นโอบกอด
+   รวมสองช่วงไว้ในคีย์เฟรมเดียว เพราะอนิเมชันสองตัวแย่ง transform กันไม่ได้
+   ไทม์ไลน์เดียวกับการเดิน (ยาว 3.1s เริ่มที่ 1.45s) */
+.is-pairs.in-view .him-arm-near {
+  animation: hugHim 3.1s ease-in-out 1.45s both;
+}
+
+.is-pairs.in-view .her-arm-near {
+  animation: hugHer 3.1s ease-in-out 1.45s both;
+}
+
+@keyframes hugHim {
+  0%   { transform: rotate(0deg); }
+  10%  { transform: rotate(-11deg); }
+  20%  { transform: rotate(11deg); }
+  30%  { transform: rotate(-11deg); }
+  40%  { transform: rotate(11deg); }
+  50%  { transform: rotate(-11deg); }
+  62%  { transform: rotate(0deg); }
+  100% { transform: rotate(-50deg); }
+}
+
+@keyframes hugHer {
+  0%   { transform: rotate(0deg); }
+  10%  { transform: rotate(11deg); }
+  20%  { transform: rotate(-11deg); }
+  30%  { transform: rotate(11deg); }
+  40%  { transform: rotate(-11deg); }
+  50%  { transform: rotate(11deg); }
+  62%  { transform: rotate(0deg); }
+  100% { transform: rotate(50deg); }
+}
+
+/* หัวใจผุดขึ้นตอนกอดติด */
+.is-pairs.in-view .pair-heart {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation:
+    pairHeartIn 1.1s var(--ease-scene) 4.25s both,
+    heartPulse 2.6s ease-in-out 5.35s infinite;
+}
+
+@keyframes pairHeartIn {
+  0%   { opacity: 0; transform: translateY(12px) scale(.3); }
+  65%  { opacity: .62; transform: translateY(-2px) scale(1.08); }
+  100% { opacity: .55; transform: none; }
+}
+
+@keyframes heartPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.09); }
+}
+
+
+/* =========================================================
+   ฉาก 5 — COUNTDOWN
+
+   ป้ายลอยขึ้นก่อน แล้วช่องตัวเลขค่อย ๆ ตกลงมาทีละช่อง
+   เหมือนป้ายบอกเวลาที่สนามบินกำลังตั้งค่า
+========================================================= */
+
+.countdown-banner:not(.in-view) {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.countdown-banner.in-view {
+  animation: sceneRise 1s var(--ease-scene) both;
+}
+
+.countdown-banner:not(.in-view) .countdown-title,
+.countdown-banner:not(.in-view) .time-box,
+.countdown-banner:not(.in-view) .separator,
+.countdown-banner:not(.in-view) .countdown-message {
+  opacity: 0;
+}
+
+.countdown-banner.in-view .countdown-title {
+  animation: sceneFade .8s ease .3s both;
+}
+
+.countdown-banner.in-view .time-box {
+  animation: boxSettle .7s var(--ease-scene) both;
+}
+
+.countdown-banner.in-view .time-box:nth-of-type(1) { animation-delay: .5s; }
+.countdown-banner.in-view .time-box:nth-of-type(2) { animation-delay: .62s; }
+.countdown-banner.in-view .time-box:nth-of-type(3) { animation-delay: .74s; }
+.countdown-banner.in-view .time-box:nth-of-type(4) { animation-delay: .86s; }
+
+@keyframes boxSettle {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.countdown-banner.in-view .separator {
+  animation: sceneFade .6s ease 1s both;
+}
+
+.countdown-banner.in-view .countdown-message {
+  animation: sceneFade .8s ease 1.1s both;
+}
+
+
+/* =========================================================
+   ฉาก 5 (ต่อ) — CEREMONY / LOCATION
+
+   สองการ์ดเข้ามาจากฝั่งของตัวเอง ตรงกับตำแหน่งที่มันไปยืน
+   บนจอแคบที่การ์ดเรียงบนล่าง ให้ลอยขึ้นตามปกติแทน
+========================================================= */
+
+.ceremony-card:not(.in-view),
+.location-card:not(.in-view) {
+  opacity: 0;
+}
+
+.ceremony-card.in-view {
+  animation: cardFromLeft 1s var(--ease-scene) .1s both;
+}
+
+.location-card.in-view {
+  animation: cardFromRight 1s var(--ease-scene) .25s both;
+}
+
+@keyframes cardFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-34px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes cardFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(34px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 900px) {
+
+  .ceremony-card.in-view,
+  .location-card.in-view {
+    animation: sceneRise .9s var(--ease-scene) both;
+  }
+
+  .location-card.in-view {
+    animation-delay: .15s;
+  }
+
+}
+
+
+/* =========================================================
+   ฉาก 6 — DRESS CODE
+
+   หัวข้อขึ้นก่อน แล้วหัวใจทั้งห้าดวงหล่นลงมาทีละดวงจากซ้ายไปขวา
+   ปิดท้ายด้วยคำเชิญชวนแต่งกาย
+========================================================= */
+
+.dress-section:not(.in-view) .section-label,
+.dress-section:not(.in-view) .dress-heading,
+.dress-section:not(.in-view) .dress-swatch,
+.dress-section:not(.in-view) .dress-note {
+  opacity: 0;
+}
+
+.dress-section.in-view .section-label {
+  animation: sceneFade .8s ease .1s both;
+}
+
+.dress-section.in-view .dress-heading {
+  animation: sceneRise .9s var(--ease-scene) .28s both;
+}
+
+.dress-section.in-view .dress-swatch {
+  animation: sceneDrop .8s var(--ease-scene) both;
+}
+
+.dress-section.in-view .dress-swatch:nth-child(1) { animation-delay: .55s; }
+.dress-section.in-view .dress-swatch:nth-child(2) { animation-delay: .65s; }
+.dress-section.in-view .dress-swatch:nth-child(3) { animation-delay: .75s; }
+.dress-section.in-view .dress-swatch:nth-child(4) { animation-delay: .85s; }
+.dress-section.in-view .dress-swatch:nth-child(5) { animation-delay: .95s; }
+
+.dress-section.in-view .dress-note {
+  animation: sceneFade .9s ease 1.15s both;
+}
+
+
+/* =========================================================
+   ฉาก 7 — GALLERY
+
+   กล้อง → ป้าย → หัวข้อ → รูป
+   รูปไล่จากภาพกลางที่เป็นภาพหลัก แล้วค่อยกระจายออกซ้ายขวา
+========================================================= */
+
+.gallery-section:not(.in-view) .gallery-camera,
+.gallery-section:not(.in-view) .section-label,
+.gallery-section:not(.in-view) h2,
+.gallery-section:not(.in-view) .gallery-item,
+.gallery-section:not(.in-view) .gallery-more {
+  opacity: 0;
+}
+
+.gallery-section.in-view .gallery-camera {
+  animation: sceneDrop .9s var(--ease-scene) both;
+}
+
+.gallery-section.in-view .section-label {
+  animation: sceneFade .8s ease .25s both;
+}
+
+.gallery-section.in-view h2 {
+  animation: sceneRise .9s var(--ease-scene) .4s both;
+}
+
+.gallery-section.in-view .gallery-item {
+  animation: photoIn 1s var(--ease-scene) both;
+}
+
+/* กลางบนคือภาพหลัก ขึ้นก่อน แล้วสองข้าง แล้วสองใบล่าง */
+.gallery-section.in-view .gallery-item.g-2 { animation-delay: .6s; }
+.gallery-section.in-view .gallery-item.g-1 { animation-delay: .72s; }
+.gallery-section.in-view .gallery-item.g-3 { animation-delay: .72s; }
+.gallery-section.in-view .gallery-item.g-4 { animation-delay: .86s; }
+.gallery-section.in-view .gallery-item.g-5 { animation-delay: .94s; }
+
+@keyframes photoIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.gallery-section.in-view .gallery-more {
+  animation: sceneRise .9s var(--ease-scene) 1.15s both;
+}
+
+
+/* =========================================================
+   ฉาก 9 — ENDING / CONTACT
+
+   ปิดท้ายแบบค่อย ๆ วาง: โลโก้ → คำขอบคุณ → เส้นคั่นลากออกจากกลาง
+   → การ์ดติดต่อทีละใบ → เครดิต
+========================================================= */
+
+.final-ending:not(.in-view) .brand-logo,
+.final-ending:not(.in-view) .ending-title,
+.final-ending:not(.in-view) .ending-sub,
+.final-ending:not(.in-view) .ending-divider .heart,
+.final-ending:not(.in-view) .footer-label,
+.final-ending:not(.in-view) .contact-row,
+.final-ending:not(.in-view) .ending-credit,
+.final-ending:not(.in-view) .website-credit {
+  opacity: 0;
+}
+
+.final-ending:not(.in-view) .ending-divider .line {
+  transform: scaleX(0);
+}
+
+.final-ending.in-view .brand-logo {
+  animation: logoIn 1.1s var(--ease-scene) both;
+}
+
+@keyframes logoIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(.9);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.final-ending.in-view .ending-title {
+  animation: sceneRise 1s var(--ease-scene) .25s both;
+}
+
+.final-ending.in-view .ending-sub {
+  animation: sceneFade .9s ease .5s both;
+}
+
+.final-ending.in-view .ending-divider .line {
+  animation: sceneGrowX .9s var(--ease-scene) .7s both;
+}
+
+.final-ending.in-view .ending-divider .heart {
+  animation: sceneDrop .8s var(--ease-scene) .9s both;
+}
+
+.final-ending.in-view .footer-label {
+  animation: sceneFade .8s ease 1s both;
+}
+
+.final-ending.in-view .contact-row {
+  animation: sceneRise .9s var(--ease-scene) both;
+}
+
+.final-ending.in-view .contact-row:nth-child(1) { animation-delay: 1.15s; }
+.final-ending.in-view .contact-row:nth-child(2) { animation-delay: 1.27s; }
+.final-ending.in-view .contact-row:nth-child(3) { animation-delay: 1.39s; }
+
+.final-ending.in-view .ending-credit {
+  animation: sceneFade .9s ease 1.6s both;
+}
+
+.final-ending.in-view .website-credit {
+  animation: sceneFade .9s ease 1.75s both;
+}
+
+
+/* =========================================================
+   ปิดทุกฉากเมื่อผู้ใช้ขอลดการเคลื่อนไหว
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .blessing:not(.in-view) .wrap.thread svg,
+  .blessing:not(.in-view) .quote-en,
+  .blessing:not(.in-view) .quote-th,
+  .blessing:not(.in-view) .quote-text,
+  .blessing:not(.in-view) .caption,
+  .blessing:not(.in-view) .gallery-leaf,
+  .countdown-banner:not(.in-view),
+  .countdown-banner:not(.in-view) .countdown-title,
+  .countdown-banner:not(.in-view) .time-box,
+  .countdown-banner:not(.in-view) .separator,
+  .countdown-banner:not(.in-view) .countdown-message,
+  .ceremony-card:not(.in-view),
+  .location-card:not(.in-view),
+  .dress-section:not(.in-view) .section-label,
+  .dress-section:not(.in-view) .dress-heading,
+  .dress-section:not(.in-view) .dress-swatch,
+  .dress-section:not(.in-view) .dress-note,
+  .gallery-section:not(.in-view) .gallery-camera,
+  .gallery-section:not(.in-view) .section-label,
+  .gallery-section:not(.in-view) h2,
+  .gallery-section:not(.in-view) .gallery-item,
+  .gallery-section:not(.in-view) .gallery-more,
+  .final-ending:not(.in-view) .brand-logo,
+  .final-ending:not(.in-view) .ending-title,
+  .final-ending:not(.in-view) .ending-sub,
+  .final-ending:not(.in-view) .ending-divider .heart,
+  .final-ending:not(.in-view) .footer-label,
+  .final-ending:not(.in-view) .contact-row,
+  .final-ending:not(.in-view) .ending-credit,
+  .final-ending:not(.in-view) .website-credit,
+  .is-pairs:not(.in-view) .pair-figure,
+  .is-pairs:not(.in-view) .pair-heart,
+  .is-pairs:not(.in-view) .pair-ground,
+  .is-typewriter .quote-en .tw-c,
+  .is-typewriter:not(.is-typed) .quote-th,
+  .is-typewriter:not(.is-typed) .caption {
+    opacity: 1;
+  }
+
+  .blessing:not(.in-view) .wrap.thread .line,
+  .final-ending:not(.in-view) .ending-divider .line {
+    transform: none;
+  }
+
+  .blessing:not(.in-view) .wrap.thread .line {
+    transform: translateX(-50%);
+  }
+
+  .countdown-banner:not(.in-view) {
+    transform: none;
+  }
+
+  .is-typewriter .tw-caret {
+    display: none;
+  }
+
+  /* ฉากเต็มจอไม่จำเป็นเมื่อไม่มีอนิเมชันให้รอ */
+  .blessing.is-fullscreen {
+    min-height: 0;
+  }
+
+  .blessing *,
+  .countdown-banner,
+  .countdown-banner *,
+  .ceremony-card,
+  .location-card,
+  .dress-section *,
+  .gallery-section *,
+  .final-ending * {
+    animation: none !important;
+  }
+
+}
+
+
+/* =========================================================
+   DETAILS PANEL — Ceremony / Location / Dress Code แผงเดียว
+
+   เดิมเป็นการ์ดสามใบลอยแยกกัน ทำให้ Dress Code ดูหลุดออกไป
+   เป็นอีกส่วนหนึ่ง ตอนนี้รวมอยู่ในกรอบเดียว แล้วคั่นด้วยเส้นบาง ๆ
+   สองฝั่งยังคุมโทนต่างกันไว้เหมือนเดิม (Ceremony สว่าง / Location อุ่น)
+========================================================= */
+
+.details-panel {
+  margin-top: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  background: #fffdf8;
+  overflow: hidden;
+}
+
+/* ข้างในไม่ต้องมีกรอบ เงา หรือมุมโค้งของตัวเองอีก */
+.details-panel > .ceremony-card,
+.details-panel > .location-card,
+.details-panel .dress-section {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+}
+
+.details-panel > .location-card {
+  background: linear-gradient(180deg, #f8f2e7 0%, #f3ecdf 100%);
+}
+
+.details-panel .dress-section {
+  border-top: 1px solid var(--line);
+  background: transparent;
+  padding: 30px 0 4px;
+}
+
+/* จอกว้าง: Location อยู่ขวา คั่นด้วยเส้นตั้ง */
+@media (min-width: 768px) {
+
+  .details-panel > .location-card {
+    border-left: 1px solid var(--line);
+  }
+
+}
+
+/* จอแคบ: เรียงลงมา คั่นด้วยเส้นนอน */
+@media (max-width: 767px) {
+
+  .details-panel > .location-card {
+    border-top: 1px solid var(--line);
+  }
+
+}
+
+
+/* =========================================================
+   FOOTER CREDITS
+
+   เดิมเป็นสองบล็อกใหญ่ซ้อนกัน กินพื้นที่พอ ๆ กับเนื้อหาจริง
+   ปรับให้เป็นบรรทัดเครดิตเล็ก ๆ ปิดท้ายหน้า
+========================================================= */
+
+.footer-credits {
+  margin: 6px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 6px 26px;
+  font-size: 12.5px;
+  line-height: 1.9;
+  color: rgba(122, 98, 87, .62);
+}
+
+.footer-credits .credit-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.footer-credits .credit-key {
+  font-size: 10.5px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(122, 98, 87, .45);
+}
+
+.footer-credits a,
+.footer-credits .credit-item > span:not(.credit-key):not(.dot) {
+  color: rgba(79, 68, 63, .78);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color .25s ease, border-color .25s ease;
+}
+
+.footer-credits a:hover {
+  color: var(--olive);
+  border-color: rgba(119, 119, 71, .4);
+}
+
+.footer-credits .dot {
+  color: rgba(122, 98, 87, .3);
+}
+
+@media (max-width: 520px) {
+
+  .footer-credits {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
+
+
+/* จังหวะการเผยของบรรทัดเครดิต */
+.final-ending:not(.in-view) .footer-credits {
+  opacity: 0;
+}
+
+.final-ending.in-view .footer-credits {
+  animation: sceneFade .9s ease 1.6s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .final-ending:not(.in-view) .footer-credits {
+    opacity: 1;
+  }
+
+}
+
+
+/* =========================================================
+   DRESS CODE ในการ์ด CEREMONY
+
+   ย้ายเข้ามาอยู่ท้ายคอลัมน์ซ้าย โดย Ceremony กับ Location
+   ยังสูงเท่ากันเสมอ เพราะ .details-panel ใช้ align-items:stretch
+   และการ์ด Ceremony เป็น flex column ที่ดัน Dress Code ลงล่างสุด
+========================================================= */
+
+.details-panel > .ceremony-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.details-panel > .ceremony-card > .dress-section {
+  margin-top: auto;
+}
+
+/* อยู่ในคอลัมน์ครึ่งเดียว หัวใจจึงต้องเล็กลงและชิดกันขึ้น */
+.details-panel .dress-section .dress-row {
+  gap: clamp(6px, 1.4vw, 16px);
+}
+
+.details-panel .dress-section .dress-swatch svg {
+  width: clamp(34px, 4.2vw, 48px);
+}
+
+.details-panel .dress-section .dress-swatch figcaption {
+  font-size: clamp(10px, 1.1vw, 12px);
+}
+
+.details-panel .dress-section .dress-heading {
+  font-size: clamp(1.35rem, 2.2vw, 1.8rem);
+}
+
+.details-panel .dress-section .dress-note {
+  margin-top: 18px;
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   คำคมใต้หัวข้อแกลเลอรี
+
+   เดิมเป็นฉากเต็มหน้าจอของตัวเอง ทำให้ต้องเลื่อนผ่านอีกหนึ่งจอ
+   ตอนนี้เป็นคำโปรยสั้น ๆ ใต้ "A Glimpse of Us"
+========================================================= */
+
+.gallery-quote {
+  width: min(620px, 88%);
+  margin: 18px auto 34px;
+  text-align: center;
+  color: rgba(111, 127, 93, .82);
+}
+
+.gallery-quote .gallery-leaf {
+  display: block;
+  width: 30px;
+  margin: 0 auto 12px;
+  color: var(--olive);
+  opacity: .6;
+}
+
+.gallery-quote .gallery-leaf svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.gallery-quote-text {
+  display: block;
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1rem, 1.35vw, 1.2rem);
+  line-height: 1.75;
+  letter-spacing: .01em;
+}
+
+/* จังหวะ: ขึ้นต่อจากหัวข้อ ก่อนที่รูปจะไล่ขึ้นมา */
+.gallery-section:not(.in-view) .gallery-quote {
+  opacity: 0;
+}
+
+.gallery-section.in-view .gallery-quote {
+  animation: sceneRise .9s var(--ease-scene) .52s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .gallery-section:not(.in-view) .gallery-quote {
+    opacity: 1;
+  }
+
+}
+
+
+/* =========================================================
+   FOOTER — คำปิดท้ายซ้าย / ตารางเบอร์ติดต่อขวา
+
+   เดิมเป็นคอลัมน์เดียวกลางหน้า การ์ดเบอร์สามใบเรียงกันแนวนอน
+   ตอนนี้แบ่งเป็นสองฝั่ง: ข้อความอยู่ซ้าย เบอร์ติดต่อเป็นตารางอยู่ขวา
+   แต่ละแถวกดโทรออกได้ทันทีจากปุ่มด้านขวาสุด
+========================================================= */
+
+.final-ending .ending-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: clamp(36px, 6vw, 72px);
+  align-items: center;
+  text-align: left;
+}
+
+.ending-message .brand-logo {
+  margin: 0 0 20px;
+}
+
+.ending-message .ending-title,
+.ending-message .ending-sub {
+  text-align: left;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.final-ending .footer-contact {
+  text-align: left;
+}
+
+.final-ending .footer-label {
+  margin-bottom: 14px;
+  text-align: left;
+}
+
+
+/* ---- ตารางเบอร์ติดต่อ ---- */
+
+.footer-contact-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  max-width: none;
+  margin: 0;
+  border-top: 1px solid rgba(122, 98, 87, .16);
+}
+
+.contact-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  column-gap: clamp(10px, 1.6vw, 20px);
+  padding: 14px 2px;
+  border-bottom: 1px solid rgba(122, 98, 87, .16);
+}
+
+.contact-row .contact-name {
+  min-height: 0;
+  text-align: left;
+  display: block;
+  font-size: clamp(10px, 1.1vw, 12px);
+}
+
+.contact-row .contact-phone {
+  text-decoration: none;
+  font-variant-numeric: tabular-nums;
+  transition: color .25s ease;
+}
+
+.contact-row .contact-call {
+  margin-top: 0;
+  min-height: 36px;
+  padding: 0 16px;
+  font-size: 13px;
+}
+
+
+/* ---- จอแคบ: ข้อความอยู่บน ตารางอยู่ล่าง ---- */
+
+@media (max-width: 900px) {
+
+  .final-ending .ending-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .ending-message .brand-logo {
+    margin: 0 auto 18px;
+  }
+
+  .ending-message .ending-title,
+  .ending-message .ending-sub,
+  .final-ending .footer-label {
+    text-align: center;
+  }
+
+}
+
+/* ---- มือถือเล็ก: ชื่อกับเบอร์ซ้อนกัน ปุ่มอยู่ขวา ---- */
+
+@media (max-width: 430px) {
+
+  .contact-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: 2px;
+  }
+
+  .contact-row .contact-name {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .contact-row .contact-phone {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .contact-row .contact-call {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+}
+
+
+/* ---- ท้ายสุด: เส้นคั่นกับเครดิต เต็มความกว้าง ---- */
+
+.ending-tail {
+  max-width: 1120px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+
+/* =========================================================
+   COUNTDOWN ในแผงเดียวกัน
+
+   เดิมเป็นกล่องลอยอยู่เหนือแผง ทำให้ส่วน Details มีสองกรอบซ้อนกัน
+   ย้ายเข้ามาเป็นแถบบนสุดของแผงเดียวกัน เหลือกรอบเดียวทั้งส่วน
+========================================================= */
+
+.details-panel > .countdown-banner {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 30px 26px 28px;
+}
+
+/* กระชับระยะขอบในการ์ด ให้กรอบไม่โหว่เกินไป */
+.details-panel > .ceremony-card,
+.details-panel > .location-card {
+  padding: 30px 30px 28px;
+}
+
+.details-panel .dress-section {
+  padding: 26px 0 2px;
+}
+
+/* Location มีเนื้อหาสั้นกว่า จึงจัดให้กระจายเต็มความสูงแทนที่จะโหว่ด้านล่าง */
+.details-panel > .location-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.details-panel > .location-card .venue-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+
+/* =========================================================
+   HERO — โมโนแกรมอาหรับที่ถูกเขียนขึ้นบนการ์ดใบใหญ่
+
+   เทคนิค: เส้นทางปลายปากกาถูกวาดเป็นเส้นหนาใน <mask>
+   แล้วใช้ stroke-dashoffset ไล่เปิดทีละเส้น ตัวอักษรจริงจึงค่อย ๆ
+   โผล่ตามรอยปากกา ไม่ใช่แค่จางเข้ามาทั้งภาพ
+
+   ความยาวของแต่ละเส้น (--len) วัดด้วย getTotalLength() ใน home.js
+   เพราะค่าจริงขึ้นกับเส้นโค้ง ไม่ควรฝังตัวเลขไว้ใน CSS
+
+   จังหวะ (นับจากตอนเผยหน้าแรก):
+     0.90s  เส้นหลัก — ลากลงจากยอดมาทางซ้าย
+     1.50s  โค้งขวา — วนกลับลงมาบรรจบที่หาง
+     2.10s  เส้นกลาง — ตัวเชื่อมด้านใน
+     2.75s  จุด — ตามธรรมเนียมการเขียนอาหรับ จุดเติมทีหลังสุด
+     3.10s  หมึกเซ็ตตัว เก็บรายละเอียดที่เหลือ
+========================================================= */
+
+.hero-card {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.logo-mask {
+  mask-type: alpha;
+}
+
+.pen-stroke {
+  stroke-dasharray: var(--len, 600);
+  stroke-dashoffset: var(--len, 600);
+}
+
+.pen-settle {
+  opacity: 0;
+}
+
+#main.enter .pen-1 {
+  animation: penWrite 1s cubic-bezier(.42, 0, .4, 1) .9s forwards;
+}
+
+#main.enter .pen-2 {
+  animation: penWrite .9s cubic-bezier(.42, 0, .4, 1) 1.5s forwards;
+}
+
+#main.enter .pen-3 {
+  animation: penWrite .85s cubic-bezier(.42, 0, .4, 1) 2.1s forwards;
+}
+
+#main.enter .pen-4 {
+  animation: penWrite .45s cubic-bezier(.42, 0, .4, 1) 2.75s forwards;
+}
+
+#main.enter .pen-settle {
+  animation: inkSettle .8s ease 3.1s forwards;
+}
+
+@keyframes penWrite {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes inkSettle {
+  to { opacity: 1; }
+}
+
+/* ผู้ใช้ที่ขอลดการเคลื่อนไหว: แสดงโมโนแกรมเต็มทันที */
+@media (prefers-reduced-motion: reduce) {
+
+  .pen-settle {
+    opacity: 1;
+  }
+
+  .pen-stroke {
+    stroke-dashoffset: 0;
+  }
+
+}
+
+
+/* =========================================================
+   SCROLL RHYTHM — เลื่อนทีละฉาก
+
+   ฉากที่เป็น "การเล่าเรื่อง" และสูงพอดีหนึ่งจอ จะดูดให้หยุดตรงหัวฉาก
+   เพื่อให้แต่ละครั้งที่เลื่อนได้ดูฉากนั้นเต็ม ๆ ก่อนไปฉากถัดไป
+
+   ใช้ proximity ไม่ใช่ mandatory — ดูดเฉพาะเมื่อเลื่อนมาใกล้อยู่แล้ว
+   ผู้ใช้ที่อยากเลื่อนยาว ๆ ผ่านไปเลยยังทำได้ ไม่โดนล็อก
+
+   ส่วนที่เป็นข้อมูล (กำหนดการ / แกลเลอรี / ท้ายหน้า) ไม่ดูด
+   เพราะสูงเกินหนึ่งจอ ถ้าดูดหัวฉากจะมีเนื้อหาตกขอบล่าง
+========================================================= */
+
+@media (min-height: 620px) and (prefers-reduced-motion: no-preference) {
+
+  html {
+    scroll-snap-type: y proximity;
+  }
+
+  #home,
+  .blessing.is-fullscreen,
+  #story {
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+  }
 
 }
