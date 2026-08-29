@@ -397,7 +397,18 @@ document.addEventListener("DOMContentLoaded", () => {
         () => {
 
 
-          showMainContent(false);
+          /* ค้างเฟรมสุดท้ายไว้ครู่หนึ่ง ให้การ์ดที่เปิดออกอยู่ในสายตา
+             ก่อนจะจางเข้าหน้าแรก */
+
+          setTimeout(
+
+            () => showMainContent(false),
+
+            typeof INTRO_HOLD_MS !== "undefined"
+              ? INTRO_HOLD_MS
+              : 2000
+
+          );
 
 
         }

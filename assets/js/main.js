@@ -39,13 +39,12 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
+  /* เลื่อนถึง = เล่น, เลื่อนพ้น = รีเซ็ต
+     เลื่อนกลับขึ้นมาจึงได้ดูอนิเมชันใหม่ทุกครั้ง ไม่ใช่เล่นครั้งเดียวจบ */
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("in-view");
-          observer.unobserve(entry.target);
-        }
+        entry.target.classList.toggle("in-view", entry.isIntersecting);
       });
     },
     {
