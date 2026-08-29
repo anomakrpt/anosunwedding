@@ -306,57 +306,78 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
 
 
-      skipBtn.addEventListener(
+      /* เริ่มเปิดการ์ด — ใช้ทั้งตอนแขกกดปุ่ม และตอนครบเวลาเอง */
+      let storyBegun = false;
 
-        "click",
-
-        async () => {
+      let autoplayTimer = null;
 
 
-          skipBtn.classList.add(
-            "is-hidden"
+      async function beginStory() {
+
+        if (storyBegun) return;
+
+        storyBegun = true;
+
+
+        clearTimeout(autoplayTimer);
+
+
+        skipBtn.classList.add(
+          "is-hidden"
+        );
+
+
+        try {
+
+
+          introVideo.currentTime = 0;
+
+
+          introVideo.muted = true;
+
+
+          introVideo.playsInline = true;
+
+
+          await introVideo.play();
+
+
+
+          /* เริ่มเพลง
+             (ถ้ามาจากการนับเวลาเอง เบราว์เซอร์อาจบล็อกเสียงไว้
+              จนกว่าแขกจะแตะหน้าจอ — music.js ดักการแตะครั้งแรกไว้แล้ว) */
+
+          startMusic();
+
+
+        } catch (error) {
+
+
+          console.log(
+            "Video play failed:",
+            error
           );
 
 
-          try {
+          storyBegun = false;
 
 
-            introVideo.currentTime = 0;
-
-
-            introVideo.muted = true;
-
-
-            introVideo.playsInline = true;
-
-
-            await introVideo.play();
-
-
-
-            /* เริ่มเพลง */
-
-            startMusic();
-
-
-          } catch (error) {
-
-
-            console.log(
-              "Video play failed:",
-              error
-            );
-
-
-            skipBtn.classList.remove(
-              "is-hidden"
-            );
-
-          }
+          skipBtn.classList.remove(
+            "is-hidden"
+          );
 
         }
 
-      );
+      }
+
+
+      skipBtn.addEventListener("click", beginStory);
+
+
+      /* ไม่ได้กดอะไรใน 5 วินาที ให้เปิดการ์ดเอง
+         (วิดีโอปิดเสียงอยู่ เบราว์เซอร์จึงยอมให้เล่นเองได้) */
+
+      autoplayTimer = setTimeout(beginStory, INTRO_AUTOPLAY_MS);
 
     }
 

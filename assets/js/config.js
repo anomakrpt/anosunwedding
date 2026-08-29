@@ -6,6 +6,9 @@
 const VIDEO_ID = "yIlKu9q_zJ4";
 const START_SECONDS = 95;   /* 1:35 */
 
+/* หน้าแรก: ถ้าแขกไม่กด "Enter Our Story" ภายในกี่มิลลิวินาที ให้เปิดการ์ดเอง */
+const INTRO_AUTOPLAY_MS = 5000;
+
 /* วันเวลางาน (เวลาไทย) — ใช้กับ countdown */
 const WEDDING_DATE = "2027-01-17T10:00:00+07:00";
 

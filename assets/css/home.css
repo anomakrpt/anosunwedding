@@ -2407,3 +2407,173 @@ a {
 @media (prefers-reduced-motion: reduce) {
   .sound-btn { transition: none; }
 }
+
+
+/* =========================================================
+   STORY — เล่าเรื่อง "สองแสงไฟที่เดินมาพบกัน"
+
+   ลำดับการเล่าเมื่อเลื่อนถึง:
+     1. ภูเขาค่อย ๆ สว่างขึ้นและซูมออกช้า ๆ  (สถานที่)
+     2. ป้าย "Where our story began" ลอยขึ้น   (ที่นี่คือจุดเริ่ม)
+     3. ประโยค "Once upon a time..."           (เวลา)
+     4. เขาเดินเข้ามาจากซ้าย เธอเข้ามาจากขวา   (คนสองคน)
+     5. แสงตะเกียงบรรจบกันตรงกลาง              (ได้พบกัน)
+
+   คุมด้วย .in-view ที่ main.js ใส่ให้ตอนเลื่อนถึง
+========================================================= */
+
+.story-scene .placeholder-photo,
+.story-scene .image-caption,
+.story-scene h2,
+.story-scene .story-him,
+.story-scene .story-her,
+.story-scene .story-spark {
+  will-change: transform, opacity;
+}
+
+/* ---------- ยังไม่ถึงคิว: ซ่อนไว้ก่อน ---------- */
+
+.story-scene:not(.in-view) .image-caption,
+.story-scene:not(.in-view) h2,
+.story-scene:not(.in-view) .story-him,
+.story-scene:not(.in-view) .story-her {
+  opacity: 0;
+}
+
+.story-scene:not(.in-view) .story-spark {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.2);
+}
+
+
+/* ---------- 1) สถานที่: ภูเขาสว่างขึ้นและซูมออก ---------- */
+
+.story-scene.in-view .placeholder-photo {
+  animation: storyPlace 3.4s cubic-bezier(.22, .61, .36, 1) both;
+}
+
+@keyframes storyPlace {
+  from {
+    transform: scale(1.12);
+    filter: brightness(.62) saturate(.85);
+  }
+  to {
+    transform: scale(1);
+    filter: brightness(1) saturate(1);
+  }
+}
+
+
+/* ---------- 2) ป้ายบอกสถานที่ ---------- */
+
+.story-scene.in-view .image-caption {
+  animation: storyRise 1s cubic-bezier(.22, .61, .36, 1) .7s both;
+}
+
+
+/* ---------- 3) ประโยคเปิดเรื่อง ---------- */
+
+.story-scene.in-view h2 {
+  animation: storyRise 1s cubic-bezier(.22, .61, .36, 1) 1.1s both;
+}
+
+@keyframes storyRise {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
+
+/* ---------- 4) เขาและเธอเดินเข้าหากัน ---------- */
+
+.story-gallery {
+  position: relative;
+}
+
+.story-scene.in-view .story-him {
+  animation: walkFromLeft 1.5s cubic-bezier(.22, .61, .36, 1) 1.6s both;
+}
+
+.story-scene.in-view .story-her {
+  animation: walkFromRight 1.5s cubic-bezier(.22, .61, .36, 1) 1.75s both;
+}
+
+@keyframes walkFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-46px) scale(.94) rotate(-2.2deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes walkFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(46px) scale(.94) rotate(2.2deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+/* ---------- 5) แสงตะเกียงบรรจบกัน ---------- */
+
+.story-spark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: clamp(90px, 16vw, 150px);
+  height: clamp(90px, 16vw, 150px);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 214, 138, .85) 0%,
+      rgba(255, 198, 112, .38) 38%,
+      rgba(255, 190, 100, 0) 70%
+    );
+  transform: translate(-50%, -50%) scale(.2);
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+
+.story-scene.in-view .story-spark {
+  animation: sparkMeet 2.6s cubic-bezier(.22, .61, .36, 1) 2.7s both;
+}
+
+@keyframes sparkMeet {
+  0%   { opacity: 0;   transform: translate(-50%, -50%) scale(.2); }
+  35%  { opacity: 1;   transform: translate(-50%, -50%) scale(1.08); }
+  70%  { opacity: .55; transform: translate(-50%, -50%) scale(.92); }
+  100% { opacity: .34; transform: translate(-50%, -50%) scale(1); }
+}
+
+
+/* ผู้ใช้ที่ปิดอนิเมชัน: ให้เห็นภาพนิ่งครบทุกชิ้น */
+@media (prefers-reduced-motion: reduce) {
+
+  .story-scene:not(.in-view) .image-caption,
+  .story-scene:not(.in-view) h2,
+  .story-scene:not(.in-view) .story-him,
+  .story-scene:not(.in-view) .story-her {
+    opacity: 1;
+  }
+
+  .story-scene.in-view .placeholder-photo,
+  .story-scene.in-view .image-caption,
+  .story-scene.in-view h2,
+  .story-scene.in-view .story-him,
+  .story-scene.in-view .story-her,
+  .story-scene.in-view .story-spark {
+    animation: none;
+  }
+
+  .story-spark { display: none; }
+
+}

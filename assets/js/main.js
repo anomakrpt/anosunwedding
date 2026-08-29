@@ -10,7 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const REVEAL_TARGETS = [
     ".section",
     ".blessing",
-    ".split-section",
+    ".split-section:not(.story-scene)",
+    ".story-scene",
     ".details-wrap > *",
     ".gallery-item",
     ".final-ending",
@@ -56,6 +57,14 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   items.forEach((el, i) => {
+
+    /* ฉาก Story มีลำดับการเล่าของตัวเองใน home.css
+       ให้ใส่แค่ .in-view ไม่ต้องใส่ .reveal ที่จางทั้งบล็อก */
+    if (el.classList.contains("story-scene")) {
+      observer.observe(el);
+      return;
+    }
+
     el.classList.add("reveal");
     /* ไล่จังหวะเล็กน้อยให้ item ที่อยู่ติดกัน */
     el.style.setProperty("--reveal-delay", `${(i % 4) * 90}ms`);
