@@ -287,3 +287,31 @@
   outline-offset: -4px;
   border-radius: 12px;
 }
+
+/* =========================================================
+   SCROLL REVEAL — ทำงานคู่กับ assets/js/main.js
+   (.reveal ถูกเติมโดย JS เท่านั้น — ถ้า JS ไม่โหลด เนื้อหาแสดงปกติ)
+========================================================= */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity .8s ease var(--reveal-delay, 0ms),
+    transform .8s cubic-bezier(.22, .61, .36, 1) var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.reveal.in-view {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

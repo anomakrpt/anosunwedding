@@ -1107,3 +1107,34 @@ img {
     scroll-behavior: auto !important;
   }
 }
+
+
+/* =========================================================
+   AMBIENT MOTION — แกลเลอรี
+========================================================= */
+
+/* สไลด์หลัก: ภาพขยับซูมช้า ๆ ระหว่างชม */
+.main-slide img {
+  animation: gallerySlowZoom 16s ease-in-out infinite alternate;
+}
+
+@keyframes gallerySlowZoom {
+  from { transform: scale(1); }
+  to   { transform: scale(1.035); }
+}
+
+/* thumbnail ยกตัวเมื่อชี้ */
+.thumbnail {
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+
+@media (hover: hover) {
+  .thumbnail:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(85, 76, 54, .18);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main-slide img { animation: none; }
+}

@@ -585,3 +585,22 @@
         scroll-behavior:auto!important;
       }
     }
+
+
+/* =========================================================
+   AMBIENT MOTION — หน้าคำอวยพร
+========================================================= */
+
+/* ไอคอนซองจดหมายลอยเบา ๆ */
+.wish-icon {
+  animation: wishFloat 4.5s ease-in-out infinite;
+}
+
+@keyframes wishFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wish-icon { animation: none; }
+}
