@@ -644,63 +644,128 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  if (fullscreenBtn && treeStage) {
+  /* โหมดเต็มจอแบบจำลอง — ใช้เมื่อเบราว์เซอร์ไม่รองรับ Fullscreen API
+     (สำคัญ: iOS Safari เรียก requestFullscreen กับ element ทั่วไปไม่ได้
+     ซึ่งเป็นกรณีที่จะเจอถ้าฉายจาก iPad/iPhone ในงาน) */
+  let pseudoFullscreen = false;
 
-    /* เบราว์เซอร์เก่าที่ไม่รองรับ ให้ซ่อนปุ่มไปเลย */
-    if (!treeStage.requestFullscreen) {
 
-      fullscreenBtn.hidden = true;
+  function setFullscreenUi(on) {
 
-    } else {
+    if (!fullscreenBtn) return;
 
-      fullscreenBtn.addEventListener("click", () => {
+    const label =
+      fullscreenBtn.querySelector(".tree-fs-label");
 
-        if (isFullscreen()) {
+    if (label) {
 
-          document.exitFullscreen();
-
-        } else {
-
-          treeStage.requestFullscreen().catch((err) => {
-
-            console.error("Fullscreen failed:", err);
-
-          });
-
-        }
-
-      });
+      label.textContent = on ? "ออกจากเต็มจอ" : "เต็มจอ";
 
     }
 
 
-    document.addEventListener("fullscreenchange", () => {
+    stopFullscreenPoll();
 
-      const on = isFullscreen();
+    if (on) {
+
+      fullscreenPollTimer = setInterval(
+        () => { loadWishes(); },
+        FULLSCREEN_POLL_MS
+      );
+
+    }
 
 
-      const label =
-        fullscreenBtn.querySelector(".tree-fs-label");
+    /* ขนาดเวทีเปลี่ยน — วาดหัวใจใหม่ให้พอดี */
+    renderWishPage();
 
-      if (label) {
+  }
 
-        label.textContent = on ? "ออกจากเต็มจอ" : "เต็มจอ";
+
+  function enterPseudoFullscreen() {
+
+    pseudoFullscreen = true;
+
+    document.body.classList.add("wish-fs-lock");
+
+    treeStage.classList.add("is-pseudo-fullscreen");
+
+    setFullscreenUi(true);
+
+  }
+
+
+  function exitPseudoFullscreen() {
+
+    pseudoFullscreen = false;
+
+    document.body.classList.remove("wish-fs-lock");
+
+    treeStage.classList.remove("is-pseudo-fullscreen");
+
+    setFullscreenUi(false);
+
+  }
+
+
+  if (fullscreenBtn && treeStage) {
+
+
+    fullscreenBtn.addEventListener("click", () => {
+
+
+      /* กำลังเต็มจออยู่ → ออก */
+      if (isFullscreen()) {
+
+        document.exitFullscreen();
+
+        return;
+
+      }
+
+      if (pseudoFullscreen) {
+
+        exitPseudoFullscreen();
+
+        return;
 
       }
 
 
-      /* จัดตำแหน่งใหม่ให้พอดีกับขนาดจอที่เปลี่ยนไป */
-      renderWishPage();
+      /* ลองใช้ Fullscreen API ก่อน ถ้าไม่ได้ค่อยใช้แบบจำลอง */
+      if (treeStage.requestFullscreen) {
+
+        treeStage.requestFullscreen().catch(() => {
+
+          enterPseudoFullscreen();
+
+        });
+
+      } else {
+
+        enterPseudoFullscreen();
+
+      }
+
+    });
 
 
-      stopFullscreenPoll();
+    document.addEventListener("fullscreenchange", () => {
 
-      if (on) {
+      setFullscreenUi(isFullscreen());
 
-        fullscreenPollTimer = setInterval(
-          () => { loadWishes(); },
-          FULLSCREEN_POLL_MS
-        );
+    });
+
+
+    /* Esc ปิดโหมดจำลองได้เหมือนเต็มจอจริง */
+    document.addEventListener("keydown", (event) => {
+
+      if (
+        event.key === "Escape" &&
+        pseudoFullscreen
+      ) {
+
+        exitPseudoFullscreen();
 
       }
 
@@ -757,367 +822,384 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
+  /* ============================================================
+     TREE RENDERER
+
+     สร้างกิ่งก้านแบบแตกกิ่งซ้ำ (recursive) ด้วยสุ่มที่ตรึงค่าไว้
+     ต้นไม้จึงหน้าตาเหมือนเดิมทุกครั้งที่เปิด
+     คำอวยพรแต่ละข้อ = หัวใจ 1 ดวงที่ปลายกิ่ง
+     ============================================================ */
+
+  const HEART_PATH =
+    "M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20" +
+    "C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z";
+
+  const HEART_COLORS = [
+    "#9fad94", /* sage   */
+    "#7e824c", /* olive  */
+    "#a9826a", /* brown  */
+    "#cbbca4", /* cream  */
+    "#c06f45"  /* copper */
+  ];
+
+  const SVG_NS = "http://www.w3.org/2000/svg";
+
+  let treeTips = [];
+
+  let spotlightIndex = 0;
+
+  let spotlightTimer = null;
+
+
+  /* สุ่มแบบตรึงค่า (LCG) — ผลลัพธ์เหมือนเดิมทุกครั้ง */
+  function makeRng(seed) {
+
+    let state = seed >>> 0;
+
+    return function () {
+
+      state = (state * 1664525 + 1013904223) >>> 0;
+
+      return state / 4294967296;
+
+    };
+
+  }
+
+
+  function buildTree() {
+
+    const rng = makeRng(20270117);
+
+    const paths = [];
+
+    const tips = [];
+
+
+    function grow(x, y, angle, len, width, depth) {
+
+      const x2 = x + Math.cos(angle) * len;
+
+      const y2 = y + Math.sin(angle) * len;
+
+
+      /* จุดควบคุมเยื้องออกด้านข้าง ทำให้กิ่งโค้งไม่เป็นเส้นตรง */
+      const bend = (rng() - 0.5) * len * 0.34;
+
+      const mx = (x + x2) / 2 + Math.cos(angle + Math.PI / 2) * bend;
+
+      const my = (y + y2) / 2 + Math.sin(angle + Math.PI / 2) * bend;
+
+
+      paths.push({
+        d:
+          "M" + x.toFixed(1) + " " + y.toFixed(1) +
+          " Q" + mx.toFixed(1) + " " + my.toFixed(1) +
+          ", " + x2.toFixed(1) + " " + y2.toFixed(1),
+        w: width
+      });
+
+
+      if (depth === 0) {
+
+        tips.push({ x: x2, y: y2 });
+
+        return;
+
+      }
+
+
+      /* กิ่งล่างแตก 2 กิ่ง กิ่งบนบางครั้งแตก 3 ให้พุ่มดูแน่น */
+      const count = depth > 3 ? 2 : (rng() < 0.45 ? 3 : 2);
+
+      const spread = 0.40 + rng() * 0.20;
+
+
+      for (let i = 0; i < count; i++) {
+
+        const offset =
+          count === 1 ? 0 : (i / (count - 1)) - 0.5;
+
+        grow(
+          x2,
+          y2,
+          angle + offset * spread * 2 + (rng() - 0.5) * 0.16,
+          len * (0.70 + rng() * 0.12),
+          width * 0.66,
+          depth - 1
+        );
+
+      }
+
+    }
+
+
+    grow(500, 700, -Math.PI / 2, 152, 19, 5);
+
+
+    return { paths: paths, tips: tips };
+
+  }
+
+
+  function drawTree() {
+
+    const branchGroup =
+      document.getElementById("treeBranches");
+
+    if (!branchGroup) return;
+
+
+    const tree = buildTree();
+
+
+    branchGroup.textContent = "";
+
+
+    tree.paths.forEach((p) => {
+
+      const el =
+        document.createElementNS(SVG_NS, "path");
+
+      el.setAttribute("d", p.d);
+
+      el.setAttribute("stroke-width", p.w.toFixed(2));
+
+      branchGroup.appendChild(el);
+
+    });
+
+
+    /* เก็บเฉพาะปลายกิ่งที่อยู่ในทรงพุ่มวงรี
+       กันหัวใจไปเกาะกิ่งโดดที่ยื่นออกนอกพุ่ม */
+    treeTips = tree.tips.filter((t) => {
+
+      const dx = (t.x - 500) / 310;
+
+      const dy = (t.y - 268) / 200;
+
+      return (dx * dx + dy * dy) <= 1;
+
+    });
+
+
+    /* เรียงแบบสลับซ้าย-ขวา-กลาง เพื่อให้หัวใจกระจายทั่วพุ่ม
+       ตั้งแต่ดวงแรก แทนที่จะกองอยู่ข้างเดียว */
+    const rng = makeRng(777);
+
+    treeTips.forEach((t) => { t.k = rng(); });
+
+    treeTips.sort((a, b) => a.k - b.k);
+
+  }
+
+
+  /* ============================================================
+     RENDER — วางหัวใจตามจำนวนคำอวยพร
+     ============================================================ */
+
   function renderWishPage() {
 
+    const heartGroup =
+      document.getElementById("treeHearts");
 
-    if (!wishesGrid) return;
-
-
-
-    /* ----------------------------------------------------------
-       ไม่มีข้อมูล
-       ---------------------------------------------------------- */
-
-    if (
-      allWishes.length === 0
-    ) {
+    if (!heartGroup) return;
 
 
-      wishesGrid.innerHTML = `
+    if (!treeTips.length) {
 
-        <div class="no-wishes">
+      drawTree();
 
-          ยังไม่มีคำอวยพรที่อนุญาตให้แสดง
+    }
 
-        </div>
 
-      `;
+    heartGroup.textContent = "";
 
+
+    if (allWishes.length === 0) {
+
+      showSpotlight(null);
 
       return;
 
     }
 
 
-
-    /* ----------------------------------------------------------
-       คำนวณข้อมูลชุดปัจจุบัน
-       ---------------------------------------------------------- */
-
-    const start =
-
-      currentWishPage *
-      WISHES_PER_PAGE;
+    const total =
+      Math.min(allWishes.length, treeTips.length);
 
 
+    for (let i = 0; i < total; i++) {
 
-    const end =
+      const tip = treeTips[i];
 
-      start +
-      WISHES_PER_PAGE;
-
+      const wish = allWishes[i];
 
 
-    const currentItems =
+      const scale = 0.25 + (i % 3) * 0.032;
 
-      allWishes.slice(
+      const g =
+        document.createElementNS(SVG_NS, "g");
 
-        start,
+      g.setAttribute("class", "wish-heart");
 
-        end
+      g.setAttribute(
+        "transform",
+        "translate(" + (tip.x - 50 * scale).toFixed(1) +
+        " " + (tip.y - 45 * scale).toFixed(1) +
+        ") scale(" + scale.toFixed(3) + ")"
+      );
 
+      g.style.setProperty(
+        "--pop-delay",
+        (i * 26) + "ms"
       );
 
 
+      const path =
+        document.createElementNS(SVG_NS, "path");
 
-    /* ==========================================================
-       FADE OUT
-       ========================================================== */
+      path.setAttribute("d", HEART_PATH);
 
-    wishesGrid.classList.add(
-      "changing"
-    );
-
-
-
-    setTimeout(() => {
-
-
-      wishesGrid.innerHTML = "";
-
-
-
-
-      /* ========================================================
-         CREATE CARDS
-         ======================================================== */
-
-      currentItems.forEach(
-
-        (item, index) => {
-
-
-          const position =
-
-            getCanopyLayout(
-              index,
-              currentItems.length
-            );
-
-
-
-          const card =
-
-            document.createElement(
-              "article"
-            );
-
-
-
-          card.className =
-
-            `wish-card ${position.size
-
-              ? "size-" +
-              position.size
-
-              : ""
-            }`;
-
-
-
-          card.style.left =
-
-            position.left +
-            "%";
-
-
-
-          card.style.top =
-
-            position.top +
-            "%";
-
-
-
-          /* ------------------------------------------------------
-             Animation delay
-             ทำให้แต่ละใบลอยไม่พร้อมกัน
-             ------------------------------------------------------ */
-
-          card.style.animationDelay =
-
-            `${(index % 5) *
-            -1.15
-            }s`;
-
-
-
-          /* ======================================================
-             CARD CONTENT
-             ====================================================== */
-
-          card.innerHTML = `
-
-
-            <div class="quote">
-
-              “
-
-            </div>
-
-
-
-            <div class="wish-text">
-
-              ${escapeWishHtml(
-            item.wish
-          )}
-
-            </div>
-
-
-
-            <div class="wish-footer">
-
-
-          
-              <span class="wish-heart">
-                <img src="pic/icon-like.png" alt="" />
-              </span>
-
-
-              <span class="wish-name">
-
-                ${escapeWishHtml(
-
-            item.name ||
-            "Guest"
-
-          )}
-
-              </span>
-
-
-            </div>
-
-
-          `;
-
-
-
-          wishesGrid.appendChild(
-            card
-          );
-
-
-        }
-
+      path.setAttribute(
+        "fill",
+        HEART_COLORS[i % HEART_COLORS.length]
       );
 
+      g.appendChild(path);
 
 
-      /* ========================================================
-         FADE IN
-         ======================================================== */
+      /* แตะหัวใจเพื่ออ่านคำอวยพรของคนนั้น */
+      g.addEventListener("click", () => {
 
-      requestAnimationFrame(() => {
+        spotlightIndex = i;
 
+        showSpotlight(wish);
 
-        wishesGrid.classList.remove(
-          "changing"
-        );
-
+        restartSpotlight();
 
       });
 
 
+      heartGroup.appendChild(g);
 
-    }, WISH_FADE_TIME);
+    }
+
+
+    startSpotlight();
 
   }
 
 
-
   /* ============================================================
-     NEXT WISH PAGE
+     SPOTLIGHT — คำอวยพรที่กำลังฉาย
      ============================================================ */
 
-  function nextWishPage() {
+  function showSpotlight(wish) {
+
+    const textEl =
+      document.getElementById("spotlightText");
+
+    const nameEl =
+      document.getElementById("spotlightName");
+
+    if (!textEl || !nameEl) return;
 
 
-    if (
-      allWishes.length === 0
-    ) {
+    if (!wish) {
+
+      textEl.textContent =
+        "ยังไม่มีคำอวยพรที่อนุญาตให้แสดง";
+
+      nameEl.textContent = "";
 
       return;
 
     }
 
 
+    const box =
+      document.getElementById("wishSpotlight");
 
-    const totalPages =
+    if (box) {
 
-      Math.ceil(
+      box.classList.remove("is-in");
 
-        allWishes.length /
-        WISHES_PER_PAGE
+      /* บังคับให้เบราว์เซอร์เริ่มอนิเมชันใหม่ */
+      void box.offsetWidth;
 
-      );
-
-
-
-    currentWishPage++;
-
-
-
-    /* ==========================================================
-       ครบทุกชุดแล้ว
-
-       -> กลับชุดแรก
-       -> Shuffle ใหม่
-       -> เริ่มรอบใหม่
-       ========================================================== */
-
-    if (
-      currentWishPage >=
-      totalPages
-    ) {
-
-
-      currentWishPage = 0;
-
-
-      allWishes =
-
-        shuffleWishes(
-          allWishes
-        );
+      box.classList.add("is-in");
 
     }
 
 
+    textEl.textContent =
+      "“" + String(wish.wish || "") + "”";
 
-    renderWishPage();
+    nameEl.textContent =
+      "— " + String(wish.name || "Guest");
 
   }
 
 
+  function startSpotlight() {
+
+    stopSpotlight();
+
+
+    if (allWishes.length === 0) return;
+
+
+    showSpotlight(allWishes[spotlightIndex % allWishes.length]);
+
+
+    if (allWishes.length < 2) return;
+
+
+    spotlightTimer = setInterval(() => {
+
+      spotlightIndex =
+        (spotlightIndex + 1) % allWishes.length;
+
+      showSpotlight(allWishes[spotlightIndex]);
+
+    }, WISHES_INTERVAL);
+
+  }
+
+
+  function stopSpotlight() {
+
+    if (spotlightTimer) {
+
+      clearInterval(spotlightTimer);
+
+      spotlightTimer = null;
+
+    }
+
+  }
+
+
+  function restartSpotlight() {
+
+    stopSpotlight();
+
+    startSpotlight();
+
+  }
+
 
   /* ============================================================
-     START AUTO LOOP
+     START
+
+     ไม่ต้องแบ่งหน้าแล้ว — หัวใจขึ้นครบทุกดวงพร้อมกัน
+     ส่วนคำอวยพรที่อ่านได้จะหมุนเปลี่ยนใน spotlight เอง
      ============================================================ */
 
   function startWishLoop() {
 
-
-    /* ----------------------------------------------------------
-       ล้าง timer เก่าก่อน
-       ป้องกันการมี loop ซ้อนกัน
-       ---------------------------------------------------------- */
-
-    if (wishLoopTimer) {
-
-
-      clearInterval(
-        wishLoopTimer
-      );
-
-
-      wishLoopTimer = null;
-
-    }
-
-
-
-    /* แสดงชุดแรก */
-
     renderWishPage();
-
-
-
-    /* ----------------------------------------------------------
-       ถ้ามี 15 ข้อหรือน้อยกว่า
-       ไม่ต้องเปลี่ยนชุด
-       ---------------------------------------------------------- */
-
-    if (
-      allWishes.length <=
-      WISHES_PER_PAGE
-    ) {
-
-
-      return;
-
-    }
-
-
-
-    /* ==========================================================
-       AUTO LOOP
-
-       เปลี่ยนชุดทุก 15 วินาที
-       ========================================================== */
-
-    wishLoopTimer =
-
-      setInterval(
-
-        nextWishPage,
-
-        WISHES_INTERVAL
-
-      );
 
   }
 

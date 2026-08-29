@@ -9,8 +9,9 @@
   <meta name="description" content="ร่วมส่งคำอวยพรถึง Ausamah & Mizahasan" />
   <meta name="theme-color" content="#f8f4ec" />
 
-  <link rel="icon" type="image/png" href="pic/logo.png" />
-  <link rel="apple-touch-icon" href="pic/logo.png" />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Wedding Wishes — Ausamah & Mizahasan" />
@@ -22,9 +23,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="assets/css/base.css?v=20260829-17" />
-  <link rel="stylesheet" href="assets/css/components.css?v=20260829-17" />
-  <link rel="stylesheet" href="assets/css/wishes.css?v=20260829-17" />
+    <link rel="stylesheet" href="assets/css/base.css?v=20260829-22" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260829-22" />
+  <link rel="stylesheet" href="assets/css/wishes.css?v=20260829-22" />
 </head>
 
 <body>
@@ -100,7 +101,7 @@
         WISH FORM
 
         JavaScript ของฟอร์มนี้อยู่ในไฟล์:
-        script.js
+        assets/js/wishes.js
 
         ไม่ต้องใส่ API URL หรือ JavaScript ซ้ำใน wishes.html
         =========================================================
@@ -494,16 +495,13 @@
   <!-- =========================================================
        JAVASCRIPT
 
-       IMPORTANT:
-       - หน้า wishes.html นี้ไม่มี JavaScript สำหรับ Wishes ฝังอยู่แล้ว
-       - ระบบส่ง/โหลดคำอวยพรทั้งหมดอยู่ใน script.js
-       - Google Apps Script Web App URL ให้แก้ใน script.js เท่านั้น
-       - ?v=20260820-3 ใช้บังคับ browser โหลดไฟล์ JS เวอร์ชันใหม่
-         ป้องกัน cache ของ script.js เก่า
+       - ระบบส่ง/โหลดคำอวยพร และต้นไม้ อยู่ใน assets/js/wishes.js
+       - Google Apps Script Web App URL แก้ที่ assets/js/config.js
+       - ?v=... ใช้บังคับ browser โหลดไฟล์ใหม่ ต้องแก้ให้ตรงกันทุกหน้า
        ========================================================= -->
-  <script src="assets/js/main.js?v=20260829-17"></script>
-  <script src="assets/js/config.js?v=20260829-17"></script>
-  <script src="assets/js/wishes.js?v=20260829-17"></script>
+  <script src="assets/js/main.js?v=20260829-22"></script>
+  <script src="assets/js/config.js?v=20260829-22"></script>
+  <script src="assets/js/wishes.js?v=20260829-22"></script>
 
 </body>
 </html>

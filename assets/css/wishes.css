@@ -313,50 +313,111 @@
   width:100%;
   max-width:1180px;
   margin:0 auto;
-  aspect-ratio:1000/640;
-  min-height:min(78vh, 720px);
+  padding-bottom:8px;
 }
 
 .wish-tree{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
   display:block;
+  width:100%;
+  height:auto;
+  max-height:min(70vh, 620px);
+  margin:0 auto;
 }
 
-/* ต้นไม้โตตามจำนวนคำอวยพร */
-.tree-canopy{
-  fill:#93a37c;
-  opacity:.42;
-  transform-origin:500px 250px;
-  transform:scale(calc(.68 + var(--growth, 0) * .32));
-  transition:transform 1.4s cubic-bezier(.22,.61,.36,1), opacity 1.4s ease;
-}
-
+/* กิ่งก้าน */
 .tree-branches path{
   fill:none;
-  stroke:#7d6a52;
-  stroke-width:7;
+  stroke:#8a7256;
   stroke-linecap:round;
-  opacity:.55;
-}
-
-.tree-branches--outer path{
-  stroke-width:5;
-  /* กิ่งชั้นนอกค่อย ๆ ปรากฏเมื่อคำอวยพรมากขึ้น */
-  opacity:calc(var(--growth, 0) * .5);
-  transition:opacity 1.4s ease;
-}
-
-.tree-trunk{
-  fill:#7d6a52;
-  opacity:.62;
+  opacity:.85;
 }
 
 .tree-ground{
   fill:#8d8a6f;
-  opacity:.18;
+  opacity:.16;
+}
+
+/* หัวใจ = คำอวยพร 1 ข้อ ค่อย ๆ ผลิทีละดวง */
+.wish-heart{
+  cursor:pointer;
+  transform-box:fill-box;
+  transform-origin:center;
+  animation:heartPop .6s cubic-bezier(.34,1.4,.5,1) both;
+  animation-delay:var(--pop-delay,0ms);
+}
+
+.wish-heart path{
+  transition:opacity .3s ease;
+}
+
+@keyframes heartPop{
+  from{ opacity:0; }
+  to{ opacity:1; }
+}
+
+@media (hover:hover){
+  .wish-heart:hover path{
+    opacity:.62;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .wish-heart{ animation:none; }
+}
+
+
+/* ---------------- คำอวยพรที่กำลังฉาย ---------------- */
+
+.wish-spotlight{
+  max-width:760px;
+  margin:6px auto 0;
+  padding:0 16px;
+  text-align:center;
+  min-height:96px;
+}
+
+.wish-spotlight.is-in .wish-spotlight-text,
+.wish-spotlight.is-in .wish-spotlight-name{
+  animation:spotlightIn .7s cubic-bezier(.22,.61,.36,1) both;
+}
+
+.wish-spotlight.is-in .wish-spotlight-name{
+  animation-delay:.12s;
+}
+
+@keyframes spotlightIn{
+  from{ opacity:0; transform:translateY(10px); }
+  to{ opacity:1; transform:none; }
+}
+
+.wish-spotlight-text{
+  margin:0 0 8px;
+  font-family:"Cormorant Garamond",serif;
+  font-size:clamp(19px,2.6vw,30px);
+  font-style:italic;
+  line-height:1.55;
+  color:var(--text);
+}
+
+.wish-spotlight-name{
+  margin:0;
+  font-size:clamp(12px,1.5vw,14px);
+  letter-spacing:.1em;
+  color:var(--muted);
+}
+
+.tree-signature{
+  margin:16px 0 0;
+  text-align:center;
+  font-family:"Cormorant Garamond",serif;
+  font-size:clamp(12px,1.5vw,15px);
+  letter-spacing:.2em;
+  color:var(--muted);
+}
+
+@media (prefers-reduced-motion:reduce){
+  .wish-spotlight.is-in .wish-spotlight-text,
+  .wish-spotlight.is-in .wish-spotlight-name{ animation:none; }
 }
 
 
@@ -409,31 +470,90 @@
 
 /* ---------------- โหมดเต็มจอ (ฉายบนจอในงาน) ---------------- */
 
+/* โหมดเต็มจอแบบจำลอง — ใช้กติกาหน้าตาชุดเดียวกับ :fullscreen
+   (จำเป็นสำหรับ iOS Safari ที่ไม่รองรับ Fullscreen API กับ element ทั่วไป) */
+
+body.wish-fs-lock{
+  overflow:hidden;
+}
+
+.tree-stage.is-pseudo-fullscreen{
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  max-width:none;
+  width:100vw;
+  height:100vh;
+  height:100dvh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:2vh 3vw;
+  margin:0;
+  background:linear-gradient(180deg,#efece0 0%,#f7f3e9 100%);
+}
+
+.tree-stage.is-pseudo-fullscreen .wish-tree{
+  max-height:62vh;
+}
+
+.tree-stage.is-pseudo-fullscreen .wish-spotlight{
+  max-width:min(1100px,90vw);
+  min-height:auto;
+}
+
+.tree-stage.is-pseudo-fullscreen .wish-spotlight-text{
+  font-size:clamp(26px,3.4vw,48px);
+}
+
+.tree-stage.is-pseudo-fullscreen .wish-spotlight-name{
+  font-size:clamp(15px,1.6vw,22px);
+}
+
+.tree-stage.is-pseudo-fullscreen .tree-signature{
+  font-size:clamp(14px,1.5vw,20px);
+}
+
+.tree-stage.is-pseudo-fullscreen .tree-hud{
+  top:16px;
+  right:20px;
+}
+
 .tree-stage:fullscreen{
   max-width:none;
   width:100vw;
   height:100vh;
-  aspect-ratio:auto;
-  padding:2vh 2vw;
-  background:linear-gradient(180deg,#efece0 0%,#f6f2e8 100%);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:2vh 3vw;
+  background:linear-gradient(180deg,#efece0 0%,#f7f3e9 100%);
 }
 
-.tree-stage:fullscreen .wish-card{
-  /* ตัวอักษรใหญ่ขึ้นให้อ่านจากไกล */
-  font-size:1.05rem;
+.tree-stage:fullscreen .wish-tree{
+  max-height:62vh;
 }
 
-.tree-stage:fullscreen .wish-text{
-  font-size:clamp(15px,1.5vw,24px);
+.tree-stage:fullscreen .wish-spotlight{
+  max-width:min(1100px,90vw);
+  min-height:auto;
 }
 
-.tree-stage:fullscreen .wish-name{
-  font-size:clamp(12px,1.1vw,18px);
+.tree-stage:fullscreen .wish-spotlight-text{
+  font-size:clamp(26px,3.4vw,48px);
+}
+
+.tree-stage:fullscreen .wish-spotlight-name{
+  font-size:clamp(15px,1.6vw,22px);
+}
+
+.tree-stage:fullscreen .tree-signature{
+  font-size:clamp(14px,1.5vw,20px);
 }
 
 .tree-stage:fullscreen .tree-hud{
-  top:12px;
-  right:16px;
+  top:16px;
+  right:20px;
 }
 
 .tree-stage:fullscreen .tree-fs-label::after{
