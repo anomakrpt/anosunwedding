@@ -773,7 +773,7 @@ a {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   gap: 22px;
-  align-items: start;
+  align-items: stretch;
 }
 
 /* สำคัญ: อนุญาตให้ card หดตาม grid ได้ */
@@ -831,17 +831,60 @@ a {
   color: var(--muted);
 }
 
-/* ---------------- Countdown ---------------- */
+/* =========================================================
+   COUNTDOWN BANNER
+   แบนเนอร์เต็มความกว้างด้านบนสุดของ #details
+   (ย้ายออกมาจากการ์ด Ceremony)
+========================================================= */
 
-.countdown-wrap {
+.countdown-banner {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(135deg, #fffdf8 0%, #f7f1e3 55%, #f2ebda 100%);
+  box-shadow: var(--shadow);
+  padding: 34px 26px 32px;
+  text-align: center;
+}
+
+/* ผ้าใบสำหรับพลุ — วางทับพื้นหลัง ไม่บังการคลิก */
+.fireworks-canvas {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  min-width: 0;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+
+.countdown-banner.is-celebrating .fireworks-canvas {
+  /* ไม่ทึบเต็มที่ เพื่อให้ตัวเลขและข้อความยังอ่านชัด */
+  opacity: .62;
+}
+
+.countdown-banner-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.countdown-title {
+  display: block;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(19px, 3.4vw, 26px);
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--brown);
+  margin-bottom: 22px;
+  transition: color .5s ease;
 }
 
 .countdown {
   width: 100%;
   min-width: 0;
-  margin-top: 10px;
   display: grid;
   grid-template-columns:
     minmax(0, 1fr) auto
@@ -849,7 +892,9 @@ a {
     minmax(0, 1fr) auto
     minmax(0, 1fr);
   align-items: start;
-  gap: 8px;
+  gap: 10px;
+  max-width: 620px;
+  margin: 0 auto;
 }
 
 .time-box {
@@ -860,24 +905,216 @@ a {
   text-align: center;
 }
 
-.time-box span,
-.separator {
-  font-size: 20px;
+.countdown-banner .time-box span,
+.countdown-banner .separator {
+  /* ใช้ Noto Sans Thai (โหลดอยู่แล้ว) แทน Cormorant
+     เพราะเลขของ Cormorant เป็นแบบ oldstyle — 6/8 สูงเกิน, 3/5/7/9 ห้อยต่ำ
+     ทำให้แผ่นพลิกดูไม่เป็นระเบียบ ตัวนี้เลขสูงเท่ากันและกว้างเท่ากันทุกตัว */
+  font-family: "Noto Sans Thai", sans-serif;
+  font-size: clamp(30px, 6.2vw, 50px);
+  font-weight: 500;
   line-height: 1;
-  letter-spacing: 1px;
-  color: #d9a29a;
+  letter-spacing: 0;
+  color: #c98f84;
+  font-variant-numeric: tabular-nums;
+  transition: color .5s ease;
 }
 
-.time-box small {
-  margin-top: 4px;
-  font-size: 10px;
-  line-height: 1;
-  letter-spacing: 1px;
-  color: #bfa39a;
+.countdown-banner .separator {
+  transform: translateY(4px);
+  opacity: .5;
 }
 
-.separator {
-  transform: translateY(2px);
+.countdown-banner .time-box small {
+  margin-top: 10px;
+  font-size: clamp(9px, 1.7vw, 11px);
+  line-height: 1;
+  letter-spacing: .2em;
+  color: var(--muted);
+}
+
+/* ---------------------------------------------------------
+   SPLIT-FLAP — ตัวเลขพลิกแบบป้ายบอกเวลาในสนามบิน
+
+   โครงต่อ 1 หลัก (สร้างโดย home.js):
+     .flap
+       .flap__half--top     ครึ่งบน  (ค่าปัจจุบัน)
+       .flap__half--bottom  ครึ่งล่าง (ค่าปัจจุบัน)
+       .flap__fold--top     แผ่นพลิกลง  = ค่าเก่า
+       .flap__fold--bottom  แผ่นพลิกมารับ = ค่าใหม่
+--------------------------------------------------------- */
+
+.flap-group {
+  display: inline-flex;
+  gap: .06em;
+}
+
+.flap {
+  position: relative;
+  display: inline-block;
+  width: .66em;
+  height: 1em;
+  line-height: 1;
+  perspective: 260px;
+  border-radius: .06em;
+  background: rgba(255, 253, 247, .72);
+  box-shadow:
+    inset 0 0 0 1px rgba(122, 98, 87, .10),
+    0 1px 2px rgba(80, 62, 48, .06);
+}
+
+/* รอยพับกลางแผ่น */
+.flap::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(122, 98, 87, .16);
+  transform: translateY(-.5px);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.flap__half,
+.flap__fold {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  overflow: hidden;
+}
+
+.flap__half > i,
+.flap__fold > i {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1em;
+  display: block;
+  font-style: normal;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.flap__half--top,
+.flap__fold--top {
+  top: 0;
+}
+
+.flap__half--bottom,
+.flap__fold--bottom {
+  top: 50%;
+}
+
+/* ครึ่งล่างเลื่อนตัวอักษรขึ้นครึ่งหนึ่ง เพื่อให้เห็นส่วนล่างของเลข */
+.flap__half--bottom > i,
+.flap__fold--bottom > i {
+  top: -.5em;
+}
+
+.flap__half--top > i,
+.flap__fold--top > i {
+  top: 0;
+}
+
+.flap__fold {
+  z-index: 2;
+  backface-visibility: hidden;
+  background: rgba(255, 253, 247, .96);
+}
+
+/* แผ่นบน: ค่าเก่า พลิกลงไปซ่อน */
+.flap__fold--top {
+  transform-origin: 50% 100%;
+  animation: flapFoldTop .26s cubic-bezier(.55, .06, .68, .19) forwards;
+}
+
+/* แผ่นล่าง: ค่าใหม่ พลิกขึ้นมารับ */
+.flap__fold--bottom {
+  transform-origin: 50% 0;
+  transform: rotateX(90deg);
+  animation: flapFoldBottom .26s .26s cubic-bezier(.33, .9, .46, .99) forwards;
+}
+
+@keyframes flapFoldTop {
+  to {
+    transform: rotateX(-90deg);
+  }
+}
+
+@keyframes flapFoldBottom {
+  to {
+    transform: rotateX(0deg);
+  }
+}
+
+/* ผู้ใช้ที่ปิดอนิเมชัน: ไม่ต้องพลิก เปลี่ยนเลขตรง ๆ */
+@media (prefers-reduced-motion: reduce) {
+
+  .flap__fold {
+    display: none;
+  }
+
+}
+
+.countdown-message {
+  margin: 20px 0 0;
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--brown);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .8s ease .4s, transform .8s ease .4s;
+}
+
+
+/* ---------------- ถึงวันงานแล้ว ---------------- */
+
+.countdown-banner.is-celebrating {
+  border-color: rgba(177, 127, 82, .4);
+  background:
+    linear-gradient(135deg, #fffdf6 0%, #f9f0dd 55%, #f4e7cd 100%);
+}
+
+.countdown-banner.is-celebrating .countdown-title {
+  color: var(--copper);
+}
+
+.countdown-banner.is-celebrating .time-box span,
+.countdown-banner.is-celebrating .separator {
+  color: var(--copper);
+}
+
+.countdown-banner.is-celebrating .countdown-message {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .countdown-message {
+    transition: none;
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .countdown-banner {
+    padding: 26px 16px 24px;
+  }
+
+  .countdown {
+    gap: 4px;
+  }
+
+  .countdown-title {
+    margin-bottom: 16px;
+  }
+
 }
 
 /* ---------------- Location ---------------- */
@@ -925,51 +1162,142 @@ a {
 
 /* ---------------- Dress Code ---------------- */
 
-.dress-card {
-  text-align: center;
+/* =========================================================
+   DRESS CODE
+   แยกออกมาเป็นส่วนของตัวเองใต้ Ceremony / Location
+   หัวใจแต่ละสีเกาะอยู่บนเถาวัลย์เส้นเดียวกัน
+========================================================= */
+
+.dress-section {
+  margin-top: 28px;
+  padding: 40px 26px 34px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(180deg, #fffdf8 0%, #faf5e9 100%);
+  box-shadow: var(--shadow);
 }
 
-.dress-mini-grid {
+.dress-heading {
+  margin-bottom: 6px;
+}
+
+/* ---------- เถาวัลย์ + หัวใจ ---------- */
+
+.dress-vine {
+  position: relative;
   width: 100%;
-  min-width: 0;
-  margin-top: 16px;
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 8px;
-  align-items: start;
+  height: 168px;
+  margin-top: 18px;
 }
 
-.dress-mini-item {
+.dress-vine-stem {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  height: 100%;
+  display: block;
+  fill: none;
+  stroke: #9aa77f;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  opacity: .75;
 }
 
-.dress-mini-item svg {
-  width: min(70px, 100%);
+.dress-node,
+.dress-leaf {
+  position: absolute;
+  left: var(--x);
+  transform: translate(-50%, -50%);
+}
+
+.dress-node {
+  top: var(--y);
+  width: clamp(44px, 9vw, 62px);
+}
+
+.dress-node svg {
+  width: 100%;
   height: auto;
-  aspect-ratio: 100 / 90;
   display: block;
   fill: currentColor;
+  filter: drop-shadow(0 4px 10px rgba(80, 62, 48, .16));
+  transition: transform .45s cubic-bezier(.22, .61, .36, 1);
 }
 
-.dress-mini-item small {
-  margin-top: 8px;
-  font-size: 10px;
-  line-height: 1.2;
+@media (hover: hover) {
+
+  .dress-node:hover svg {
+    transform: translateY(-4px) scale(1.06);
+  }
+
+}
+
+/* ใบไม้เล็ก ๆ ตรงจุดที่เถาวัลย์ตัดแนวกลาง */
+.dress-leaf {
+  top: 50%;
+  width: 22px;
+  color: #9aa77f;
+  opacity: .8;
+}
+
+.dress-leaf svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  fill: currentColor;
+  transform: var(--flip, none);
+}
+
+/* ---------- ป้ายชื่อสี ---------- */
+
+.dress-labels {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.dress-labels small {
   text-align: center;
-  white-space: normal;
+  font-size: clamp(10px, 2vw, 12px);
+  line-height: 1.35;
+  letter-spacing: .04em;
   color: currentColor;
+}
+
+.dress-note {
+  margin: 22px 0 0;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--muted);
 }
 
 /* Dress code colors */
 .dress-sage   { color: #9fad94; }
 .dress-olive  { color: #7e824c; }
 .dress-brown  { color: #a9826a; }
-.dress-cream  { color: #d7c9b5; }
+.dress-cream  { color: #cbbca4; }
 .dress-copper { color: #c06f45; }
+
+
+@media (max-width: 700px) {
+
+  .dress-section {
+    margin-top: 20px;
+    padding: 30px 14px 26px;
+  }
+
+  .dress-vine {
+    height: 132px;
+  }
+
+  .dress-leaf {
+    width: 16px;
+  }
+
+}
 
 /* ============================================================
    iPAD / TABLET PORTRAIT
@@ -1007,29 +1335,8 @@ a {
     gap: 4px;
   }
 
-  .time-box span,
-  .separator {
-    font-size: 18px;
-  }
 
-  .time-box small {
-    font-size: 8px;
-    letter-spacing: 0.6px;
-  }
 
-  .dress-mini-grid {
-    gap: 5px;
-  }
-
-  .dress-mini-item svg {
-    width: min(52px, 100%);
-  }
-
-  .dress-mini-item small {
-    margin-top: 5px;
-    font-size: 8px;
-    line-height: 1.15;
-  }
 
   .venue-address {
     font-size: 14px;
@@ -1067,30 +1374,8 @@ a {
     gap: 3px;
   }
 
-  .time-box span,
-  .separator {
-    font-size: 17px;
-  }
 
-  .time-box small {
-    font-size: 7px;
-    letter-spacing: 0.5px;
-  }
 
-  .dress-mini-grid {
-    gap: 6px;
-    margin-top: 12px;
-  }
-
-  .dress-mini-item svg {
-    width: min(42px, 100%);
-  }
-
-  .dress-mini-item small {
-    margin-top: 4px;
-    font-size: 7px;
-    line-height: 1.15;
-  }
 }
 
 /* Gallery */
@@ -1834,6 +2119,10 @@ a {
   margin-top: 20px;
 }
 
+#details > .countdown-banner {
+  margin-bottom: 20px;
+}
+
 
 /* =========================================================
    iPad + Desktop
@@ -1848,7 +2137,8 @@ a {
       minmax(0, 1fr);
 
     gap: 28px;
-    align-items: start;
+    /* stretch = การ์ด Ceremony กับ Location สูงเท่ากันเสมอ */
+    align-items: stretch;
 
     width: min(1180px, calc(100% - 40px)) !important;
     max-width: 1180px !important;
@@ -1861,6 +2151,20 @@ a {
   }
 
 
+  /* Countdown เต็มความกว้างด้านบนสุด */
+
+  #details > .countdown-banner {
+    grid-column: 1 / -1;
+  }
+
+
+  /* Dress Code เต็มความกว้างด้านล่างสุด */
+
+  #details > .dress-section {
+    grid-column: 1 / -1;
+  }
+
+
   /* Ceremony ฝั่งซ้าย */
 
   #details > .ceremony-card {
@@ -1868,6 +2172,7 @@ a {
     width: 100% !important;
     max-width: none !important;
     margin: 0 !important;
+    height: 100%;
   }
 
 
@@ -1878,6 +2183,7 @@ a {
     width: 100% !important;
     max-width: none !important;
     margin: 0 !important;
+    height: 100%;
   }
 
 

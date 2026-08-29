@@ -50,9 +50,9 @@
        MAIN CSS
   ========================================================== -->
 
-    <link rel="stylesheet" href="assets/css/base.css?v=20260829-3" />
-  <link rel="stylesheet" href="assets/css/components.css?v=20260829-3" />
-  <link rel="stylesheet" href="assets/css/home.css?v=20260829-3" />
+    <link rel="stylesheet" href="assets/css/base.css?v=20260829-10" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260829-10" />
+  <link rel="stylesheet" href="assets/css/home.css?v=20260829-10" />
 
 
   
@@ -78,7 +78,7 @@
     >
 
       <source
-        src="pic/cardopen.mp4?v=20260829-2"
+        src="pic/cardopen.mp4?v=20260829-10"
         type="video/mp4"
       />
 
@@ -451,6 +451,123 @@
 
 
         <!-- =================================================
+             COUNTDOWN — แบนเนอร์เต็มความกว้างด้านบนสุด
+
+             เมื่อถึงวันงาน countdown จะเป็น 00 ทั้งหมด
+             แล้วจุดพลุอัตโนมัติ (ดู CELEBRATION ใน home.js)
+        ================================================== -->
+
+        <div
+          class="countdown-banner"
+          id="countdownBanner"
+        >
+
+          <canvas
+            class="fireworks-canvas"
+            id="fireworksCanvas"
+            aria-hidden="true"
+          ></canvas>
+
+
+          <div class="countdown-banner-inner">
+
+
+            <span
+              class="countdown-title"
+              id="countdownTitle"
+            >
+              Until Our Day
+            </span>
+
+
+            <div
+              id="countdown"
+              class="countdown"
+            >
+
+
+              <div class="time-box">
+
+                <span id="days">
+                  0
+                </span>
+
+                <small>
+                  DAYS
+                </small>
+
+              </div>
+
+
+              <div class="separator">
+                :
+              </div>
+
+
+              <div class="time-box">
+
+                <span id="hours">
+                  00
+                </span>
+
+                <small>
+                  HOURS
+                </small>
+
+              </div>
+
+
+              <div class="separator">
+                :
+              </div>
+
+
+              <div class="time-box">
+
+                <span id="minutes">
+                  00
+                </span>
+
+                <small>
+                  MINUTES
+                </small>
+
+              </div>
+
+
+              <div class="separator">
+                :
+              </div>
+
+
+              <div class="time-box">
+
+                <span id="seconds">
+                  00
+                </span>
+
+                <small>
+                  SECONDS
+                </small>
+
+              </div>
+
+
+            </div>
+
+
+            <p
+              class="countdown-message"
+              id="countdownMessage"
+            ></p>
+
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
              CEREMONY - LEFT COLUMN ON iPad / DESKTOP
         ================================================== -->
 
@@ -508,240 +625,6 @@
 
             </div>
 
-
-
-            <!-- =================================================
-                 COUNTDOWN
-            ================================================== -->
-
-            <div class="detail-card countdown-card">
-
-
-              <span class="label">
-                UNTIL OUR DAY
-              </span>
-
-
-              <div class="countdown-wrap">
-
-
-                <div
-                  id="countdown"
-                  class="countdown"
-                >
-
-
-                  <div class="time-box">
-
-                    <span id="days">
-                      0
-                    </span>
-
-                    <small>
-                      DAYS
-                    </small>
-
-                  </div>
-
-
-                  <div class="separator">
-                    :
-                  </div>
-
-
-                  <div class="time-box">
-
-                    <span id="hours">
-                      00
-                    </span>
-
-                    <small>
-                      HOURS
-                    </small>
-
-                  </div>
-
-
-                  <div class="separator">
-                    :
-                  </div>
-
-
-                  <div class="time-box">
-
-                    <span id="minutes">
-                      00
-                    </span>
-
-                    <small>
-                      MINUTES
-                    </small>
-
-                  </div>
-
-
-                  <div class="separator">
-                    :
-                  </div>
-
-
-                  <div class="time-box">
-
-                    <span id="seconds">
-                      00
-                    </span>
-
-                    <small>
-                      SECONDS
-                    </small>
-
-                  </div>
-
-
-                </div>
-
-
-              </div>
-
-
-            </div>
-
-
-
-            <!-- =================================================
-                 DRESS CODE
-            ================================================== -->
-
-            <div class="detail-card dress-card">
-
-
-              <span class="label">
-                DRESS CODE
-              </span>
-
-
-              <div class="dress-mini-grid">
-
-
-
-                <!-- SAGE -->
-
-                <div class="dress-mini-item dress-sage">
-
-                  <svg
-                    viewBox="0 0 100 90"
-                    aria-hidden="true"
-                  >
-
-                    <path
-                      d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z"
-                    />
-
-                  </svg>
-
-                  <small>
-                    Sage Green
-                  </small>
-
-                </div>
-
-
-
-                <!-- OLIVE -->
-
-                <div class="dress-mini-item dress-olive">
-
-                  <svg
-                    viewBox="0 0 100 90"
-                    aria-hidden="true"
-                  >
-
-                    <path
-                      d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z"
-                    />
-
-                  </svg>
-
-                  <small>
-                    Olive
-                  </small>
-
-                </div>
-
-
-
-                <!-- BROWN -->
-
-                <div class="dress-mini-item dress-brown">
-
-                  <svg
-                    viewBox="0 0 100 90"
-                    aria-hidden="true"
-                  >
-
-                    <path
-                      d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z"
-                    />
-
-                  </svg>
-
-                  <small>
-                    Soft Brown
-                  </small>
-
-                </div>
-
-
-
-                <!-- CREAM -->
-
-                <div class="dress-mini-item dress-cream">
-
-                  <svg
-                    viewBox="0 0 100 90"
-                    aria-hidden="true"
-                  >
-
-                    <path
-                      d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z"
-                    />
-
-                  </svg>
-
-                  <small>
-                    Cream
-                  </small>
-
-                </div>
-
-
-
-                <!-- COPPER -->
-
-                <div class="dress-mini-item dress-copper">
-
-                  <svg
-                    viewBox="0 0 100 90"
-                    aria-hidden="true"
-                  >
-
-                    <path
-                      d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z"
-                    />
-
-                  </svg>
-
-                  <small>
-                    Copper
-                  </small>
-
-                </div>
-
-
-              </div>
-
-
-            </div>
 
 
           </div>
@@ -855,6 +738,187 @@
 
         </div>
 
+
+
+        <!-- =================================================
+             DRESS CODE
+             แยกออกมาจากการ์ด Ceremony มาอยู่ด้านล่าง
+             หัวใจแต่ละสีเกาะอยู่บนเถาวัลย์เส้นเดียวกัน
+        ================================================== -->
+
+        <section class="dress-section">
+
+
+          <p class="section-label center">
+            Dress Code
+          </p>
+
+
+          <h2 class="center dress-heading">
+            Wear Our Colours
+          </h2>
+
+
+          <div class="dress-vine">
+
+
+            <!-- เถาวัลย์: ยืดตามความกว้าง หัวใจเกาะตามจุดโค้ง -->
+
+            <svg
+              class="dress-vine-stem"
+              viewBox="0 0 1000 120"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+
+              <path
+                d="M0 60 C 50 60, 60 31, 100 31 C 140 31, 160 89, 200 89 C 240 89, 260 31, 300 31 C 340 31, 360 89, 400 89 C 440 89, 460 31, 500 31 C 540 31, 560 89, 600 89 C 640 89, 660 31, 700 31 C 740 31, 760 89, 800 89 C 840 89, 860 31, 900 31 C 940 31, 950 60, 1000 60"
+                vector-effect="non-scaling-stroke"
+              />
+
+            </svg>
+
+            <span
+              class="dress-leaf"
+              style="--x: 20%; --flip: none;"
+              aria-hidden="true"
+            >
+
+              <svg viewBox="0 0 24 22">
+                <path d="M2 20C2 10 10 2 22 2C22 14 14 20 2 20Z" />
+              </svg>
+
+            </span>
+            <span
+              class="dress-leaf"
+              style="--x: 40%; --flip: scaleY(-1);"
+              aria-hidden="true"
+            >
+
+              <svg viewBox="0 0 24 22">
+                <path d="M2 20C2 10 10 2 22 2C22 14 14 20 2 20Z" />
+              </svg>
+
+            </span>
+            <span
+              class="dress-leaf"
+              style="--x: 60%; --flip: none;"
+              aria-hidden="true"
+            >
+
+              <svg viewBox="0 0 24 22">
+                <path d="M2 20C2 10 10 2 22 2C22 14 14 20 2 20Z" />
+              </svg>
+
+            </span>
+            <span
+              class="dress-leaf"
+              style="--x: 80%; --flip: scaleY(-1);"
+              aria-hidden="true"
+            >
+
+              <svg viewBox="0 0 24 22">
+                <path d="M2 20C2 10 10 2 22 2C22 14 14 20 2 20Z" />
+              </svg>
+
+            </span>
+
+            <span
+              class="dress-node dress-sage"
+              style="--x: 10%; --y: 26%;"
+            >
+
+              <svg
+                viewBox="0 0 100 90"
+                aria-hidden="true"
+              >
+                <path d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" />
+              </svg>
+
+            </span>
+            <span
+              class="dress-node dress-olive"
+              style="--x: 30%; --y: 74%;"
+            >
+
+              <svg
+                viewBox="0 0 100 90"
+                aria-hidden="true"
+              >
+                <path d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" />
+              </svg>
+
+            </span>
+            <span
+              class="dress-node dress-brown"
+              style="--x: 50%; --y: 26%;"
+            >
+
+              <svg
+                viewBox="0 0 100 90"
+                aria-hidden="true"
+              >
+                <path d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" />
+              </svg>
+
+            </span>
+            <span
+              class="dress-node dress-cream"
+              style="--x: 70%; --y: 74%;"
+            >
+
+              <svg
+                viewBox="0 0 100 90"
+                aria-hidden="true"
+              >
+                <path d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" />
+              </svg>
+
+            </span>
+            <span
+              class="dress-node dress-copper"
+              style="--x: 90%; --y: 26%;"
+            >
+
+              <svg
+                viewBox="0 0 100 90"
+                aria-hidden="true"
+              >
+                <path d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" />
+              </svg>
+
+            </span>
+
+          </div>
+
+
+          <div class="dress-labels">
+
+            <small class="dress-sage">
+              Sage Green
+            </small>
+            <small class="dress-olive">
+              Olive
+            </small>
+            <small class="dress-brown">
+              Soft Brown
+            </small>
+            <small class="dress-cream">
+              Cream
+            </small>
+            <small class="dress-copper">
+              Copper
+            </small>
+
+          </div>
+
+
+          <p class="dress-note">
+            ร่วมแต่งกายในโทนสีเหล่านี้ เพื่อให้ภาพความทรงจำของเรากลมกลืนกัน
+          </p>
+
+
+        </section>
 
       </section>
 
@@ -1325,35 +1389,6 @@
 
 
 
-      <!-- =====================================================
-           STORY
-      ====================================================== -->
-
-      <a
-        href="#story"
-        class="nav-item"
-      >
-
-        <svg
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-
-          <path
-            d="M12 21s-7-4.6-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 11c0 5.4-7 10-7 10z"
-          />
-
-        </svg>
-
-
-        <span>
-          Story
-        </span>
-
-
-      </a>
-
-
 
       <!-- =====================================================
            EVENT
@@ -1527,10 +1562,10 @@
        JAVASCRIPT
   ========================================================== -->
 
-  <script src="assets/js/main.js?v=20260829-3"></script>
-  <script src="assets/js/config.js?v=20260829-3"></script>
-  <script src="assets/js/music.js?v=20260829-3"></script>
-  <script src="assets/js/home.js?v=20260829-3"></script>
+  <script src="assets/js/main.js?v=20260829-10"></script>
+  <script src="assets/js/config.js?v=20260829-10"></script>
+  <script src="assets/js/music.js?v=20260829-10"></script>
+  <script src="assets/js/home.js?v=20260829-10"></script>
 
 
   <script

@@ -485,6 +485,510 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ============================================================
+     SPLIT-FLAP — ตัวเลขพลิกแบบป้ายบอกเวลาในสนามบิน
+
+     setFlapNumber(el, "07") จะสร้าง/อัปเดตแผ่นพลิกใน el
+     พลิกเฉพาะหลักที่ค่าเปลี่ยนจริง หลักที่เหมือนเดิมอยู่นิ่ง
+     ============================================================ */
+
+  const FLAP_FLIP_MS = 520; /* ให้ตรงกับ .26s + .26s ใน home.css */
+
+  const flapReduceMotion =
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+
+  function buildFlap(digit) {
+
+    const flap = document.createElement("span");
+
+    flap.className = "flap";
+
+    flap.dataset.value = digit;
+
+
+    flap.innerHTML =
+      '<span class="flap__half flap__half--top"><i></i></span>' +
+      '<span class="flap__half flap__half--bottom"><i></i></span>';
+
+
+    flap.querySelector(".flap__half--top > i").textContent = digit;
+
+    flap.querySelector(".flap__half--bottom > i").textContent = digit;
+
+
+    return flap;
+
+  }
+
+
+  function flipFlap(flap, next) {
+
+    const prev = flap.dataset.value;
+
+    if (prev === next) return;
+
+    flap.dataset.value = next;
+
+
+    const topStatic =
+      flap.querySelector(".flap__half--top > i");
+
+    const bottomStatic =
+      flap.querySelector(".flap__half--bottom > i");
+
+
+    /* ปิดอนิเมชัน → เปลี่ยนเลขตรง ๆ */
+    if (flapReduceMotion) {
+
+      topStatic.textContent = next;
+
+      bottomStatic.textContent = next;
+
+      return;
+
+    }
+
+
+    /* ถ้ายังมีแผ่นค้างจากรอบก่อน ให้เก็บกวาดก่อน */
+    const stale =
+      flap.querySelectorAll(".flap__fold");
+
+    stale.forEach((el) => el.remove());
+
+
+    /* ครึ่งบนเปลี่ยนเป็นค่าใหม่ทันที — จะถูกเผยเมื่อแผ่นเก่าพลิกพ้น */
+    topStatic.textContent = next;
+
+
+    const foldTop =
+      document.createElement("span");
+
+    foldTop.className = "flap__fold flap__fold--top";
+
+    foldTop.innerHTML = "<i></i>";
+
+    foldTop.firstChild.textContent = prev;
+
+
+    const foldBottom =
+      document.createElement("span");
+
+    foldBottom.className = "flap__fold flap__fold--bottom";
+
+    foldBottom.innerHTML = "<i></i>";
+
+    foldBottom.firstChild.textContent = next;
+
+
+    flap.appendChild(foldTop);
+
+    flap.appendChild(foldBottom);
+
+
+    setTimeout(() => {
+
+      /* แผ่นล่างลงล็อกแล้ว ค่อยเปลี่ยนครึ่งล่างจริง */
+      bottomStatic.textContent = next;
+
+      foldTop.remove();
+
+      foldBottom.remove();
+
+    }, FLAP_FLIP_MS);
+
+  }
+
+
+  function setFlapNumber(host, value) {
+
+    if (!host) return;
+
+
+    const text = String(value);
+
+
+    let group =
+      host.querySelector(".flap-group");
+
+
+    /* สร้างใหม่เมื่อยังไม่มี หรือจำนวนหลักเปลี่ยน (เช่น 100 → 99) */
+    if (
+      !group ||
+      group.children.length !== text.length
+    ) {
+
+      group = document.createElement("span");
+
+      group.className = "flap-group";
+
+
+      for (let i = 0; i < text.length; i++) {
+
+        group.appendChild(
+          buildFlap(text.charAt(i))
+        );
+
+      }
+
+
+      host.textContent = "";
+
+      host.appendChild(group);
+
+      return;
+
+    }
+
+
+    for (let i = 0; i < text.length; i++) {
+
+      flipFlap(
+        group.children[i],
+        text.charAt(i)
+      );
+
+    }
+
+  }
+
+
+
+  /* ============================================================
+     CELEBRATION — ถึงวันงานแล้ว
+
+     เมื่อ countdown ถึง 00:00:00:00
+     • เปลี่ยนหัวข้อเป็นข้อความฉลอง
+     • จุดพลุบนผ้าใบหลังตัวเลข (วาดเอง ไม่ใช้ไลบรารีภายนอก)
+     • หยุด interval เพราะไม่มีอะไรให้นับต่อแล้ว
+
+     ผู้ใช้ที่ตั้งค่า reduce motion จะเห็นข้อความอย่างเดียว ไม่มีพลุ
+     ============================================================ */
+
+  let celebrating = false;
+
+  let countdownTimer = null;
+
+
+  function celebrate() {
+
+    if (celebrating) return;
+
+    celebrating = true;
+
+
+    /* ไม่ต้องนับต่อแล้ว */
+    if (countdownTimer) {
+
+      clearInterval(countdownTimer);
+
+      countdownTimer = null;
+
+    }
+
+
+    const banner =
+      document.getElementById("countdownBanner");
+
+    const title =
+      document.getElementById("countdownTitle");
+
+    const message =
+      document.getElementById("countdownMessage");
+
+
+    if (title) {
+
+      title.textContent = "Today Is The Day";
+
+    }
+
+
+    if (message) {
+
+      message.textContent =
+        "วันนี้คือวันของเรา — ขอบคุณที่มาร่วมเป็นส่วนหนึ่งของความทรงจำนี้";
+
+    }
+
+
+    if (banner) {
+
+      banner.classList.add("is-celebrating");
+
+    }
+
+
+    const reduceMotion =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+
+    if (!reduceMotion) {
+
+      startFireworks();
+
+    }
+
+  }
+
+
+
+  /* ============================================================
+     FIREWORKS — วาดบน canvas ด้วย 2D context
+     ============================================================ */
+
+  function startFireworks() {
+
+    const canvas =
+      document.getElementById("fireworksCanvas");
+
+    if (!canvas || !canvas.getContext) return;
+
+
+    const ctx = canvas.getContext("2d");
+
+    if (!ctx) return;
+
+
+    /* สีพลุ — โทนงานแต่ง แต่เข้มพอให้เห็นชัดบนพื้นครีม */
+    const COLORS = [
+      "#a56a35", /* copper เข้ม */
+      "#bd7466", /* rose เข้ม   */
+      "#6b7a52", /* olive       */
+      "#c19a4b", /* gold        */
+      "#8f6f4e"  /* bronze      */
+    ];
+
+
+    let particles = [];
+
+    let rockets = [];
+
+    let width = 0;
+
+    let height = 0;
+
+    let dpr = 1;
+
+    let running = true;
+
+
+    function resize() {
+
+      const rect = canvas.getBoundingClientRect();
+
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      width = rect.width;
+
+      height = rect.height;
+
+      canvas.width = Math.round(width * dpr);
+
+      canvas.height = Math.round(height * dpr);
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    }
+
+
+    resize();
+
+    window.addEventListener("resize", resize);
+
+
+    function launchRocket() {
+
+      if (!running || width === 0) return;
+
+
+      rockets.push({
+        x: width * (0.18 + Math.random() * 0.64),
+        y: height,
+        /* ระเบิดที่ความสูงช่วงบนของแบนเนอร์ */
+        targetY: height * (0.18 + Math.random() * 0.3),
+        vy: -(height / 46) * (0.85 + Math.random() * 0.3),
+        color: COLORS[Math.floor(Math.random() * COLORS.length)]
+      });
+
+    }
+
+
+    function explode(x, y, color) {
+
+      const count = 26 + Math.floor(Math.random() * 14);
+
+      for (let i = 0; i < count; i++) {
+
+        const angle =
+          (Math.PI * 2 * i) / count +
+          Math.random() * 0.2;
+
+        const speed = 1.1 + Math.random() * 2.4;
+
+        particles.push({
+          x: x,
+          y: y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 1,
+          decay: 0.009 + Math.random() * 0.010,
+          color: color,
+          size: 1.7 + Math.random() * 1.7
+        });
+
+      }
+
+    }
+
+
+    function frame() {
+
+      if (!running) return;
+
+
+      /* เฟดภาพเดิมแทนการล้าง เพื่อให้เกิดหางพลุ
+         ใช้ source-over ปกติ (ไม่ใช่ lighter) เพราะพื้นหลังเป็นสีครีม
+         ถ้าใช้ lighter สีจะจมหายไปกับพื้น */
+      ctx.globalCompositeOperation = "destination-out";
+
+      ctx.fillStyle = "rgba(0, 0, 0, 0.09)";
+
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.globalCompositeOperation = "source-over";
+
+
+      /* จรวด */
+      for (let i = rockets.length - 1; i >= 0; i--) {
+
+        const r = rockets[i];
+
+        r.y += r.vy;
+
+        r.vy += 0.05;
+
+
+        ctx.beginPath();
+
+        ctx.fillStyle = r.color;
+
+        ctx.globalAlpha = 0.95;
+
+        ctx.shadowBlur = 8;
+
+        ctx.shadowColor = r.color;
+
+        ctx.arc(r.x, r.y, 2.6, 0, Math.PI * 2);
+
+        ctx.fill();
+
+        ctx.shadowBlur = 0;
+
+
+        if (r.y <= r.targetY || r.vy >= 0) {
+
+          explode(r.x, r.y, r.color);
+
+          rockets.splice(i, 1);
+
+        }
+
+      }
+
+
+      /* ประกายพลุ */
+      for (let i = particles.length - 1; i >= 0; i--) {
+
+        const p = particles[i];
+
+        p.x += p.vx;
+
+        p.y += p.vy;
+
+        p.vx *= 0.985;
+
+        p.vy = p.vy * 0.985 + 0.035; /* แรงโน้มถ่วง */
+
+        p.life -= p.decay;
+
+
+        if (p.life <= 0) {
+
+          particles.splice(i, 1);
+
+          continue;
+
+        }
+
+
+        ctx.beginPath();
+
+        ctx.globalAlpha = Math.max(p.life, 0);
+
+        ctx.fillStyle = p.color;
+
+        ctx.shadowBlur = 7;
+
+        ctx.shadowColor = p.color;
+
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+
+        ctx.fill();
+
+        ctx.shadowBlur = 0;
+
+      }
+
+
+      ctx.globalAlpha = 1;
+
+      ctx.globalCompositeOperation = "source-over";
+
+
+      requestAnimationFrame(frame);
+
+    }
+
+
+    /* ยิงชุดแรกให้เห็นทันที แล้วยิงต่อเป็นระยะ */
+    launchRocket();
+
+    setTimeout(launchRocket, 420);
+
+    setTimeout(launchRocket, 900);
+
+    setInterval(launchRocket, 950);
+
+
+    requestAnimationFrame(frame);
+
+
+    /* หยุดวาดเมื่อผู้ใช้สลับแท็บไป ประหยัดแบตเตอรี่ */
+    document.addEventListener("visibilitychange", () => {
+
+      if (document.hidden) {
+
+        running = false;
+
+      } else if (!running) {
+
+        running = true;
+
+        requestAnimationFrame(frame);
+
+      }
+
+    });
+
+  }
+
+
+
+  /* ============================================================
      COUNTDOWN
      17 JANUARY 2027 - 10:00
      ============================================================ */
@@ -540,13 +1044,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (distance <= 0) {
 
 
-      daysEl.textContent = "00";
+      setFlapNumber(daysEl, "00");
 
-      hoursEl.textContent = "00";
+      setFlapNumber(hoursEl, "00");
 
-      minutesEl.textContent = "00";
+      setFlapNumber(minutesEl, "00");
 
-      secondsEl.textContent = "00";
+      setFlapNumber(secondsEl, "00");
+
+
+      celebrate();
 
 
       return;
@@ -623,26 +1130,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    daysEl.textContent =
-      days;
+    /* วันคงหลักไว้อย่างน้อย 2 หลัก เพื่อไม่ให้แผ่นพลิกกระตุกเวลาข้ามหลัก */
+    setFlapNumber(
+      daysEl,
+      String(days).padStart(2, "0")
+    );
 
 
-    hoursEl.textContent =
-
-      String(hours)
-        .padStart(2, "0");
-
-
-    minutesEl.textContent =
-
-      String(minutes)
-        .padStart(2, "0");
+    setFlapNumber(
+      hoursEl,
+      String(hours).padStart(2, "0")
+    );
 
 
-    secondsEl.textContent =
+    setFlapNumber(
+      minutesEl,
+      String(minutes).padStart(2, "0")
+    );
 
-      String(seconds)
-        .padStart(2, "0");
+
+    setFlapNumber(
+      secondsEl,
+      String(seconds).padStart(2, "0")
+    );
 
   }
 
@@ -655,7 +1165,8 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCountdown();
 
 
-    setInterval(
+    /* เก็บ id ไว้ให้ celebrate() หยุดได้เมื่อถึงวันงาน */
+    countdownTimer = setInterval(
       updateCountdown,
       1000
     );
