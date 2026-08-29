@@ -1099,45 +1099,126 @@ a {
 }
 
 .gallery-grid {
-  margin-top: 20px;
+  margin-top: 26px;
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr 0.9fr;
-  grid-template-rows: 260px 260px;
-  gap: 18px;
-  filter: brightness(0.95) contrast(1.05);
+  /* โมเสก 4 คอลัมน์: ภาพแนวตั้งขนาบซ้าย-ขวา ภาพแนวนอนอยู่กลาง */
+  grid-template-columns: 0.82fr 1fr 1fr 0.82fr;
+  grid-template-rows: 232px 232px;
+  gap: 16px;
 }
 
 .gallery-item {
+  position: relative;
+  margin: 0;
   border-radius: 18px;
   overflow: hidden;
-  background-size: cover;
-  background-position: center;
-  position: relative;
   box-shadow: var(--shadow);
+  background: var(--cream-dark);
 }
 
-.gallery-item:nth-child(1) {
-  background-image: url("../../pic/couple1.jpg");
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .9s cubic-bezier(.22, .61, .36, 1);
 }
 
-.gallery-item:nth-child(2) {
-  background-image: url("../../pic/photo/photo-02.jpg");
+/* ไล่เฉดอ่อน ๆ ที่ขอบล่าง ให้ภาพดูมีมิติและเข้ากับโทนกระดาษ */
+.gallery-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to top,
+      rgba(64, 62, 49, .18) 0%,
+      rgba(64, 62, 49, 0) 42%
+    );
+  pointer-events: none;
 }
 
-.gallery-item:nth-child(3) {
-  background-image: url("../../pic/photo/photo-01.jpg");
+@media (hover: hover) {
+
+  .gallery-item:hover img {
+    transform: scale(1.06);
+  }
+
 }
 
-.gallery-item:nth-child(4) {
-  background-image: url("../../pic/photo/photo-07.jpg");
+/* ---- ตำแหน่งในโมเสก ---- */
+
+/* แนวตั้ง ซ้ายสุด — สูงเต็ม 2 แถว */
+.gallery-item.g-1 {
+  grid-column: 1;
+  grid-row: 1 / span 2;
 }
 
-.gallery-item.tall {
-  grid-row: span 2;
+/* แนวนอน กลางบน — กว้าง 2 คอลัมน์ */
+.gallery-item.g-2 {
+  grid-column: 2 / span 2;
+  grid-row: 1;
 }
 
-.gallery-item.wide {
-  grid-column: span 2;
+/* แนวตั้ง ขวาสุด — สูงเต็ม 2 แถว */
+.gallery-item.g-3 {
+  grid-column: 4;
+  grid-row: 1 / span 2;
+}
+
+.gallery-item.g-4 {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.gallery-item.g-5 {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+
+/* ==========================================
+   ลิงก์ไปหน้า Photos
+========================================== */
+
+.gallery-more {
+  margin-top: 26px;
+  text-align: center;
+}
+
+.gallery-more-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 24px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--brown);
+  font-size: 14px;
+  letter-spacing: .04em;
+  transition: border-color .3s ease, transform .3s ease, box-shadow .3s ease;
+}
+
+.gallery-more-link svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform .3s ease;
+}
+
+.gallery-more-link:hover {
+  border-color: var(--olive);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(80, 62, 48, .12);
+}
+
+.gallery-more-link:hover svg {
+  transform: translateX(4px);
 }
 
 /* ==========================================
@@ -1581,17 +1662,36 @@ a {
     grid-template-columns: 1fr;
   }
 
+  /* มือถือ: 2 คอลัมน์ ภาพแนวตั้งสูง 2 แถว เรียงสลับซ้าย-ขวา */
   .gallery-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, 148px);
+    gap: 12px;
   }
 
-  .gallery-item,
-  .gallery-item.tall,
-  .gallery-item.wide {
-    grid-column: auto;
-    grid-row: auto;
-    min-height: 260px;
+  .gallery-item.g-1 {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+
+  .gallery-item.g-2 {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .gallery-item.g-4 {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .gallery-item.g-3 {
+    grid-column: 1;
+    grid-row: 3 / span 2;
+  }
+
+  .gallery-item.g-5 {
+    grid-column: 2;
+    grid-row: 3 / span 2;
   }
 
   .placeholder-photo {
@@ -1844,18 +1944,6 @@ a {
 @keyframes bowSway {
   0%, 100% { transform: rotate(-3deg); }
   50%      { transform: rotate(3deg); }
-}
-
-/* การ์ดรูปในแกลเลอรีหน้าแรก: ยกตัว + ซูมเมื่อชี้ (desktop) */
-.gallery-item {
-  transition: transform .5s ease, box-shadow .5s ease;
-}
-
-@media (hover: hover) {
-  .gallery-item:hover {
-    transform: translateY(-6px) scale(1.015);
-    box-shadow: 0 22px 50px rgba(80, 62, 48, .16);
-  }
 }
 
 /* ตัวเลข countdown เต้นเบา ๆ */
