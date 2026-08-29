@@ -133,7 +133,7 @@
       margin-top:5px;
       padding-right:8px;
       text-align:right;
-      color:#999586;
+      color:#6e6b60;
       font-size:14px;
     }
 
@@ -193,7 +193,7 @@
       height:58px;
       border:0;
       border-radius:999px;
-      background:linear-gradient(90deg,#747544,#85864e);
+      background:linear-gradient(90deg,#747544,#717242);
       color:#fff;
       font-size:18px;
       box-shadow:0 8px 20px rgba(103,102,57,.16);
@@ -286,8 +286,8 @@
 
 .sparkle-icon{
   font-size:20px;
-  color:var(--olive);
-  opacity:.8;
+  /* opacity ระดับ element ก็ลดคอนทราสต์เหมือนสีจาง — ใช้สีเต็มแทน */
+  color:#5f6037;
 }
 
 .cloud-header h2{
@@ -1115,8 +1115,28 @@ body.wish-fs-lock{
   display:none;
 }
 
+/* ในหน้าปกติ รายการนี้อยู่ใต้ต้นไม้ อ่านได้และกดได้
+   (ตอนเต็มจอจะย้ายไปเป็นแถบขวามือ — ดูกฎในหมวดโหมดเต็มจอ)
+
+   เหตุผลเชิงการเข้าถึง: หัวใจบนต้นไม้เล็กเกินเกณฑ์ SC 2.5.8
+   รายการนี้คือทางเข้าเดียวกันในขนาดที่นิ้วกดได้จริง */
 .wish-feed{
+  display:block;
+  width:min(760px, 92%);
+  margin:clamp(26px, 4vw, 44px) auto 0;
+  padding:clamp(18px, 2.4vw, 26px);
+  border-radius:22px;
+  background:rgba(255,253,247,.72);
+  border:1px solid var(--line);
+}
+
+.wish-feed:empty{
   display:none;
+}
+
+/* แถวหนึ่ง = คำอวยพรหนึ่งข้อ สูงพอให้กดได้สบายบนมือถือ */
+.wish-feed .wish-feed-item{
+  min-height:44px;
 }
 
 

@@ -880,6 +880,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (timer) return;
 
+      /* ผู้ใช้กดหยุดไว้ — การเลื่อนกลับเข้ามาในจอต้องไม่เริ่มเล่นเอง */
+      if (!wantsPlay()) return;
+
       timer = setInterval(
         tick,
         typeof HOME_GALLERY_INTERVAL !== "undefined"
@@ -897,6 +900,69 @@ document.addEventListener("DOMContentLoaded", () => {
       clearInterval(timer);
 
       timer = null;
+
+    }
+
+
+    /* ---- ปุ่มหยุด/เล่น (SC 2.2.2 Pause, Stop, Hide) ----
+       เนื้อหาที่ขยับเองต่อเนื่องเกินห้าวินาที ต้องมีวิธีให้ผู้ใช้หยุดได้
+       wantsPlay คือความตั้งใจของผู้ใช้ แยกจาก start()/stop()
+       ที่ใช้หยุดชั่วคราวตอนเลื่อนพ้นจอหรือสลับแท็บ */
+
+    const GALLERY_KEY = "wedding-gallery";
+
+    function wantsPlay() {
+      try {
+        return localStorage.getItem(GALLERY_KEY) !== "paused";
+      } catch (e) {
+        return true;
+      }
+    }
+
+    const toggle =
+      document.getElementById("galleryToggle");
+
+    function syncToggle() {
+
+      if (!toggle) return;
+
+      const playing = wantsPlay();
+
+      toggle.classList.toggle("is-paused", !playing);
+      toggle.setAttribute("aria-pressed", String(playing));
+
+      const label = toggle.querySelector(".gt-label");
+
+      if (label) {
+        label.textContent = playing ? "หยุดสไลด์" : "เล่นสไลด์";
+      }
+
+    }
+
+    if (toggle) {
+
+      toggle.addEventListener("click", () => {
+
+        const nowPaused = wantsPlay();
+
+        try {
+          localStorage.setItem(
+            GALLERY_KEY,
+            nowPaused ? "paused" : "playing"
+          );
+        } catch (e) { /* โหมดส่วนตัว — ใช้ได้แค่รอบนี้ */ }
+
+        syncToggle();
+
+        if (nowPaused) {
+          stop();
+        } else {
+          start();
+        }
+
+      });
+
+      syncToggle();
 
     }
 

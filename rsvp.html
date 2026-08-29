@@ -45,9 +45,9 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="assets/css/base.css?v=20260830-33" />
-  <link rel="stylesheet" href="assets/css/components.css?v=20260830-33" />
-  <link rel="stylesheet" href="assets/css/rsvp.css?v=20260830-33" />
+  <link rel="stylesheet" href="assets/css/base.css?v=20260830-42" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260830-42" />
+  <link rel="stylesheet" href="assets/css/rsvp.css?v=20260830-42" />
 
 </head>
 
@@ -65,7 +65,7 @@
         class="brand-logo"
       >
 
-      <h1>AUSAMAH &amp; MIZAHASAN</h1>
+      <h1 lang="en">AUSAMAH &amp; MIZAHASAN</h1>
     </div>
 
     <div class="header-space"></div>
@@ -87,7 +87,7 @@
         class="bow-icon"
       >
 
-      <h2>WILL YOU JOIN US?</h2>
+      <h2 lang="en">WILL YOU JOIN US?</h2>
 
       <p>ร่วมยืนยันการเข้าร่วมงานของคุณ</p>
 
@@ -126,7 +126,9 @@
             <label class="choice-card">
               <input type="radio" name="attending" value="yes" required>
               <span class="choice-inner">
-                <span class="choice-icon">♥</span>
+                <!-- กรอบว่าง -> ติ๊กถูก เมื่อถูกเลือก
+                     รูปทรงเปลี่ยนจริง ไม่ได้บอกสถานะด้วยสีอย่างเดียว -->
+                <span class="choice-mark" aria-hidden="true"></span>
                 ยินดีเข้าร่วม
               </span>
             </label>
@@ -134,7 +136,7 @@
             <label class="choice-card">
               <input type="radio" name="attending" value="no" required>
               <span class="choice-inner">
-                <span class="choice-icon">✕</span>
+                <span class="choice-mark" aria-hidden="true"></span>
                 ขออภัย ไม่สามารถมาได้
               </span>
             </label>
@@ -162,12 +164,18 @@
 
             <label class="choice-card">
               <input type="radio" name="side" value="groom">
-              <span class="choice-inner">ฝั่งเจ้าบ่าว</span>
+              <span class="choice-inner">
+                <span class="choice-mark" aria-hidden="true"></span>
+                ฝั่งเจ้าบ่าว
+              </span>
             </label>
 
             <label class="choice-card">
               <input type="radio" name="side" value="bride">
-              <span class="choice-inner">ฝั่งเจ้าสาว</span>
+              <span class="choice-inner">
+                <span class="choice-mark" aria-hidden="true"></span>
+                ฝั่งเจ้าสาว
+              </span>
             </label>
 
           </div>
@@ -204,13 +212,13 @@
           class="confirm-logo"
         >
 
-        <p class="confirm-brand">AUSAMAH &amp; MIZAHASAN</p>
+        <p class="confirm-brand" lang="en">AUSAMAH &amp; MIZAHASAN</p>
 
         <div class="confirm-divider">
           <img src="pic/icon-bow.png" alt="" class="bow-icon small">
         </div>
 
-        <p class="confirm-title" id="confirmTitle">ขอบคุณสำหรับการตอบรับ</p>
+        <p class="confirm-title" id="confirmTitle" tabindex="-1">ขอบคุณสำหรับการตอบรับ</p>
 
         <p class="confirm-name" id="confirmName"></p>
 
@@ -363,9 +371,9 @@
   ></div>
 
 
-  <script src="assets/js/main.js?v=20260830-33"></script>
-  <script src="assets/js/config.js?v=20260830-33"></script>
-  <script src="assets/js/rsvp.js?v=20260830-33"></script>
+  <script src="assets/js/main.js?v=20260830-42"></script>
+  <script src="assets/js/config.js?v=20260830-42"></script>
+  <script src="assets/js/rsvp.js?v=20260830-42"></script>
 
 </body>
 

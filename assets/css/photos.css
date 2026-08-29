@@ -93,7 +93,7 @@ img {
 
   margin-top: 7px;
 
-  color: #aaa783;
+  color: #767356;
 
   font-size: 17px;
 }
@@ -454,7 +454,7 @@ img {
 
   gap: 14px;
 
-  color: #aaa783;
+  color: #767356;
 }
 
 
@@ -667,7 +667,7 @@ img {
     linear-gradient(
       90deg,
       #747544,
-      #85864e
+      #717242
     );
 
   box-shadow:
@@ -715,13 +715,13 @@ img {
 
   font-size: 13px;
 
-  color: #8b8678;
+  color: #6c6960;
 }
 
 
 .drive-note span {
 
-  color: #9b8e48;
+  color: #7b7139;
 
   font-weight: 500;
 }
@@ -805,7 +805,7 @@ img {
 
 .photo-thanks span {
 
-  color: #aaa783;
+  color: #767356;
 
   font-size: 14px;
 }
@@ -1137,4 +1137,48 @@ img {
 
 @media (prefers-reduced-motion: reduce) {
   .main-slide img { animation: none; }
+}
+
+
+/* =========================================================
+   SC 2.5.8 Target Size (Minimum) — จุดบอกตำแหน่งรูป
+
+   จุดเดิมกว้าง 9–10px และเรียงชิดกัน จึงไม่เข้าข้อยกเว้นเรื่องระยะห่าง
+   ขยายพื้นที่กดเป็น 24×24 โดยคงขนาดจุดที่มองเห็นไว้เท่าเดิม
+   (จุดจริงวาดด้วย ::after ส่วนตัวปุ่มกลายเป็นพื้นที่กดโปร่งใส)
+========================================================= */
+
+.photo-dot {
+  position: relative;
+  /* 26 ไม่ใช่ 24 พอดี — กันเศษพิกเซลจากการปัดของ layout */
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.photo-dot::after {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--line, #ddd5c6);
+  transition: background .25s ease, transform .25s ease;
+}
+
+.photo-dot.active::after {
+  background: var(--olive, #777747);
+  transform: scale(1.15);
+}
+
+.photo-dot:focus-visible {
+  outline: 2px solid var(--olive, #777747);
+  outline-offset: 0;
+  border-radius: 50%;
 }

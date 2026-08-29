@@ -256,6 +256,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (confirmSection) {
       confirmSection.hidden = false;
+
+      /* ฟอร์มถูกซ่อนไปแล้ว จุดโฟกัสของผู้ใช้คีย์บอร์ดจึงหายไปจากหน้า
+         ถ้าไม่ย้ายให้ กด Tab ครั้งถัดไปจะเด้งกลับไปเริ่มที่บนสุดของหน้า */
+      const confirmTitle =
+        document.getElementById("confirmTitle");
+
+      if (confirmTitle && typeof confirmTitle.focus === "function") {
+        confirmTitle.focus({ preventScroll: false });
+      }
       confirmSection.scrollIntoView({ block: "center" });
     }
 

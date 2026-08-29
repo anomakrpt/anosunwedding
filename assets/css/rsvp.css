@@ -39,7 +39,8 @@
   margin-top: 10px;
   font-size: 14px;
   letter-spacing: .04em;
-  color: var(--olive);
+  /* เข้มกว่า --olive หนึ่งขั้น — ค่าเดิมได้อัตราส่วน 4.24 ซึ่งยังไม่ถึง 4.5 */
+  color: #6e6e41;
 }
 
 
@@ -213,7 +214,7 @@
   padding: 0 26px;
   border: 0;
   border-radius: 999px;
-  background: linear-gradient(135deg, #747544, #85864e);
+  background: linear-gradient(135deg, #747544, #717242);
   color: #fdfbf4;
   font-size: 16px;
   letter-spacing: .04em;
@@ -442,5 +443,56 @@
 @media (prefers-reduced-motion: reduce) {
   .rsvp-confirm {
     animation: none;
+  }
+}
+
+
+/* =========================================================
+   SC 1.4.1 Use of Color — สถานะ "เลือกแล้ว"
+
+   ของเดิมเปลี่ยนแค่สีขอบ สีพื้น และสีไอคอน ผู้ที่แยกสีไม่ได้
+   จึงมองไม่ออกว่าเลือกอันไหนอยู่ — ทั้งที่เป็นปุ่มที่ตัดสินว่าจองที่นั่งหรือไม่
+   เพิ่มการ์ดเครื่องหมาย: กรอบวงกลมว่าง เปลี่ยนเป็นติ๊กถูก รูปทรงเปลี่ยนจริง
+========================================================= */
+
+.choice-mark {
+  position: relative;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border: 1.6px solid var(--line);
+  border-radius: 50%;
+  background: #fff;
+  transition: border-color .25s ease, background .25s ease;
+}
+
+/* ติ๊กถูกวาดด้วยเส้นขอบสองด้านแล้วหมุน — ไม่ต้องพึ่งฟอนต์หรือไฟล์ */
+.choice-mark::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 1.5px;
+  width: 5px;
+  height: 9px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(42deg) scale(0);
+  transform-origin: center;
+  transition: transform .2s cubic-bezier(.22, .61, .36, 1);
+}
+
+.choice-card input:checked + .choice-inner .choice-mark {
+  border-color: var(--olive-dark);
+  background: var(--olive-dark);
+}
+
+.choice-card input:checked + .choice-inner .choice-mark::after {
+  transform: rotate(42deg) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .choice-mark,
+  .choice-mark::after {
+    transition: none;
   }
 }

@@ -19,9 +19,9 @@
   --cream: #f7edd6;
   --cream-soft: #fbf5e8;
   --cream-dark: #efe5d2;
-  --green: #717d62;
+  --green: #626d55;
   --olive:#5C6B4A;
-  --green-dark: #606d56;
+  --green-dark: #55604a;
   --shadow: 0 18px 45px rgba(80, 62, 48, 0.08);
   --radius-lg: 32px;
   --copper:#B17F52;
@@ -200,7 +200,7 @@ a {
   margin: 0 auto;
   font-size: clamp(15px, 2vw, 18px);
   line-height: 1.8;
-  color: rgba(248, 240, 221, 0.9);
+  color: #f8f0dd;
 }
 
 .scroll-down {
@@ -230,7 +230,7 @@ a {
 .scroll-hint {
   margin-top: 30px;
   font-size: 10px;
-  color: rgba(248, 240, 221, 0.85);
+  color: #f8f0dd;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
@@ -425,7 +425,7 @@ a {
     font-size:clamp(1rem,1.15vw,1.15rem);
     line-height:2;
     letter-spacing:.01em;
-    color:rgba(111,127,93,.82);
+    color:#627152;
 }
 
 /* ---------------- Citation ---------------- */
@@ -440,7 +440,7 @@ a {
     font-size:clamp(.5rem,.95vw,1.05rem);
     letter-spacing:.12em;
     text-transform:uppercase;
-    color:rgba(111,127,93,.58);
+    color:#627152;
 }
 
 /* จังหวะการเผยของ blessing ย้ายไปอยู่ในบล็อก SECTION CHOREOGRAPHY
@@ -904,7 +904,7 @@ a {
   font-weight: 500;
   line-height: 1;
   letter-spacing: 0;
-  color: #c98f84;
+  color: #b48076;
   font-variant-numeric: tabular-nums;
   transition: color .5s ease;
 }
@@ -1138,7 +1138,7 @@ a {
   font-size: 11px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #a18f82;
+  color: #75685e;
 }
 
 .venue-transport p,
@@ -1606,7 +1606,7 @@ a {
   font-size: clamp(1rem, 1.4vw, 1.2rem);
   line-height: 1.8;
   letter-spacing: 0.06em;
-  color: rgba(122, 98, 87, 0.72);
+  color: #7a6257;
 }
 
 .ending-divider {
@@ -1678,7 +1678,7 @@ a {
   letter-spacing: .16em;
   line-height: 1.35;
   text-align: center;
-  color: rgba(122, 98, 87, .7);
+  color: #7a6257;
   /* กันชื่อยาว (BRIDE'S FATHER) ตัดสองบรรทัดแล้วดันเบอร์กับปุ่มเลื่อนลง
      ไม่ตรงแนวกับใบอื่น — จองความสูงไว้สองบรรทัดเท่ากันทุกใบ */
   min-height: calc(1.35em * 2);
@@ -3462,7 +3462,7 @@ a {
   gap: 6px 26px;
   font-size: 12.5px;
   line-height: 1.9;
-  color: rgba(122, 98, 87, .62);
+  color: #7a6257;
 }
 
 .footer-credits .credit-item {
@@ -3475,12 +3475,17 @@ a {
   font-size: 10.5px;
   letter-spacing: .16em;
   text-transform: uppercase;
-  color: rgba(122, 98, 87, .45);
+  /* ตัวพิมพ์ใหญ่ระยะห่างกว้างทำหน้าที่แยกลำดับอยู่แล้ว
+     ไม่ต้องพึ่งสีจาง ซึ่งได้อัตราส่วนแค่ 1.85 */
+  color: #7a6257;
 }
 
 .footer-credits a,
 .footer-credits .credit-item > span:not(.credit-key):not(.dot) {
-  color: rgba(79, 68, 63, .78);
+  color: #4f443f;
+  /* ชื่อสั้น ๆ อย่าง "Nat" กว้างไม่ถึง 24px — เติมระยะด้านข้างให้พ้นเกณฑ์
+     โดยไม่ทำให้บรรทัดเครดิตสูงขึ้น (SC 2.5.8) */
+  padding: 0 3px;
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: color .25s ease, border-color .25s ease;
@@ -3492,7 +3497,8 @@ a {
 }
 
 .footer-credits .dot {
-  color: rgba(122, 98, 87, .3);
+  color: #7a6257;
+  opacity: .5;
 }
 
 @media (max-width: 520px) {
@@ -3574,7 +3580,7 @@ a {
   width: min(620px, 88%);
   margin: 18px auto 34px;
   text-align: center;
-  color: rgba(111, 127, 93, .82);
+  color: #627152;
 }
 
 .gallery-quote .gallery-leaf {
@@ -3689,6 +3695,12 @@ a {
   text-decoration: none;
   font-variant-numeric: tabular-nums;
   transition: color .25s ease;
+
+  /* เบอร์โทรเป็นลิงก์ กดแล้วโทรได้ จึงต้องสูงพอเป็นเป้ากด (SC 2.5.8)
+     ความสูงตามบรรทัดอย่างเดียวได้ 23px ซึ่งขาดไปหนึ่งพิกเซล */
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
 }
 
 .contact-row .contact-call {
@@ -3943,6 +3955,97 @@ a {
   .story-scene,
   .blessing.is-fullscreen {
     min-height: 0;
+  }
+
+}
+
+
+/* =========================================================
+   ปุ่มหยุด/เล่นสไลด์แกลเลอรี — WCAG SC 2.2.2 Pause, Stop, Hide
+
+   เนื้อหาที่ขยับเองต่อเนื่องเกินห้าวินาทีต้องมีวิธีให้ผู้ใช้หยุด
+   วางไว้เหนือโมเสก ชิดขวา ให้เห็นแต่ไม่แย่งความสนใจจากรูป
+========================================================= */
+
+.gallery-toggle {
+  /* block-level + width:fit-content เพื่อให้ margin-left:auto ดันไปชิดขวาได้
+     (inline-flex จะถูกจัดกลางตาม text-align ของ section แทน) */
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 14px auto;
+  padding: 7px 15px;
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--warm-white, #fff);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 12.5px;
+  letter-spacing: .02em;
+  cursor: pointer;
+  transition: color .25s ease, border-color .25s ease, background .25s ease;
+}
+
+.gallery-toggle svg {
+  width: 13px;
+  height: 13px;
+  fill: currentColor;
+  flex: none;
+}
+
+/* แสดงไอคอนเดียวตามสถานะ */
+.gallery-toggle .gt-play  { display: none; }
+.gallery-toggle.is-paused .gt-pause { display: none; }
+.gallery-toggle.is-paused .gt-play  { display: block; }
+
+.gallery-toggle:hover {
+  color: var(--olive);
+  border-color: var(--olive);
+}
+
+.gallery-toggle:focus-visible {
+  outline: 2px solid var(--olive);
+  outline-offset: 2px;
+}
+
+/* ปุ่มอยู่ในสายการ reveal ของแกลเลอรี ให้ขึ้นมาพร้อมหัวข้อ */
+.gallery-section:not(.in-view) .gallery-toggle { opacity: 0; }
+
+.gallery-section.in-view .gallery-toggle {
+  animation: sceneFade .8s ease .45s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .gallery-section:not(.in-view) .gallery-toggle { opacity: 1; }
+
+  /* ไม่มีสไลด์ให้หยุด เพราะสคริปต์ไม่เริ่มเล่นตั้งแต่แรก */
+  .gallery-toggle { display: none; }
+
+}
+
+
+/* =========================================================
+   SC 1.4.10 Reflow — 320px
+
+   เมนูล่างหกช่องดันความกว้างเอกสารเกินจอที่ 320px
+   ปล่อยให้ช่องย่อได้ และลดขนาดป้ายลงในจอที่แคบกว่า 360px
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .bottom-nav .nav-item {
+    min-width: 0;
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+
+  .bottom-nav .nav-item span {
+    font-size: 9px;
+    letter-spacing: 0;
+    overflow-wrap: anywhere;
   }
 
 }

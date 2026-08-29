@@ -51,9 +51,9 @@
        MAIN CSS
   ========================================================== -->
 
-    <link rel="stylesheet" href="assets/css/base.css?v=20260830-33" />
-  <link rel="stylesheet" href="assets/css/components.css?v=20260830-33" />
-  <link rel="stylesheet" href="assets/css/home.css?v=20260830-33" />
+    <link rel="stylesheet" href="assets/css/base.css?v=20260830-42" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260830-42" />
+  <link rel="stylesheet" href="assets/css/home.css?v=20260830-42" />
 
 
   
@@ -79,7 +79,7 @@
     >
 
       <source
-        src="pic/cardopen.mp4?v=20260830-33"
+        src="pic/cardopen.mp4?v=20260830-42"
         type="video/mp4"
       />
 
@@ -276,12 +276,12 @@
       <div class="hero-right">
 
 
-        <p class="script-title">
+        <p class="script-title" lang="en">
           A Golden Renewal
         </p>
 
 
-        <h1>
+        <h1 lang="en">
 
           Anoma
 
@@ -393,7 +393,7 @@
         <blockquote>
 
 
-          <span class="quote-en">
+          <span class="quote-en" lang="en">
 
             It is written that He placed between two hearts a quiet love and a
             mercy that asks for nothing — only a home, built gently, together.
@@ -409,7 +409,7 @@
           </span>
 
 
-          <cite class="caption">
+          <cite class="caption" lang="en">
 
             — after Qur'an, Ar-Rūm 30:21
 
@@ -437,7 +437,7 @@
 
           <div class="placeholder-photo">
 
-            <div class="image-caption">
+            <div class="image-caption" lang="en">
 
               Where our story began
 
@@ -456,7 +456,7 @@
         <div class="card soft">
 
 
-          <h2>
+          <h2 lang="en">
 
             Once upon a time,
 
@@ -561,7 +561,7 @@
         <blockquote>
 
 
-          <span class="quote-en">
+          <span class="quote-en" lang="en">
 
             "And We created you in pairs."
 
@@ -575,7 +575,7 @@
           </span>
 
 
-          <cite class="caption">
+          <cite class="caption" lang="en">
 
             — after Qur'an, An-Naba' 78:8
 
@@ -760,7 +760,8 @@
 
 
               <span
-                class="countdown-title"
+                lang="en"
+              class="countdown-title"
                 id="countdownTitle"
               >
                 Until Our Day
@@ -857,7 +858,7 @@
              CEREMONY - LEFT COLUMN ON iPad / DESKTOP
         ================================================== -->
 
-        <div class="card white ceremony-card">
+        <div class="card white ceremony-card" lang="en">
 
 
           <h2>
@@ -926,12 +927,12 @@
           <section class="dress-section">
 
 
-            <p class="section-label center">
+            <p class="section-label center" lang="en">
               Dress Code
             </p>
 
 
-            <h2 class="center dress-heading">
+            <h2 class="center dress-heading" lang="en">
               Wear Our Colours
             </h2>
 
@@ -1196,19 +1197,19 @@
         </div>
 
 
-        <p class="section-label center">
+        <p class="section-label center" lang="en">
           Gallery
         </p>
 
 
-        <h2 class="center">
+        <h2 class="center" lang="en">
           A Glimpse of Us
         </h2>
 
 
         <!-- คำคมปิดเรื่อง ย้ายมาอยู่ใต้หัวข้อแกลเลอรี เล่าเป็นคำโปรย
              ไม่ใช่ฉากเต็มหน้าจอของตัวเองอีกต่อไป -->
-        <p class="gallery-quote">
+        <p class="gallery-quote" lang="en">
 
           <span class="gallery-leaf" aria-hidden="true">
 
@@ -1245,6 +1246,29 @@
           ถ้าจะสลับรูป แก้ src ตรงนี้ได้เลย
           ตำแหน่งในโมเสกกำหนดด้วย class g-1 … g-5 (ดู home.css)
         -->
+
+        <!-- SC 2.2.2 Pause, Stop, Hide — เนื้อหาที่ขยับเองต้องมีปุ่มให้หยุดได้
+             ค่าที่เลือกถูกจำไว้ใน localStorage เหมือนปุ่มเปิด/ปิดเสียง -->
+        <button
+          type="button"
+          class="gallery-toggle"
+          id="galleryToggle"
+          aria-pressed="true"
+        >
+
+          <svg class="gt-pause" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="7" y="5" width="3.4" height="14" rx="1.2" />
+            <rect x="13.6" y="5" width="3.4" height="14" rx="1.2" />
+          </svg>
+
+          <svg class="gt-play" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 5.2v13.6L19 12z" />
+          </svg>
+
+          <span class="gt-label">หยุดสไลด์</span>
+
+        </button>
+
 
         <div class="gallery-grid">
 
@@ -1337,7 +1361,9 @@
          ENDING / CONTACT
     ========================================================== -->
 
-    <section
+    <!-- ใช้ <footer> ไม่ใช่ <section> เพื่อให้เป็น landmark ที่โปรแกรมอ่านหน้าจอ
+         กระโดดมาถึงได้โดยตรง — เบอร์ติดต่อทั้งหมดอยู่ในนี้ -->
+    <footer
       class="ending final-ending"
       id="contact"
     >
@@ -1362,14 +1388,14 @@
           >
 
 
-          <h2 class="ending-title">
+          <h2 class="ending-title" lang="en">
 
             We look forward to celebrating with you
 
           </h2>
 
 
-          <p class="ending-sub">
+          <p class="ending-sub" lang="en">
 
             Made with love for our dearest family and friends
 
@@ -1386,7 +1412,7 @@
         <div class="footer-contact">
 
 
-          <p class="footer-label">
+          <p class="footer-label" lang="en">
             For any enquiries
           </p>
 
@@ -1508,7 +1534,7 @@
 
 
 
-        <p class="footer-credits">
+        <p class="footer-credits" lang="en">
 
           <span class="credit-item">
 
@@ -1554,7 +1580,7 @@
       </div>
 
 
-    </section>
+    </footer>
 
 
 
@@ -1776,10 +1802,10 @@
        JAVASCRIPT
   ========================================================== -->
 
-  <script src="assets/js/main.js?v=20260830-33"></script>
-  <script src="assets/js/config.js?v=20260830-33"></script>
-  <script src="assets/js/music.js?v=20260830-33"></script>
-  <script src="assets/js/home.js?v=20260830-33"></script>
+  <script src="assets/js/main.js?v=20260830-42"></script>
+  <script src="assets/js/config.js?v=20260830-42"></script>
+  <script src="assets/js/music.js?v=20260830-42"></script>
+  <script src="assets/js/home.js?v=20260830-42"></script>
 
 
   <script

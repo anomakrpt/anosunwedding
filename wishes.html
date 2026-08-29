@@ -23,9 +23,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="assets/css/base.css?v=20260830-33" />
-  <link rel="stylesheet" href="assets/css/components.css?v=20260830-33" />
-  <link rel="stylesheet" href="assets/css/wishes.css?v=20260830-33" />
+    <link rel="stylesheet" href="assets/css/base.css?v=20260830-42" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260830-42" />
+  <link rel="stylesheet" href="assets/css/wishes.css?v=20260830-42" />
 </head>
 
 <body>
@@ -116,7 +116,7 @@
         class="brand-logo"
       >
 
-      <h1>AUSAMAH &amp; MIZAHASAN</h1>
+      <h1 lang="en">AUSAMAH &amp; MIZAHASAN</h1>
       <!-- <p>17-01-2027</p> -->
     </div>
 
@@ -385,7 +385,7 @@
           ✦
         </div>
 
-        <h2>
+        <h2 lang="en">
           WISHES FROM OUR LOVED ONES
         </h2>
 
@@ -487,8 +487,13 @@
         </div>
 
 
-        <!-- แถบลำดับคำอวยพร — แสดงเฉพาะตอนเต็มจอ -->
-        <aside class="wish-feed" id="wishFeed" aria-hidden="true">
+        <!-- ลำดับคำอวยพร — เป็นแถบข้างตอนเต็มจอ และเป็นรายการอ่านได้ตอนปกติ
+
+             SC 2.5.8 Target Size: หัวใจบนต้นไม้เล็กที่สุด 10px และบางดวง
+             เกือบทับกัน จึงไม่ผ่านทั้งเกณฑ์ขนาดและข้อยกเว้นเรื่องระยะห่าง
+             รายการนี้ทำหน้าที่เดียวกัน (อ่านคำอวยพรเต็ม ๆ) ในขนาดที่กดได้จริง
+             จึงเข้าข้อยกเว้น "Equivalent" — และอ่านง่ายกว่าการไล่ชี้ทีละดวงอยู่แล้ว -->
+        <aside class="wish-feed" id="wishFeed">
 
           <p class="wish-feed-head">
             ลำดับคำอวยพร
@@ -689,9 +694,9 @@
        - Google Apps Script Web App URL แก้ที่ assets/js/config.js
        - ?v=... ใช้บังคับ browser โหลดไฟล์ใหม่ ต้องแก้ให้ตรงกันทุกหน้า
        ========================================================= -->
-  <script src="assets/js/main.js?v=20260830-33"></script>
-  <script src="assets/js/config.js?v=20260830-33"></script>
-  <script src="assets/js/wishes.js?v=20260830-33"></script>
+  <script src="assets/js/main.js?v=20260830-42"></script>
+  <script src="assets/js/config.js?v=20260830-42"></script>
+  <script src="assets/js/wishes.js?v=20260830-42"></script>
 
 </body>
 </html>
