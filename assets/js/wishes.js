@@ -567,271 +567,195 @@ document.addEventListener("DOMContentLoaded", () => {
      15 ตำแหน่ง
      ============================================================ */
 
-  function getWishDesktopLayout(index) {
+  /* ============================================================
+     TREE GROWTH + FULLSCREEN
+
+     • ต้นไม้โตตามจำนวนคำอวยพร ผ่านตัวแปร CSS --growth (0..1)
+     • ปุ่มเต็มจอไว้ฉายบนจอในวันงาน — ขณะเต็มจอจะโหลดคำอวยพรใหม่
+       เป็นระยะ เพื่อให้จอโชว์คำอวยพรที่เพิ่งส่งเข้ามาด้วย
+     ============================================================ */
+
+  const treeStage =
+    document.getElementById("treeStage");
+
+  const treeCount =
+    document.getElementById("treeCount");
+
+  const fullscreenBtn =
+    document.getElementById("fullscreenBtn");
 
 
-    const layouts = [
+  /* จำนวนคำอวยพรที่ถือว่าต้นไม้โตเต็มที่ */
+  const TREE_FULL_AT = 40;
+
+  /* ระหว่างฉายเต็มจอ ดึงคำอวยพรใหม่ทุก 45 วินาที */
+  const FULLSCREEN_POLL_MS = 45000;
+
+  let fullscreenPollTimer = null;
 
 
-      {
-        left: 1,
-        top: 0,
-        size: "sm"
-      },
+  function updateTree() {
+
+    const total = allWishes.length;
 
 
-      {
-        left: 31,
-        top: 35,
-        size: "lg"
-      },
+    if (treeStage) {
+
+      const growth =
+        Math.min(total / TREE_FULL_AT, 1);
+
+      treeStage.style.setProperty(
+        "--growth",
+        growth.toFixed(3)
+      );
+
+    }
 
 
-      {
-        left: 76,
-        top: 14,
-        size: "sm"
-      },
+    if (treeCount) {
 
+      treeCount.textContent =
+        total > 0
+          ? `คำอวยพร ${total} ข้อความ`
+          : "";
 
-      {
-        left: 0,
-        top: 195,
-        size: ""
-      },
-
-
-      {
-        left: 72,
-        top: 210,
-        size: "sm"
-      },
-
-
-      {
-        left: 31,
-        top: 315,
-        size: ""
-      },
-
-
-      {
-        left: 79,
-        top: 390,
-        size: ""
-      },
-
-
-      {
-        left: 4,
-        top: 455,
-        size: "sm"
-      },
-
-
-      {
-        left: 37,
-        top: 535,
-        size: "sm"
-      },
-
-
-      {
-        left: 75,
-        top: 585,
-        size: "sm"
-      },
-
-
-      {
-        left: 1,
-        top: 650,
-        size: "lg"
-      },
-
-
-      {
-        left: 52,
-        top: 705,
-        size: "sm"
-      },
-
-
-      {
-        left: 77,
-        top: 785,
-        size: ""
-      },
-
-
-      {
-        left: 5,
-        top: 855,
-        size: "sm"
-      },
-
-
-      {
-        left: 34,
-        top: 900,
-        size: "lg"
-      }
-
-    ];
-
-
-
-    return layouts[
-      index %
-      layouts.length
-    ];
+    }
 
   }
 
 
+  function isFullscreen() {
 
-  /* ============================================================
-     MOBILE LAYOUT
-     15 ตำแหน่ง
-     ============================================================ */
-
-  function getWishMobileLayout(index) {
-
-
-    const layouts = [
-
-
-      {
-        left: 0,
-        top: 0,
-        size: "sm"
-      },
-
-
-      {
-        left: 35,
-        top: 48,
-        size: "lg"
-      },
-
-
-      {
-        left: 58,
-        top: 0,
-        size: "sm"
-      },
-
-
-      {
-        left: 0,
-        top: 190,
-        size: ""
-      },
-
-
-      {
-        left: 58,
-        top: 225,
-        size: "sm"
-      },
-
-
-      {
-        left: 26,
-        top: 360,
-        size: ""
-      },
-
-
-      {
-        left: 57,
-        top: 470,
-        size: ""
-      },
-
-
-      {
-        left: 0,
-        top: 510,
-        size: "sm"
-      },
-
-
-      {
-        left: 31,
-        top: 650,
-        size: "sm"
-      },
-
-
-      {
-        left: 58,
-        top: 735,
-        size: "sm"
-      },
-
-
-      {
-        left: 1,
-        top: 790,
-        size: "lg"
-      },
-
-
-      {
-        left: 56,
-        top: 930,
-        size: "sm"
-      },
-
-
-      {
-        left: 4,
-        top: 1010,
-        size: ""
-      },
-
-
-      {
-        left: 48,
-        top: 1110,
-        size: ""
-      },
-
-
-      {
-        left: 10,
-        top: 1220,
-        size: "sm"
-      }
-
-    ];
-
-
-
-    return layouts[
-      index %
-      layouts.length
-    ];
+    return Boolean(document.fullscreenElement);
 
   }
 
 
+  function stopFullscreenPoll() {
+
+    if (fullscreenPollTimer) {
+
+      clearInterval(fullscreenPollTimer);
+
+      fullscreenPollTimer = null;
+
+    }
+
+  }
+
+
+  if (fullscreenBtn && treeStage) {
+
+    /* เบราว์เซอร์เก่าที่ไม่รองรับ ให้ซ่อนปุ่มไปเลย */
+    if (!treeStage.requestFullscreen) {
+
+      fullscreenBtn.hidden = true;
+
+    } else {
+
+      fullscreenBtn.addEventListener("click", () => {
+
+        if (isFullscreen()) {
+
+          document.exitFullscreen();
+
+        } else {
+
+          treeStage.requestFullscreen().catch((err) => {
+
+            console.error("Fullscreen failed:", err);
+
+          });
+
+        }
+
+      });
+
+    }
+
+
+    document.addEventListener("fullscreenchange", () => {
+
+      const on = isFullscreen();
+
+
+      const label =
+        fullscreenBtn.querySelector(".tree-fs-label");
+
+      if (label) {
+
+        label.textContent = on ? "ออกจากเต็มจอ" : "เต็มจอ";
+
+      }
+
+
+      /* จัดตำแหน่งใหม่ให้พอดีกับขนาดจอที่เปลี่ยนไป */
+      renderWishPage();
+
+
+      stopFullscreenPoll();
+
+      if (on) {
+
+        fullscreenPollTimer = setInterval(
+          () => { loadWishes(); },
+          FULLSCREEN_POLL_MS
+        );
+
+      }
+
+    });
+
+  }
+
 
   /* ============================================================
-     RENDER CURRENT PAGE
+     CANOPY LAYOUT
 
-     ตัวอย่าง:
-
-     page 0
-     -> Wishes 1-15
-
-     page 1
-     -> Wishes 16-30
-
-     page 2
-     -> Wishes 31-45
+     วางคำอวยพรกระจายในทรงพุ่มของต้นไม้ ด้วยมุมทองคำ (golden angle)
+     ทำให้กระจายสม่ำเสมอไม่ว่าจะมีกี่ใบ และตำแหน่งคงที่ทุกครั้ง
+     (แทนตำแหน่งตายตัว 15 จุดแบบเดิม ที่ไม่พอเมื่อคำอวยพรเยอะ)
      ============================================================ */
+
+  const GOLDEN_ANGLE = 137.507764;
+
+
+  function getCanopyLayout(index, total) {
+
+    const count = Math.max(total, 1);
+
+
+    /* ระยะจากใจกลางพุ่ม — sqrt ทำให้ความหนาแน่นสม่ำเสมอ */
+    const radius =
+      Math.sqrt((index + 0.5) / count);
+
+    const angle =
+      (index * GOLDEN_ANGLE * Math.PI) / 180;
+
+
+    /* พุ่มกว้างกว่าสูง จึงถ่วงแกน Y ให้แบนลง */
+    const cx = 50 + Math.cos(angle) * radius * 42;
+    const cy = 45 + Math.sin(angle) * radius * 36;
+
+
+    /* สลับขนาดใบให้มีจังหวะ ใบใกล้กลางใหญ่กว่า */
+    let size = "";
+
+    if (radius < 0.42) {
+      size = "lg";
+    } else if (radius > 0.82) {
+      size = "sm";
+    }
+
+
+    return {
+      left: Math.min(Math.max(cx, 6), 94),
+      top: Math.min(Math.max(cy, 4), 88),
+      size: size
+    };
+
+  }
+
 
   function renderWishPage() {
 
@@ -913,15 +837,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-      const isMobile =
-
-        window.matchMedia(
-
-          "(max-width: 700px)"
-
-        ).matches;
-
-
 
       /* ========================================================
          CREATE CARDS
@@ -934,15 +849,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
           const position =
 
-            isMobile
-
-              ? getWishMobileLayout(
-                index
-              )
-
-              : getWishDesktopLayout(
-                index
-              );
+            getCanopyLayout(
+              index,
+              currentItems.length
+            );
 
 
 
@@ -976,7 +886,7 @@ document.addEventListener("DOMContentLoaded", () => {
           card.style.top =
 
             position.top +
-            "px";
+            "%";
 
 
 
@@ -1331,6 +1241,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       /* เริ่มจากชุดแรก = คำอวยพรล่าสุด */
       currentWishPage = 0;
+
+
+      /* ต้นไม้โตตามจำนวนคำอวยพรที่เพิ่งโหลดมา */
+      updateTree();
 
 
       /* เริ่ม Auto Loop */

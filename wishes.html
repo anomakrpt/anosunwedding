@@ -22,9 +22,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="assets/css/base.css?v=20260829-10" />
-  <link rel="stylesheet" href="assets/css/components.css?v=20260829-10" />
-  <link rel="stylesheet" href="assets/css/wishes.css?v=20260829-10" />
+    <link rel="stylesheet" href="assets/css/base.css?v=20260829-17" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260829-17" />
+  <link rel="stylesheet" href="assets/css/wishes.css?v=20260829-17" />
 </head>
 
 <body>
@@ -207,10 +207,19 @@
     </section>
 
 
-    <section class="cloud-section">
+    <!-- =========================================================
+         WISH TREE
 
-      <div class="sparkles"></div>
+         คำอวยพรแต่ละข้อ = หัวใจ 1 ดวงบนกิ่งไม้
+         (อ้างอิงบอร์ดต้นไม้อวยพรในงานแต่งจริง)
+         ยิ่งมีคนอวยพรมาก ต้นไม้ยิ่งเต็มไปด้วยหัวใจ
+         แตะที่หัวใจเพื่ออ่านคำอวยพร — กดเต็มจอเพื่อฉายในงาน
+    ========================================================== -->
 
+    <section
+      class="tree-section"
+      id="treeSection"
+    >
 
       <div class="cloud-header">
 
@@ -226,21 +235,93 @@
           คำอวยพรจากทุกคน
         </p>
 
-        <!--<div class="heart">
-          ♥
-        </div> -->
+      </div>
 
-        <!--<div class="heart">
-          <img src="pic/icon-heart.png" alt="" />
-        </div>-->
+
+      <!-- เวทีต้นไม้ — เป็นตัวที่ขยายเต็มจอ -->
+      <div
+        class="tree-stage"
+        id="treeStage"
+      >
+
+        <!-- กิ่งก้านสร้างจาก JS (assets/js/wishes.js → buildTree)
+             หัวใจจะไปเกาะที่ปลายกิ่งแต่ละกิ่ง -->
+        <svg
+          class="wish-tree"
+          id="wishTree"
+          viewBox="0 0 1000 720"
+          preserveAspectRatio="xMidYMax meet"
+          aria-hidden="true"
+        >
+
+          <g class="tree-branches" id="treeBranches"></g>
+
+          <g class="tree-hearts" id="treeHearts"></g>
+
+          <ellipse
+            class="tree-ground"
+            cx="500"
+            cy="706"
+            rx="150"
+            ry="9"
+          />
+
+        </svg>
+
+
+        <!-- ป้ายนับ + ปุ่มเต็มจอ -->
+        <div class="tree-hud">
+
+          <span
+            class="tree-count"
+            id="treeCount"
+          ></span>
+
+          <button
+            id="fullscreenBtn"
+            class="tree-fs-btn"
+            type="button"
+            aria-label="แสดงเต็มจอ"
+          >
+
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />
+            </svg>
+
+            <span class="tree-fs-label">เต็มจอ</span>
+
+          </button>
+
+        </div>
+
+
+        <!-- คำอวยพรที่กำลังฉาย -->
+        <div
+          class="wish-spotlight"
+          id="wishSpotlight"
+          aria-live="polite"
+        >
+
+          <p class="wish-spotlight-text" id="spotlightText"></p>
+
+          <p class="wish-spotlight-name" id="spotlightName"></p>
+
+        </div>
+
+
+        <!-- ชื่อคู่บ่าวสาว เหมือนบอร์ดในงานจริง -->
+        <p class="tree-signature">
+          AUSAMAH &amp; MIZAHASAN &nbsp;·&nbsp; 17.01.2027
+        </p>
 
       </div>
 
 
+      <!-- คงไว้ให้ JS เดิมทำงานได้ (ไม่แสดงผลแล้ว) -->
       <div
         id="wishesGrid"
         class="wishes-grid"
-        aria-live="polite"
+        hidden
       ></div>
 
 
@@ -420,9 +501,9 @@
        - ?v=20260820-3 ใช้บังคับ browser โหลดไฟล์ JS เวอร์ชันใหม่
          ป้องกัน cache ของ script.js เก่า
        ========================================================= -->
-  <script src="assets/js/main.js?v=20260829-10"></script>
-  <script src="assets/js/config.js?v=20260829-10"></script>
-  <script src="assets/js/wishes.js?v=20260829-10"></script>
+  <script src="assets/js/main.js?v=20260829-17"></script>
+  <script src="assets/js/config.js?v=20260829-17"></script>
+  <script src="assets/js/wishes.js?v=20260829-17"></script>
 
 </body>
 </html>

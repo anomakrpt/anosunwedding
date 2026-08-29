@@ -1182,88 +1182,47 @@ a {
   margin-bottom: 6px;
 }
 
-/* ---------- เถาวัลย์ + หัวใจ ---------- */
+/* ---------- แถวสีหัวใจ ---------- */
 
-.dress-vine {
-  position: relative;
-  width: 100%;
-  height: 168px;
-  margin-top: 18px;
+.dress-row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(8px, 2vw, 26px);
+  align-items: end;
+  margin-top: clamp(24px, 4vw, 34px);
 }
 
-.dress-vine-stem {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  fill: none;
-  stroke: #9aa77f;
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  opacity: .75;
+.dress-swatch {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 1.6vw, 15px);
 }
 
-.dress-node,
-.dress-leaf {
-  position: absolute;
-  left: var(--x);
-  transform: translate(-50%, -50%);
-}
-
-.dress-node {
-  top: var(--y);
-  width: clamp(44px, 9vw, 62px);
-}
-
-.dress-node svg {
-  width: 100%;
+.dress-swatch svg {
+  width: clamp(46px, 7vw, 70px);
   height: auto;
   display: block;
   fill: currentColor;
-  filter: drop-shadow(0 4px 10px rgba(80, 62, 48, .16));
-  transition: transform .45s cubic-bezier(.22, .61, .36, 1);
+  transition: transform .4s cubic-bezier(.22, .61, .36, 1);
 }
 
 @media (hover: hover) {
 
-  .dress-node:hover svg {
-    transform: translateY(-4px) scale(1.06);
+  .dress-swatch:hover svg {
+    transform: translateY(-4px);
   }
 
 }
 
-/* ใบไม้เล็ก ๆ ตรงจุดที่เถาวัลย์ตัดแนวกลาง */
-.dress-leaf {
-  top: 50%;
-  width: 22px;
-  color: #9aa77f;
-  opacity: .8;
-}
-
-.dress-leaf svg {
-  width: 100%;
-  height: auto;
-  display: block;
-  fill: currentColor;
-  transform: var(--flip, none);
-}
-
-/* ---------- ป้ายชื่อสี ---------- */
-
-.dress-labels {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 6px;
-  margin-top: 6px;
-}
-
-.dress-labels small {
-  text-align: center;
-  font-size: clamp(10px, 2vw, 12px);
-  line-height: 1.35;
+.dress-swatch figcaption {
+  /* ป้ายใช้สีกลางทั้งแถว — ถ้าใช้สีตัวเอง ป้าย Cream จะจางจนอ่านไม่ออก */
+  color: var(--muted);
+  font-size: clamp(11px, 1.7vw, 13px);
+  line-height: 1.4;
   letter-spacing: .04em;
-  color: currentColor;
+  text-align: center;
 }
 
 .dress-note {
@@ -1289,13 +1248,7 @@ a {
     padding: 30px 14px 26px;
   }
 
-  .dress-vine {
-    height: 132px;
-  }
 
-  .dress-leaf {
-    width: 16px;
-  }
 
 }
 

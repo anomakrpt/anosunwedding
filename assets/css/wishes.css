@@ -13,8 +13,15 @@
         linear-gradient(180deg,#fbf8f1 0%,#f8f4ec 100%);
     }
 
-    /* Wish card*/ 
+    /* Wish card*/
     .wishes-grid{
+  /* วางทับบริเวณพุ่มใบของต้นไม้ */
+  position:absolute;
+  left:2%;
+  right:2%;
+  top:2%;
+  height:62%;
+  z-index:3;
   transition:
     opacity .5s ease,
     transform .5s ease;
@@ -227,92 +234,219 @@
        ไม่มีวงกลมขาว / ไม่มีเมฆวงกลม
        ========================================================= */
 
-    .cloud-section{
-      position:relative;
-      min-height:980px;
-      overflow:hidden;
-      padding:58px 20px 105px;
-
-      background:
-        linear-gradient(
-          180deg,
-          #e2dfcf 0%,
-          #e6e2d6 44%,
-          #ece7dd 100%
-        );
-
-      isolation:isolate;
-
-    }
-
-    /* ปิด pseudo elements ที่เคยทำให้เกิดวงกลมขาว */
-    .cloud-section::before,
-    .cloud-section::after{
-      display:none;
-    }
-
-    .sparkles{
-      position:absolute;
-      inset:0;
-      z-index:-1;
-      pointer-events:none;
-
-      background-image:
-        radial-gradient(circle, rgba(255,255,255,.9) 0 1.3px, transparent 1.8px),
-        radial-gradient(circle, rgba(255,255,255,.5) 0 .9px, transparent 1.5px);
-
-      background-size:
-        120px 150px,
-        180px 210px;
-
-      background-position:
-        18px 28px,
-        75px 96px;
-
-      opacity:.65;
-    }
-
-    .cloud-header{
-      text-align:center;
-      max-width:850px;
-      margin:0 auto 34px;
-    }
-
-    .sparkle-icon{
-      font-size:22px;
-      color:#aaa781;
-    }
-
-    .cloud-header h2{
-      margin:10px 0 4px;
-      font:600 clamp(28px,5vw,38px)/1.15 "Cormorant Garamond",serif;
-      letter-spacing:.12em;
-    }
-
-    .cloud-header p{
-      margin:0;
-      font-size:20px;
-      font-weight:300;
-    }
-
-    .wishes-grid{
-      position:relative;
-      width:min(100%,960px);
-      min-height:690px;
-      margin:0 auto;
-    }
-
     /* =========================================================
-       WISH CARD ALIGNMENT
-       คำอวยพรอยู่กลางการ์ดทั้งแนวตั้ง + แนวนอน
-       quote ยังอยู่มุมซ้ายบน
-       ชื่อ + หัวใจยังอยู่ด้านล่าง
-       ========================================================= */
-    .wish-card{
+   WISH TREE
+   คำอวยพรเกาะบนต้นไม้ ต้นไม้โตตามจำนวนคำอวยพร (--growth 0..1)
+========================================================= */
+
+.tree-section{
+  position:relative;
+  padding:44px 16px 30px;
+  background:linear-gradient(180deg,#e9e6d8 0%,#eee9dd 40%,#f5f1e6 100%);
+  overflow:hidden;
+}
+
+.tree-section::before,
+.tree-section::after{
+  content:"";
+  position:absolute;
+  left:0;right:0;
+  height:60px;
+  pointer-events:none;
+}
+
+.tree-section::before{
+  top:0;
+  background:linear-gradient(180deg,var(--cream) 0%,rgba(248,244,236,0) 100%);
+}
+
+.tree-section::after{
+  bottom:0;
+  background:linear-gradient(0deg,var(--cream) 0%,rgba(248,244,236,0) 100%);
+}
+
+.sparkles{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background-image:
+    radial-gradient(2px 2px at 12% 22%, rgba(255,255,255,.9) 50%, transparent 51%),
+    radial-gradient(2px 2px at 78% 14%, rgba(255,255,255,.8) 50%, transparent 51%),
+    radial-gradient(1.6px 1.6px at 32% 68%, rgba(255,255,255,.75) 50%, transparent 51%),
+    radial-gradient(1.6px 1.6px at 88% 58%, rgba(255,255,255,.7) 50%, transparent 51%),
+    radial-gradient(1.4px 1.4px at 58% 34%, rgba(255,255,255,.7) 50%, transparent 51%);
+}
+
+.cloud-header{
+  position:relative;
+  z-index:2;
+  text-align:center;
+  margin-bottom:8px;
+}
+
+.sparkle-icon{
+  font-size:20px;
+  color:var(--olive);
+  opacity:.8;
+}
+
+.cloud-header h2{
+  margin:8px 0 4px;
+  font-family:"Cormorant Garamond",serif;
+  font-weight:600;
+  font-size:clamp(22px,4.6vw,34px);
+  letter-spacing:.14em;
+  color:var(--text);
+}
+
+.cloud-header p{
+  margin:0;
+  font-size:15px;
+  color:var(--muted);
+}
+
+
+/* ---------------- เวทีต้นไม้ ---------------- */
+
+.tree-stage{
+  position:relative;
+  width:100%;
+  max-width:1180px;
+  margin:0 auto;
+  aspect-ratio:1000/640;
+  min-height:min(78vh, 720px);
+}
+
+.wish-tree{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+/* ต้นไม้โตตามจำนวนคำอวยพร */
+.tree-canopy{
+  fill:#93a37c;
+  opacity:.42;
+  transform-origin:500px 250px;
+  transform:scale(calc(.68 + var(--growth, 0) * .32));
+  transition:transform 1.4s cubic-bezier(.22,.61,.36,1), opacity 1.4s ease;
+}
+
+.tree-branches path{
+  fill:none;
+  stroke:#7d6a52;
+  stroke-width:7;
+  stroke-linecap:round;
+  opacity:.55;
+}
+
+.tree-branches--outer path{
+  stroke-width:5;
+  /* กิ่งชั้นนอกค่อย ๆ ปรากฏเมื่อคำอวยพรมากขึ้น */
+  opacity:calc(var(--growth, 0) * .5);
+  transition:opacity 1.4s ease;
+}
+
+.tree-trunk{
+  fill:#7d6a52;
+  opacity:.62;
+}
+
+.tree-ground{
+  fill:#8d8a6f;
+  opacity:.18;
+}
+
+
+/* ---------------- ป้ายนับ + ปุ่มเต็มจอ ---------------- */
+
+.tree-hud{
+  /* มุมบนขวาของเวที — ไม่ชนแถบเมนูด้านล่าง และยังเห็นตอนเต็มจอ */
+  position:absolute;
+  top:0;
+  right:0;
+  z-index:5;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.tree-count{
+  font-size:13px;
+  letter-spacing:.06em;
+  color:var(--muted);
+}
+
+.tree-fs-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:9px 18px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:rgba(255,255,255,.86);
+  color:var(--olive-dark);
+  font-size:13px;
+  transition:border-color .3s ease,transform .3s ease,box-shadow .3s ease;
+}
+
+.tree-fs-btn svg{
+  width:15px;height:15px;
+  fill:none;stroke:currentColor;stroke-width:1.9;
+  stroke-linecap:round;stroke-linejoin:round;
+}
+
+.tree-fs-btn:hover{
+  border-color:var(--olive);
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(85,76,54,.14);
+}
+
+
+/* ---------------- โหมดเต็มจอ (ฉายบนจอในงาน) ---------------- */
+
+.tree-stage:fullscreen{
+  max-width:none;
+  width:100vw;
+  height:100vh;
+  aspect-ratio:auto;
+  padding:2vh 2vw;
+  background:linear-gradient(180deg,#efece0 0%,#f6f2e8 100%);
+}
+
+.tree-stage:fullscreen .wish-card{
+  /* ตัวอักษรใหญ่ขึ้นให้อ่านจากไกล */
+  font-size:1.05rem;
+}
+
+.tree-stage:fullscreen .wish-text{
+  font-size:clamp(15px,1.5vw,24px);
+}
+
+.tree-stage:fullscreen .wish-name{
+  font-size:clamp(12px,1.1vw,18px);
+}
+
+.tree-stage:fullscreen .tree-hud{
+  top:12px;
+  right:16px;
+}
+
+.tree-stage:fullscreen .tree-fs-label::after{
+  content:" (กด Esc เพื่อออก)";
+}
+
+.wish-card{
       position:absolute;
-      width:240px;
-      min-height:145px;
-      padding:42px 24px 42px;
+      /* เล็กลงกว่าเดิม เพื่อให้เห็นพุ่มใบของต้นไม้ลอดผ่าน */
+      width:clamp(118px, 12vw, 156px);
+      min-height:92px;
+      padding:22px 14px 22px;
+      transform:translate(-50%, -50%);
 
       border-radius:20px;
       background:rgba(255,252,246,.82);
@@ -329,15 +463,15 @@
     }
 
     .wish-card.size-lg{
-      width:320px;
-      min-height:195px;
-      padding:48px 30px 48px;
+      width:clamp(140px, 14vw, 186px);
+      min-height:112px;
+      padding:26px 18px 26px;
     }
 
     .wish-card.size-sm{
-      width:200px;
-      min-height:125px;
-      padding:38px 20px 38px;
+      width:clamp(108px, 11vw, 142px);
+      min-height:78px;
+      padding:18px 12px 18px;
     }
 
     .wish-card .quote{
@@ -519,27 +653,22 @@
         font-size:18px;
       }
 
-      .wishes-grid{
-        min-height:880px;
-        width:100%;
-      }
-
       .wish-card{
-        width:46%;
-        min-height:145px;
-        padding:38px 16px 38px;
+        width:33%;
+        min-height:76px;
+        padding:16px 10px;
       }
 
       .wish-card.size-lg{
-        width:62%;
-        min-height:185px;
-        padding:42px 20px 42px;
+        width:40%;
+        min-height:92px;
+        padding:18px 12px;
       }
 
       .wish-card.size-sm{
-        width:42%;
-        min-height:125px;
-        padding:36px 14px 36px;
+        width:29%;
+        min-height:66px;
+        padding:14px 9px;
       }
 
       .wish-text{
