@@ -853,3 +853,79 @@ body.wish-fs-lock{
 @media (prefers-reduced-motion: reduce) {
   .wish-icon { animation: none; }
 }
+
+
+/* =========================================================
+   WISH TIP — ข้อความเต็มตอนชี้/แตะหัวใจ
+========================================================= */
+
+.wish-tip{
+  position:absolute;
+  z-index:6;
+  max-width:min(300px, 74vw);
+  padding:14px 16px;
+  border-radius:16px;
+  background:rgba(255,253,247,.97);
+  border:1px solid var(--line);
+  box-shadow:0 14px 34px rgba(85,76,54,.18);
+  text-align:center;
+  pointer-events:none;
+  opacity:0;
+  transform:translate(-50%, -104%) scale(.96);
+  transition:opacity .22s ease, transform .22s cubic-bezier(.22,.61,.36,1);
+}
+
+.wish-tip.is-visible{
+  opacity:1;
+  transform:translate(-50%, -110%) scale(1);
+}
+
+/* หางชี้ลงไปที่หัวใจ */
+.wish-tip::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:-7px;
+  width:12px;
+  height:12px;
+  transform:translateX(-50%) rotate(45deg);
+  background:rgba(255,253,247,.97);
+  border-right:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+
+.wish-tip-text{
+  margin:0 0 6px;
+  font-size:15px;
+  line-height:1.65;
+  color:var(--text);
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+.wish-tip-name{
+  margin:0;
+  font-size:12px;
+  letter-spacing:.08em;
+  color:var(--muted);
+}
+
+.wish-heart:focus-visible{
+  outline:2px solid var(--olive);
+  outline-offset:2px;
+}
+
+.tree-stage:fullscreen .wish-tip,
+.tree-stage.is-pseudo-fullscreen .wish-tip{
+  max-width:min(460px, 60vw);
+  padding:18px 22px;
+}
+
+.tree-stage:fullscreen .wish-tip-text,
+.tree-stage.is-pseudo-fullscreen .wish-tip-text{
+  font-size:clamp(17px,1.7vw,24px);
+}
+
+@media (prefers-reduced-motion:reduce){
+  .wish-tip{ transition:none; }
+}

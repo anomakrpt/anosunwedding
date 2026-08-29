@@ -656,6 +656,240 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ============================================================
+     HOME GALLERY SLIDESHOW
+
+     กรอบ mosaic คงเดิม แต่รูปในแต่ละช่องสลับเองอัตโนมัติ
+     • สลับทีละช่อง (ไล่ไปเรื่อย ๆ) ไม่เปลี่ยนพร้อมกันทั้งหมด
+     • ไม่ให้รูปซ้ำกันในเวลาเดียวกัน
+     • หยุดเมื่อเลื่อนพ้นจอ / สลับแท็บ เพื่อไม่กินเน็ตและแบต
+     • ผู้ใช้ที่ปิดอนิเมชันจะเห็นรูปนิ่งชุดแรก
+     ============================================================ */
+
+  function startHomeGallery() {
+
+    const tiles =
+      Array.from(
+        document.querySelectorAll(".gallery-item")
+      );
+
+    if (
+      tiles.length === 0 ||
+      typeof HOME_GALLERY_PHOTOS === "undefined"
+    ) {
+      return;
+    }
+
+
+    const reduceMotion =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+    if (reduceMotion) return;
+
+
+    const pool = HOME_GALLERY_PHOTOS;
+
+    if (pool.length <= tiles.length) return;
+
+
+    /* รูปที่กำลังโชว์อยู่ตอนนี้ (ตรงกับที่เขียนไว้ใน index.html) */
+    const showing = tiles.map((tile) => {
+
+      const img = tile.querySelector("img");
+
+      return img ? img.getAttribute("src") : "";
+
+    });
+
+
+    /* คิวรูปที่ยังไม่ได้โชว์ */
+    let queue = pool
+      .map((p) => p.src)
+      .filter((src) => showing.indexOf(src) === -1);
+
+    let tileIndex = 0;
+
+    let timer = null;
+
+
+    function nextPhoto() {
+
+      if (queue.length === 0) {
+
+        /* ครบรอบแล้ว เติมคิวใหม่จากรูปที่ไม่ได้อยู่บนจอ */
+        queue = pool
+          .map((p) => p.src)
+          .filter((src) => showing.indexOf(src) === -1);
+
+      }
+
+      return queue.shift();
+
+    }
+
+
+    function swapTile(tile, index) {
+
+      const src = nextPhoto();
+
+      if (!src) return;
+
+
+      const meta =
+        pool.find((p) => p.src === src) || { alt: "" };
+
+      const current = tile.querySelector("img");
+
+      if (!current) return;
+
+
+      const next = document.createElement("img");
+
+      next.src = src;
+
+      next.alt = meta.alt || "";
+
+      next.loading = "eager";
+
+      next.decoding = "async";
+
+      next.style.opacity = "0";
+
+
+      next.addEventListener("load", () => {
+
+        /* รอเฟรมถัดไปให้ browser วางภาพก่อน แล้วค่อยไล่ opacity */
+        requestAnimationFrame(() => {
+
+          requestAnimationFrame(() => {
+
+            next.style.opacity = "1";
+
+            current.style.opacity = "0";
+
+          });
+
+        });
+
+
+        setTimeout(() => {
+
+          if (current.parentNode) {
+
+            current.remove();
+
+          }
+
+        }, 1200);
+
+      }, { once: true });
+
+
+      /* โหลดไม่สำเร็จ ให้ทิ้งไปเงียบ ๆ ไม่ต้องเปลี่ยนอะไร */
+      next.addEventListener("error", () => {
+
+        next.remove();
+
+      }, { once: true });
+
+
+      tile.appendChild(next);
+
+      showing[index] = src;
+
+    }
+
+
+    function tick() {
+
+      swapTile(
+        tiles[tileIndex % tiles.length],
+        tileIndex % tiles.length
+      );
+
+      tileIndex++;
+
+    }
+
+
+    function start() {
+
+      if (timer) return;
+
+      timer = setInterval(
+        tick,
+        typeof HOME_GALLERY_INTERVAL !== "undefined"
+          ? HOME_GALLERY_INTERVAL
+          : 3600
+      );
+
+    }
+
+
+    function stop() {
+
+      if (!timer) return;
+
+      clearInterval(timer);
+
+      timer = null;
+
+    }
+
+
+    /* เดินเฉพาะตอนที่แกลเลอรีอยู่ในจอ */
+    const grid =
+      document.querySelector(".gallery-grid");
+
+    if (
+      grid &&
+      "IntersectionObserver" in window
+    ) {
+
+      new IntersectionObserver((entries) => {
+
+        entries.forEach((entry) => {
+
+          if (entry.isIntersecting) {
+
+            start();
+
+          } else {
+
+            stop();
+
+          }
+
+        });
+
+      }, { threshold: 0.1 }).observe(grid);
+
+    } else {
+
+      start();
+
+    }
+
+
+    /* สลับแท็บไปแล้วหยุดไว้ก่อน */
+    document.addEventListener("visibilitychange", () => {
+
+      if (document.hidden) {
+
+        stop();
+
+      }
+
+    });
+
+  }
+
+
+  startHomeGallery();
+
+
+  /* ============================================================
      CELEBRATION — ถึงวันงานแล้ว
 
      เมื่อ countdown ถึง 00:00:00:00

@@ -823,6 +823,125 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ============================================================
+     WISH TIP — ข้อความเต็มเมื่อชี้ (เดสก์ท็อป) หรือแตะ (มือถือ)
+
+     แตะแล้วจะ "ปักหมุด" ไว้จนกว่าจะแตะที่อื่น
+     เพื่อให้บนมือถืออ่านได้จริง ไม่หายทันทีที่ยกนิ้ว
+     ============================================================ */
+
+  let tipPinned = false;
+
+  let tipHideTimer = null;
+
+
+  function showWishTip(heartEl, wish) {
+
+    const tip = document.getElementById("wishTip");
+
+    const stage = document.getElementById("treeStage");
+
+    if (!tip || !stage) return;
+
+
+    clearTimeout(tipHideTimer);
+
+
+    const textEl = document.getElementById("wishTipText");
+
+    const nameEl = document.getElementById("wishTipName");
+
+    if (textEl) {
+      textEl.textContent = "“" + String(wish.wish || "") + "”";
+    }
+
+    if (nameEl) {
+      nameEl.textContent = "— " + String(wish.name || "Guest");
+    }
+
+
+    /* วางกล่องเหนือหัวใจ โดยอิงพิกัดเทียบกับเวที */
+    const stageBox = stage.getBoundingClientRect();
+
+    const heartBox = heartEl.getBoundingClientRect();
+
+    let left =
+      heartBox.left - stageBox.left + heartBox.width / 2;
+
+    const top =
+      heartBox.top - stageBox.top;
+
+
+    /* กันกล่องล้นขอบเวทีซ้าย-ขวา */
+    const half = tip.offsetWidth / 2 || 150;
+
+    const margin = 8;
+
+    left = Math.min(
+      Math.max(left, half + margin),
+      stageBox.width - half - margin
+    );
+
+
+    tip.style.left = left + "px";
+
+    tip.style.top = top + "px";
+
+    tip.classList.add("is-visible");
+
+    tip.setAttribute("aria-hidden", "false");
+
+  }
+
+
+  function hideWishTip(immediate) {
+
+    const tip = document.getElementById("wishTip");
+
+    if (!tip) return;
+
+    clearTimeout(tipHideTimer);
+
+
+    const doHide = () => {
+
+      tip.classList.remove("is-visible");
+
+      tip.setAttribute("aria-hidden", "true");
+
+    };
+
+
+    if (immediate) {
+
+      doHide();
+
+    } else {
+
+      tipHideTimer = setTimeout(doHide, 160);
+
+    }
+
+  }
+
+
+  /* แตะที่ว่างเพื่อปิดกล่องที่ปักหมุดไว้ */
+  document.addEventListener("click", (event) => {
+
+    if (
+      tipPinned &&
+      !event.target.closest(".wish-heart")
+    ) {
+
+      tipPinned = false;
+
+      hideWishTip(true);
+
+    }
+
+  });
+
+
+  /* ============================================================
      TREE RENDERER
 
      สร้างกิ่งก้านแบบแตกกิ่งซ้ำ (recursive) ด้วยสุ่มที่ตรึงค่าไว้
@@ -1015,6 +1134,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     heartGroup.textContent = "";
 
+    tipPinned = false;
+
+    hideWishTip(true);
+
 
     if (allWishes.length === 0) {
 
@@ -1069,8 +1192,54 @@ document.addEventListener("DOMContentLoaded", () => {
       g.appendChild(path);
 
 
-      /* แตะหัวใจเพื่ออ่านคำอวยพรของคนนั้น */
-      g.addEventListener("click", () => {
+      /* เข้าถึงด้วยคีย์บอร์ดได้ */
+      g.setAttribute("tabindex", "0");
+
+      g.setAttribute("role", "button");
+
+      g.setAttribute(
+        "aria-label",
+        "คำอวยพรจาก " + String(wish.name || "Guest")
+      );
+
+
+      /* ชี้ (เดสก์ท็อป) → โชว์ข้อความเต็ม */
+      g.addEventListener("mouseenter", () => {
+
+        if (tipPinned) return;
+
+        showWishTip(g, wish);
+
+      });
+
+      g.addEventListener("mouseleave", () => {
+
+        if (tipPinned) return;
+
+        hideWishTip();
+
+      });
+
+
+      /* คีย์บอร์ด */
+      g.addEventListener("focus", () => showWishTip(g, wish));
+
+      g.addEventListener("blur", () => {
+
+        if (!tipPinned) hideWishTip();
+
+      });
+
+
+      /* คลิก/แตะ → ปักหมุดกล่องไว้ + อัปเดตข้อความด้านล่างด้วย */
+      g.addEventListener("click", (event) => {
+
+        event.stopPropagation();
+
+        tipPinned = true;
+
+        showWishTip(g, wish);
+
 
         spotlightIndex = i;
 

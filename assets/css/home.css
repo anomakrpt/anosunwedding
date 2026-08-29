@@ -1355,11 +1355,17 @@ a {
 }
 
 .gallery-item img {
+  /* ซ้อนทับกันในกรอบเดียว เพื่อให้สลับรูปแบบค่อย ๆ จางเข้าหากันได้
+     (ดู HOME GALLERY SLIDESHOW ใน home.js) */
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform .9s cubic-bezier(.22, .61, .36, 1);
+  transition:
+    opacity 1.1s ease,
+    transform .9s cubic-bezier(.22, .61, .36, 1);
 }
 
 /* ไล่เฉดอ่อน ๆ ที่ขอบล่าง ให้ภาพดูมีมิติและเข้ากับโทนกระดาษ */

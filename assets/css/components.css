@@ -11,18 +11,21 @@
 
       position: fixed;
 
-      left: 50%;
+      left: 0;
+
+      right: 0;
 
       bottom: 0;
 
-      transform: translateX(-50%);
-
-      width: min(100%, 760px);
+      /* เต็มความกว้างจอเสมอ — เดิมจำกัด 760px แล้วจัดกลาง
+         ทำให้บนจอกว้างมีช่องว่างสองข้างดูเหมือนแถบลอย */
+      width: 100%;
 
       min-height: var(--nav-height);
 
+      /* เนื้อหาข้างในยังคุมความกว้างไว้ ไม่ให้ไอคอนกระจายห่างเกินบนจอใหญ่ */
       padding:
-        8px 12px
+        8px max(12px, calc((100% - 900px) / 2))
         calc(8px + env(safe-area-inset-bottom));
 
       display: grid;
