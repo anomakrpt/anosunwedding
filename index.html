@@ -51,9 +51,9 @@
        MAIN CSS
   ========================================================== -->
 
-    <link rel="stylesheet" href="assets/css/base.css?v=20260830-6" />
-  <link rel="stylesheet" href="assets/css/components.css?v=20260830-6" />
-  <link rel="stylesheet" href="assets/css/home.css?v=20260830-6" />
+    <link rel="stylesheet" href="assets/css/base.css?v=20260830-11" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260830-11" />
+  <link rel="stylesheet" href="assets/css/home.css?v=20260830-11" />
 
 
   
@@ -79,7 +79,7 @@
     >
 
       <source
-        src="pic/cardopen.mp4?v=20260830-6"
+        src="pic/cardopen.mp4?v=20260830-11"
         type="video/mp4"
       />
 
@@ -102,6 +102,36 @@
     id="main"
     style="display:none;"
   >
+
+
+    <!-- =======================================================
+         ปุ่มเปิด/ปิดเสียงเพลง (มุมบนขวา)
+    ======================================================== -->
+
+    <button
+      id="soundBtn"
+      class="sound-btn"
+      type="button"
+      aria-pressed="false"
+      aria-label="เปิดเสียงเพลง"
+    >
+
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+
+        <path class="sound-body" d="M4 9.5h3.2L12 5.4v13.2L7.2 14.5H4z" />
+
+        <g class="sound-waves">
+          <path d="M15.6 9.4a3.6 3.6 0 0 1 0 5.2" />
+          <path d="M18 7a7 7 0 0 1 0 10" />
+        </g>
+
+        <path class="sound-slash" d="M16.5 9.5l5 5m0-5l-5 5" />
+
+      </svg>
+
+    </button>
+
+
 
 
 
@@ -1508,10 +1538,10 @@
        JAVASCRIPT
   ========================================================== -->
 
-  <script src="assets/js/main.js?v=20260830-6"></script>
-  <script src="assets/js/config.js?v=20260830-6"></script>
-  <script src="assets/js/music.js?v=20260830-6"></script>
-  <script src="assets/js/home.js?v=20260830-6"></script>
+  <script src="assets/js/main.js?v=20260830-11"></script>
+  <script src="assets/js/config.js?v=20260830-11"></script>
+  <script src="assets/js/music.js?v=20260830-11"></script>
+  <script src="assets/js/home.js?v=20260830-11"></script>
 
 
   <script

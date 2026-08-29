@@ -674,14 +674,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!fullscreenBtn) return;
 
+    const text = on ? "ออกจากเต็มจอ" : "แสดงเต็มจอ";
+
     const label =
       fullscreenBtn.querySelector(".tree-fs-label");
 
     if (label) {
 
-      label.textContent = on ? "ออกจากเต็มจอ" : "เต็มจอ";
+      label.textContent = text;
 
     }
+
+    /* ปุ่มเหลือแต่ไอคอน ชื่อปุ่มจึงต้องอยู่ที่ aria-label */
+    fullscreenBtn.setAttribute("aria-label", text);
 
 
     stopFullscreenPoll();
@@ -1463,6 +1468,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       g.setAttribute("class", "wish-heart");
 
+      g.dataset.index = String(i);
+
       g.setAttribute(
         "transform",
         "translate(" + (tip.x - 50 * scale).toFixed(1) +
@@ -1624,6 +1631,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     highlightFeed(wish);
 
+    highlightHeart(wish);
+
 
     nameEl.textContent = "";
 
@@ -1738,6 +1747,63 @@ document.addEventListener("DOMContentLoaded", () => {
       list.appendChild(li);
 
     });
+
+  }
+
+
+  /* หัวใจบนต้นไม้ที่ตรงกับคำอวยพรที่กำลังฉาย จะเด่นขึ้นมา
+     ทำให้เห็นว่าข้อความนี้มาจากหัวใจดวงไหน */
+  function highlightHeart(wish) {
+
+    const group =
+      document.getElementById("treeHearts");
+
+    if (!group) return;
+
+
+    const index = allWishes.indexOf(wish);
+
+
+    let activeHeart = null;
+
+    Array.from(group.children).forEach((heart) => {
+
+      const on = Number(heart.dataset.index) === index;
+
+      heart.classList.toggle("is-active", on);
+
+      if (on) activeHeart = heart;
+
+    });
+
+
+    /* ตอนฉายเต็มจอ ให้ข้อความโผล่ที่หัวใจดวงนั้นเองด้วย
+       ผู้ชมจะเห็นว่าคำอวยพรนี้มาจากหัวใจดวงไหนบนต้นไม้ */
+    const stage =
+      document.getElementById("treeStage");
+
+    const presenting =
+      stage &&
+      (
+        isFullscreen() ||
+        stage.classList.contains("is-pseudo-fullscreen")
+      );
+
+
+    if (presenting && activeHeart) {
+
+      /* ไม่ให้ทับกับกล่องที่ผู้ใช้ปักหมุดไว้เอง */
+      if (!tipPinned) {
+
+        showWishTip(activeHeart, wish);
+
+      }
+
+    } else if (!tipPinned) {
+
+      hideWishTip(true);
+
+    }
 
   }
 

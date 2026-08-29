@@ -218,6 +218,22 @@ document.addEventListener("DOMContentLoaded", () => {
     showMainContent(true);
 
 
+    /* มาจากหน้าอื่น — ถ้าเคยเปิดเสียงไว้ ให้เล่นต่อ
+       (onReady ใน music.js จะจัดการกรณี player ยังไม่พร้อม) */
+    if (
+      typeof soundWanted === "function" &&
+      soundWanted()
+    ) {
+
+      if (typeof resumeMusic === "function") {
+
+        resumeMusic();
+
+      }
+
+    }
+
+
     /* ----------------------------------------------------------
        ตอนโหลด #main ยัง display:none ทำให้ browser scroll ไป
        hash ไม่ได้ — เลื่อนไปเองหลังแสดงเนื้อหาแล้ว
@@ -781,7 +797,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           }
 
-        }, 1200);
+        }, 800);
 
       }, { once: true });
 

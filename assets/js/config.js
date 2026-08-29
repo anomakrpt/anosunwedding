@@ -35,4 +35,4 @@ const HOME_GALLERY_PHOTOS = [
 ];
 
 /* สลับรูปในแกลเลอรีหน้าแรกทีละช่อง ทุกกี่มิลลิวินาที */
-const HOME_GALLERY_INTERVAL = 3600;
+const HOME_GALLERY_INTERVAL = 2000;
