@@ -160,6 +160,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       main.style.display = "block";
 
+
+      /* จังหวะเปิดตัว hero (ดู HERO ENTRANCE ใน home.css)
+         ใส่ class หลัง display เปลี่ยนแล้ว 1 เฟรม
+         เพื่อให้ animation เริ่มนับจากตอนที่มองเห็นจริง */
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          main.classList.add("enter");
+        });
+      });
+
     }
 
 
@@ -184,7 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       intro.style.display = "none";
 
-    }, 800);
+    }, 1100); /* ให้ตรงกับ transition 1.1s ของ #intro */
 
   }
 
