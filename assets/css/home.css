@@ -2748,7 +2748,10 @@ a {
   align-items: center;
   justify-content: center;
   padding-top: clamp(60px, 9vh, 110px);
-  padding-bottom: clamp(60px, 9vh, 110px);
+
+  /* แถบเมนูล่างเป็น fixed จึงลอยทับเนื้อหา
+     ฉากเต็มจอต้องเผื่อความสูงแถบไว้ ไม่งั้นบรรทัดล่างสุดโดนบัง */
+  padding-bottom: calc(clamp(60px, 9vh, 110px) + var(--nav-height));
 }
 
 .blessing.is-fullscreen .wrap.thread {
@@ -3895,9 +3898,51 @@ a {
 
   #home,
   .blessing.is-fullscreen,
-  #story {
+  .story-scene {
     scroll-snap-align: start;
-    scroll-snap-stop: normal;
+  }
+
+}
+
+
+/* =========================================================
+   SCROLL RHYTHM — ปรับจังหวะการเลื่อน
+
+   ฉากเล่าเรื่องทั้งสามต้องสูงเท่ากันหนึ่งจอพอดี ไม่งั้นเวลาหยุดที่หัวฉาก
+   ฉากถัดไปจะโผล่ค้างอยู่ที่ขอบล่าง แล้วเริ่มเล่นทั้งที่ยังอ่านฉากนี้ไม่จบ
+   (ฉาก Story เดิมสูง 620px บนจอ 837px จึงเหลือช่องว่างให้ฉากถัดไปแทรก)
+========================================================= */
+
+.story-scene {
+  min-height: 100vh;
+  min-height: 100svh;
+
+  /* เผื่อแถบเมนูล่างเช่นกัน — คำบรรยายภาพเกาะขอบล่างของกรอบรูป
+     ถ้าไม่เผื่อ บรรทัด "Doi Luang Chiang Dao" จะหายไปใต้แถบเมนู
+     ความสูงรวมของ section ยังเท่าหนึ่งจอ การ snap จึงไม่เพี้ยน */
+  box-sizing: border-box;
+  padding-bottom: var(--nav-height);
+}
+
+@media (min-height: 620px) and (prefers-reduced-motion: no-preference) {
+
+  /* หยุดที่ฉากนี้เสมอ — เลื่อนหนึ่งครั้งได้ดูหนึ่งฉากเต็ม ๆ
+     ไม่ปัดผ่านทั้งฉากไปด้วยการสะบัดครั้งเดียว */
+  #home,
+  .blessing.is-fullscreen,
+  .story-scene {
+    scroll-snap-stop: always;
+  }
+
+}
+
+/* จอเตี้ยกว่าฉาก (มือถือแนวนอน / หน้าต่างเล็ก) — ไม่ต้องบังคับความสูง
+   ไม่งั้นเนื้อหาจะถูกอัดจนล้น */
+@media (max-height: 619px) {
+
+  .story-scene,
+  .blessing.is-fullscreen {
+    min-height: 0;
   }
 
 }
