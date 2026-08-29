@@ -23,9 +23,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="assets/css/base.css?v=20260830-5" />
-  <link rel="stylesheet" href="assets/css/components.css?v=20260830-5" />
-  <link rel="stylesheet" href="assets/css/wishes.css?v=20260830-5" />
+    <link rel="stylesheet" href="assets/css/base.css?v=20260830-6" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260830-6" />
+  <link rel="stylesheet" href="assets/css/wishes.css?v=20260830-6" />
 </head>
 
 <body>
@@ -465,18 +465,35 @@
         </div>
 
 
-        <!-- คำอวยพรที่กำลังฉาย -->
+        <!-- คำอวยพรที่กำลังฉาย
+             โหมดปกติ = ข้อความใต้ต้นไม้
+             โหมดเต็มจอ = การ์ดที่มีทั้งรูปและข้อความ -->
         <div
           class="wish-spotlight"
           id="wishSpotlight"
           aria-live="polite"
         >
 
+          <div class="wish-spotlight-avatar" id="spotlightAvatar"></div>
+
           <p class="wish-spotlight-text" id="spotlightText"></p>
 
           <p class="wish-spotlight-name" id="spotlightName"></p>
 
         </div>
+
+
+        <!-- แถบลำดับคำอวยพร — แสดงเฉพาะตอนเต็มจอ -->
+        <aside class="wish-feed" id="wishFeed" aria-hidden="true">
+
+          <p class="wish-feed-head">
+            ลำดับคำอวยพร
+            <span id="wishFeedCount"></span>
+          </p>
+
+          <ol class="wish-feed-list" id="wishFeedList"></ol>
+
+        </aside>
 
 
         <!-- ชื่อคู่บ่าวสาว เหมือนบอร์ดในงานจริง -->
@@ -668,9 +685,9 @@
        - Google Apps Script Web App URL แก้ที่ assets/js/config.js
        - ?v=... ใช้บังคับ browser โหลดไฟล์ใหม่ ต้องแก้ให้ตรงกันทุกหน้า
        ========================================================= -->
-  <script src="assets/js/main.js?v=20260830-5"></script>
-  <script src="assets/js/config.js?v=20260830-5"></script>
-  <script src="assets/js/wishes.js?v=20260830-5"></script>
+  <script src="assets/js/main.js?v=20260830-6"></script>
+  <script src="assets/js/config.js?v=20260830-6"></script>
+  <script src="assets/js/wishes.js?v=20260830-6"></script>
 
 </body>
 </html>

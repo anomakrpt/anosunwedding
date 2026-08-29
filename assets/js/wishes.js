@@ -1552,6 +1552,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    renderFeed();
+
     startSpotlight();
 
   }
@@ -1604,6 +1606,25 @@ document.addEventListener("DOMContentLoaded", () => {
     textEl.textContent =
       "“" + String(wish.wish || "") + "”";
 
+
+    /* ช่องรูปของการ์ด (ใช้จริงตอนเต็มจอ) */
+    const faceEl =
+      document.getElementById("spotlightAvatar");
+
+    if (faceEl) {
+
+      faceEl.textContent = "";
+
+      faceEl.appendChild(
+        buildAvatarEl(wish.avatar || "")
+      );
+
+    }
+
+
+    highlightFeed(wish);
+
+
     nameEl.textContent = "";
 
     nameEl.className = "wish-spotlight-name wish-spotlight-who";
@@ -1617,6 +1638,138 @@ document.addEventListener("DOMContentLoaded", () => {
     whoSpot.textContent = String(wish.name || "Guest");
 
     nameEl.appendChild(whoSpot);
+
+  }
+
+
+  /* ============================================================
+     WISH FEED — ลำดับคำอวยพรที่ส่งเข้ามา (โหมดเต็มจอ)
+
+     เรียงจากใหม่ไปเก่า พร้อมเลขลำดับ
+     รายการที่กำลังฉายอยู่จะถูกไฮไลต์และเลื่อนให้เห็นเอง
+     ============================================================ */
+
+  function renderFeed() {
+
+    const list =
+      document.getElementById("wishFeedList");
+
+    const countEl =
+      document.getElementById("wishFeedCount");
+
+    if (!list) return;
+
+
+    list.textContent = "";
+
+
+    if (countEl) {
+
+      countEl.textContent =
+        allWishes.length > 0
+          ? allWishes.length + " ข้อความ"
+          : "";
+
+    }
+
+
+    /* allWishes เรียงใหม่→เก่าอยู่แล้ว ลำดับจึงนับถอยหลังจากทั้งหมด */
+    allWishes.forEach((wish, index) => {
+
+      const li = document.createElement("li");
+
+      li.className = "wish-feed-item";
+
+      li.dataset.index = String(index);
+
+
+      const no = document.createElement("span");
+
+      no.className = "wish-feed-no";
+
+      no.textContent = String(allWishes.length - index);
+
+      li.appendChild(no);
+
+
+      li.appendChild(
+        buildAvatarEl(wish.avatar || "")
+      );
+
+
+      const who = document.createElement("span");
+
+      who.className = "wish-feed-who";
+
+
+      const nm = document.createElement("span");
+
+      nm.className = "wish-feed-name";
+
+      nm.textContent = String(wish.name || "Guest");
+
+      who.appendChild(nm);
+
+
+      const tx = document.createElement("span");
+
+      tx.className = "wish-feed-text";
+
+      tx.textContent = String(wish.wish || "");
+
+      who.appendChild(tx);
+
+
+      li.appendChild(who);
+
+
+      /* คลิกรายการเพื่อฉายคำอวยพรนั้น */
+      li.addEventListener("click", () => {
+
+        spotlightIndex = index;
+
+        showSpotlight(wish);
+
+        restartSpotlight();
+
+      });
+
+
+      list.appendChild(li);
+
+    });
+
+  }
+
+
+  function highlightFeed(wish) {
+
+    const list =
+      document.getElementById("wishFeedList");
+
+    if (!list || !list.children.length) return;
+
+
+    const index = allWishes.indexOf(wish);
+
+    Array.from(list.children).forEach((li) => {
+
+      const on =
+        Number(li.dataset.index) === index;
+
+      li.classList.toggle("is-active", on);
+
+
+      if (on) {
+
+        li.scrollIntoView({
+          block: "nearest",
+          behavior: "smooth"
+        });
+
+      }
+
+    });
 
   }
 
