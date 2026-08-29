@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
+
+  <meta
+    name="theme-color"
+    content="#f8f4ec"
+  />
+
+  <title>RSVP — Ausamah & Mizahasan</title>
+
+  <meta name="description" content="ตอบรับคำเชิญร่วมงานแต่งงานของ Ausamah & Mizahasan — 16-17 มกราคม 2027" />
+
+  <link rel="icon" type="image/png" href="pic/logo.png" />
+  <link rel="apple-touch-icon" href="pic/logo.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="RSVP — Ausamah & Mizahasan" />
+  <meta property="og:description" content="ตอบรับคำเชิญร่วมงานแต่งงานของ Ausamah & Mizahasan" />
+  <meta property="og:image" content="https://anomakrpt.github.io/anosunwedding/pic/WELCOME.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="assets/css/base.css?v=20260829-1" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260829-1" />
+  <link rel="stylesheet" href="assets/css/rsvp.css?v=20260829-1" />
+
+</head>
+
+<body>
+
+  <header class="topbar">
+
+    <div class="header-space"></div>
+
+    <div class="brand">
+
+      <img
+        src="pic/logo.png"
+        alt="Ausamah & Mizahasan Logo"
+        class="brand-logo"
+      >
+
+      <h1>AUSAMAH &amp; MIZAHASAN</h1>
+    </div>
+
+    <div class="header-space"></div>
+
+  </header>
+
+
+  <main class="rsvp-page">
+
+    <!-- =========================================================
+         HEADING
+    ========================================================== -->
+
+    <section class="rsvp-heading">
+
+      <img
+        src="pic/icon-bow.png"
+        alt=""
+        class="bow-icon"
+      >
+
+      <h2>WILL YOU JOIN US?</h2>
+
+      <p>ร่วมยืนยันการเข้าร่วมงานของคุณ</p>
+
+      <p class="rsvp-date">16 – 17 มกราคม 2570 · ดอยหลวงเชียงดาว</p>
+
+    </section>
+
+
+    <!-- =========================================================
+         FORM
+    ========================================================== -->
+
+    <section class="rsvp-section">
+
+      <form id="rsvpForm" class="rsvp-form" novalidate>
+
+        <div class="field">
+          <label for="rsvpName">ชื่อ-นามสกุล</label>
+          <input
+            type="text"
+            id="rsvpName"
+            name="fullname"
+            maxlength="80"
+            placeholder="ชื่อของคุณ"
+            autocomplete="name"
+            required
+          >
+        </div>
+
+
+        <fieldset class="field choice-field">
+          <legend>ท่านสะดวกเข้าร่วมงานหรือไม่</legend>
+
+          <div class="choice-row">
+
+            <label class="choice-card">
+              <input type="radio" name="attending" value="yes" required>
+              <span class="choice-inner">
+                <span class="choice-icon">♥</span>
+                ยินดีเข้าร่วม
+              </span>
+            </label>
+
+            <label class="choice-card">
+              <input type="radio" name="attending" value="no" required>
+              <span class="choice-inner">
+                <span class="choice-icon">✕</span>
+                ขออภัย ไม่สามารถมาได้
+              </span>
+            </label>
+
+          </div>
+        </fieldset>
+
+
+        <!-- แสดงเฉพาะเมื่อเลือก "ยินดีเข้าร่วม" -->
+        <div class="field guests-field" id="guestsField" hidden>
+          <label for="rsvpGuests">จำนวนผู้ติดตาม (ไม่รวมตัวท่าน)</label>
+
+          <div class="stepper">
+            <button type="button" class="step-btn" id="guestMinus" aria-label="ลดจำนวน">−</button>
+            <output id="rsvpGuests" for="guestMinus guestPlus">0</output>
+            <button type="button" class="step-btn" id="guestPlus" aria-label="เพิ่มจำนวน">+</button>
+          </div>
+        </div>
+
+
+        <fieldset class="field choice-field" id="sideField" hidden>
+          <legend>ท่านเป็นแขกฝั่งไหน (ไม่บังคับ)</legend>
+
+          <div class="choice-row side-row">
+
+            <label class="choice-card">
+              <input type="radio" name="side" value="groom">
+              <span class="choice-inner">ฝั่งเจ้าบ่าว</span>
+            </label>
+
+            <label class="choice-card">
+              <input type="radio" name="side" value="bride">
+              <span class="choice-inner">ฝั่งเจ้าสาว</span>
+            </label>
+
+          </div>
+        </fieldset>
+
+
+        <button type="submit" id="rsvpSubmit" class="submit-btn">
+          ➤ &nbsp; ส่งคำตอบรับ
+        </button>
+
+        <div
+          id="rsvpMessage"
+          class="message"
+          role="status"
+          aria-live="polite"
+        ></div>
+
+      </form>
+
+    </section>
+
+
+    <!-- =========================================================
+         CONFIRMATION CARD (แสดงหลังส่งสำเร็จ)
+    ========================================================== -->
+
+    <section class="rsvp-confirm" id="rsvpConfirm" hidden>
+
+      <div class="confirm-card" id="confirmCard">
+
+        <img
+          src="pic/logo.png"
+          alt=""
+          class="confirm-logo"
+        >
+
+        <p class="confirm-brand">AUSAMAH &amp; MIZAHASAN</p>
+
+        <div class="confirm-divider">
+          <img src="pic/icon-bow.png" alt="" class="bow-icon small">
+        </div>
+
+        <p class="confirm-title" id="confirmTitle">ขอบคุณสำหรับการตอบรับ</p>
+
+        <p class="confirm-name" id="confirmName"></p>
+
+        <p class="confirm-status" id="confirmStatus"></p>
+
+        <div class="confirm-details">
+          <p>16 – 17 มกราคม 2570</p>
+          <p>ดอยหลวงเชียงดาว · เชียงใหม่</p>
+        </div>
+
+        <p class="confirm-note" id="confirmNote"></p>
+
+      </div>
+
+
+      <div class="confirm-actions">
+
+        <button type="button" id="saveCardBtn" class="submit-btn">
+          ↓ &nbsp; บันทึกการ์ด
+        </button>
+
+        <button type="button" id="shareCardBtn" class="submit-btn ghost">
+          ➦ &nbsp; แชร์
+        </button>
+
+        <button type="button" id="calendarBtn" class="submit-btn ghost">
+          🗓 &nbsp; เพิ่มลงปฏิทิน
+        </button>
+
+      </div>
+
+      <button type="button" id="editRsvpBtn" class="edit-link">
+        แก้ไขคำตอบ
+      </button>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================================================
+       BOTTOM NAVIGATION
+  ========================================================== -->
+
+  <nav class="bottom-nav">
+
+    <a
+      href="index.html?skipIntro=1#home"
+      class="nav-item"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path d="M3 11L12 4l9 7v8a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" />
+      </svg>
+
+      <span>Home</span>
+    </a>
+
+
+    <a
+      href="index.html?skipIntro=1#story"
+      class="nav-item"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path d="M12 21s-7-4.6-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 11c0 5.4-7 10-7 10z" />
+      </svg>
+
+      <span>Story</span>
+    </a>
+
+
+    <a
+      href="index.html?skipIntro=1#details"
+      class="nav-item"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path d="M7 2v3M17 2v3M4 8h16M5 5h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" />
+      </svg>
+
+      <span>Event</span>
+    </a>
+
+
+    <!-- หน้าปัจจุบัน = RSVP -->
+    <a
+      href="rsvp.html"
+      class="nav-item active"
+      aria-current="page"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path d="M9 11.5l2.5 2.5L17 8.5" />
+        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+      </svg>
+
+      <span>RSVP</span>
+    </a>
+
+
+    <a
+      href="wishes.html"
+      class="nav-item"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path d="M3 6l9 7 9-7M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/>
+      </svg>
+
+      <span>Wishes</span>
+    </a>
+
+
+    <a
+      href="index.html?skipIntro=1#location"
+      class="nav-item"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path d="M12 21s6-5.3 6-10a6 6 0 0 0-12 0c0 4.7 6 10 6 10z" />
+        <circle cx="12" cy="11" r="2.5" />
+      </svg>
+
+      <span>Location</span>
+    </a>
+
+
+    <a
+      href="photos.html"
+      class="nav-item"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path d="M4 7h3l2-2h6l2 2h3v12H4z" />
+        <circle cx="12" cy="13" r="3.5" />
+      </svg>
+
+      <span>Photos</span>
+    </a>
+
+  </nav>
+
+
+  <div
+    id="toast"
+    class="toast"
+    role="status"
+    aria-live="polite"
+  ></div>
+
+
+  <script src="assets/js/main.js?v=20260829-1"></script>
+  <script src="assets/js/config.js?v=20260829-1"></script>
+  <script src="assets/js/rsvp.js?v=20260829-1"></script>
+
+</body>
+
+</html>

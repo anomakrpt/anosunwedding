@@ -1,0 +1,446 @@
+/* ============ RSVP PAGE ============ */
+
+.rsvp-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+}
+
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+.rsvp-heading {
+  text-align: center;
+  padding: 46px 0 30px;
+}
+
+.rsvp-heading .bow-icon {
+  margin: 0 auto 18px;
+}
+
+.rsvp-heading h2 {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 600;
+  font-size: clamp(30px, 7vw, 44px);
+  letter-spacing: .12em;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+
+.rsvp-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.rsvp-heading .rsvp-date {
+  margin-top: 10px;
+  font-size: 14px;
+  letter-spacing: .04em;
+  color: var(--olive);
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.rsvp-form {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 30px 26px 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.field {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.field > label,
+.field > legend {
+  display: block;
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: .08em;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.field input[type="text"] {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  color: var(--text);
+  font-size: 16px;
+  outline: none;
+  transition: border-color .25s ease, box-shadow .25s ease;
+}
+
+.field input[type="text"]:focus {
+  border-color: var(--olive);
+  box-shadow: 0 0 0 3px rgba(119, 119, 71, .12);
+}
+
+
+/* ----- choice cards (มา/ไม่มา, ฝั่ง) ----- */
+
+.choice-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.choice-card {
+  position: relative;
+  display: block;
+  cursor: pointer;
+}
+
+.choice-card input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.choice-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 56px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  color: var(--text);
+  font-size: 15px;
+  text-align: center;
+  transition:
+    border-color .25s ease,
+    background .25s ease,
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.choice-icon {
+  font-size: 15px;
+  color: var(--muted);
+  transition: color .25s ease;
+}
+
+.choice-card input:checked + .choice-inner {
+  border-color: var(--olive);
+  background: rgba(119, 119, 71, .08);
+  box-shadow: 0 0 0 3px rgba(119, 119, 71, .1);
+}
+
+.choice-card input:checked + .choice-inner .choice-icon {
+  color: var(--olive);
+}
+
+.choice-card input:focus-visible + .choice-inner {
+  outline: 2px solid var(--olive);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .choice-card:hover .choice-inner {
+    transform: translateY(-2px);
+    border-color: var(--olive-soft, var(--olive));
+  }
+}
+
+
+/* ----- stepper จำนวนผู้ติดตาม ----- */
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  padding: 6px 10px;
+}
+
+.step-btn {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(119, 119, 71, .1);
+  color: var(--olive-dark);
+  font-size: 22px;
+  line-height: 1;
+  transition: background .2s ease, transform .2s ease;
+}
+
+.step-btn:hover {
+  background: rgba(119, 119, 71, .2);
+}
+
+.step-btn:active {
+  transform: scale(.92);
+}
+
+.stepper output {
+  min-width: 34px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+
+/* ----- submit + message (โทนเดียวกับหน้า wishes) ----- */
+
+.submit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 26px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #747544, #85864e);
+  color: #fdfbf4;
+  font-size: 16px;
+  letter-spacing: .04em;
+  box-shadow: 0 10px 24px rgba(85, 76, 54, .22);
+  transition: transform .25s ease, box-shadow .25s ease, opacity .2s ease;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(85, 76, 54, .28);
+}
+
+.submit-btn:disabled {
+  opacity: .55;
+  transform: none;
+  cursor: default;
+}
+
+.submit-btn.ghost {
+  background: #fff;
+  color: var(--olive-dark);
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+
+.submit-btn.ghost:hover {
+  border-color: var(--olive);
+}
+
+.message {
+  min-height: 22px;
+  text-align: center;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+
+.message.show {
+  opacity: 1;
+}
+
+.message.ok {
+  color: var(--olive-dark);
+}
+
+.message.error {
+  color: #a3543f;
+}
+
+
+/* =========================================================
+   CONFIRMATION CARD
+========================================================= */
+
+.rsvp-confirm {
+  text-align: center;
+  animation: confirmIn .7s cubic-bezier(.22, .61, .36, 1);
+}
+
+@keyframes confirmIn {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.confirm-card {
+  background:
+    linear-gradient(180deg, #fffdf8 0%, #faf6ec 100%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 40px 30px 34px;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.confirm-logo {
+  width: 54px;
+  height: auto;
+  margin: 0 auto 12px;
+  display: block;
+}
+
+.confirm-brand {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 15px;
+  letter-spacing: .22em;
+  color: var(--text);
+  margin: 0 0 14px;
+}
+
+.confirm-divider {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.confirm-title {
+  font-size: 15px;
+  color: var(--muted);
+  margin: 0 0 6px;
+}
+
+.confirm-name {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(26px, 6vw, 32px);
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 8px;
+  overflow-wrap: anywhere;
+}
+
+.confirm-status {
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: 999px;
+  background: rgba(119, 119, 71, .1);
+  color: var(--olive-dark);
+  font-size: 14px;
+  margin: 0 0 20px;
+}
+
+.confirm-status.declined {
+  background: rgba(163, 84, 63, .08);
+  color: #a3543f;
+}
+
+.confirm-details p {
+  margin: 2px 0;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.confirm-note {
+  margin: 16px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.confirm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.edit-link {
+  margin-top: 18px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.edit-link:hover {
+  color: var(--olive-dark);
+}
+
+
+/* =========================================================
+   TOAST (โทนเดียวกับหน้า wishes)
+========================================================= */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--nav-height) + 20px);
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(64, 62, 49, .92);
+  color: #fdfbf4;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .35s ease, transform .35s ease;
+  z-index: 10000;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .rsvp-heading {
+    padding-top: 34px;
+  }
+
+  .rsvp-form {
+    padding: 24px 18px 28px;
+  }
+
+}
+
+@media (max-width: 420px) {
+
+  .choice-row {
+    grid-template-columns: 1fr;
+  }
+
+  .choice-row.side-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .confirm-actions .submit-btn {
+    flex: 1 1 100%;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rsvp-confirm {
+    animation: none;
+  }
+}
