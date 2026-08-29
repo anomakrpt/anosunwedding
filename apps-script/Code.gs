@@ -1,7 +1,7 @@
 /**
  * Google Apps Script — Wishes + RSVP backend
  * ============================================================
- * สำเนาอ้างอิงของโค้ดที่ deploy จริงแล้ว (Version 3, 30 ส.ค. 2026)
+ * สำเนาอ้างอิงของโค้ดที่ deploy จริงแล้ว (Version 4, 30 ส.ค. 2026)
  *
  * โปรเจกต์จริง: Apps Script ชื่อ "Wishes"
  * ผูกกับ Google Sheet: Wedding_Wishes
@@ -88,3 +88,29 @@ function handleRsvp_(data) {
     message: "RSVP saved"
   });
 }
+
+
+/* ============================================================
+   3) AVATAR — รูปแทนตัวผู้เขียนคำอวยพร (เพิ่มใน Version 4)
+
+   แก้ 4 จุดในโค้ดคำอวยพรเดิม:
+
+   3.1 ใน doPost หลัง const allowDisplay = ... ให้เพิ่ม
+
+       const avatar =
+         String(data.avatar || "").slice(0, 20000);
+
+   3.2 ใน sheet.appendRow([...]) เพิ่ม avatar ต่อท้าย status
+       คอลัมน์ใหม่: F = Avatar
+
+   3.3 ใน doGet เปลี่ยน getRange(2, 1, lastRow - 1, 5)
+       เป็น getRange(2, 1, lastRow - 1, 6)
+
+   3.4 ใน items.push({...}) เพิ่ม
+
+       avatar: row[5] || "",
+
+   ค่าที่เก็บมี 2 แบบ
+     • "hiker-m" / "hiker-f" / "hiker-h" → รูปวาดสำเร็จในเว็บ
+     • "data:image/jpeg;base64,..."      → เซลฟี่ที่ย่อ 128px แล้ว (~5 KB)
+   ============================================================ */

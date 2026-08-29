@@ -929,3 +929,161 @@ body.wish-fs-lock{
 @media (prefers-reduced-motion:reduce){
   .wish-tip{ transition:none; }
 }
+
+
+/* =========================================================
+   AVATAR PICKER — รูปแทนตัวผู้เขียนคำอวยพร
+========================================================= */
+
+.av-sprite{
+  position:absolute;
+  width:0;
+  height:0;
+  overflow:hidden;
+}
+
+.av-field .field-label small{
+  font-weight:400;
+  letter-spacing:0;
+  text-transform:none;
+  color:var(--muted);
+}
+
+.av-row{
+  display:grid;
+  grid-template-columns:repeat(5, minmax(0,1fr));
+  gap:8px;
+  margin-top:10px;
+}
+
+.av-choice{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:10px 4px 8px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#fff;
+  color:var(--muted);
+  cursor:pointer;
+  transition:border-color .25s ease, background .25s ease,
+             color .25s ease, transform .25s ease;
+}
+
+.av-choice svg{
+  width:30px;
+  height:30px;
+  display:block;
+}
+
+.av-choice .av-cam{
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.7;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.av-choice span{
+  font-size:11px;
+  line-height:1.2;
+  text-align:center;
+}
+
+@media (hover:hover){
+  .av-choice:hover{
+    border-color:var(--olive);
+    transform:translateY(-2px);
+  }
+}
+
+.av-choice.is-selected{
+  border-color:var(--olive);
+  background:rgba(119,119,71,.08);
+  color:var(--olive-dark);
+  box-shadow:0 0 0 3px rgba(119,119,71,.1);
+}
+
+.av-choice:focus-visible{
+  outline:2px solid var(--olive);
+  outline-offset:2px;
+}
+
+/* ตัวอย่างรูปเซลฟี่ที่เลือก */
+.av-preview{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:12px;
+}
+
+/* display:flex ด้านบนทับ attribute hidden ต้องสั่งซ่อนเอง */
+.av-preview[hidden]{
+  display:none;
+}
+
+.av-preview img{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  object-fit:cover;
+  border:1px solid var(--line);
+}
+
+.av-clear{
+  border:0;
+  background:none;
+  color:var(--muted);
+  font-size:13px;
+  text-decoration:underline;
+  text-underline-offset:3px;
+  cursor:pointer;
+}
+
+.av-clear:hover{ color:var(--olive-dark); }
+
+
+/* ---------- avatar ที่แสดงคู่กับคำอวยพร ---------- */
+
+.wish-avatar{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  flex:none;
+  display:block;
+  object-fit:cover;
+  border:1px solid var(--line);
+  background:rgba(119,119,71,.08);
+  color:var(--olive-dark);
+  padding:3px;
+}
+
+.wish-tip-who{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+.wish-spotlight-who{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-top:6px;
+}
+
+.tree-stage:fullscreen .wish-avatar,
+.tree-stage.is-pseudo-fullscreen .wish-avatar{
+  width:46px;
+  height:46px;
+}
+
+@media (max-width:430px){
+  .av-row{ gap:6px; }
+  .av-choice{ padding:8px 2px 6px; border-radius:13px; }
+  .av-choice svg{ width:25px; height:25px; }
+  .av-choice span{ font-size:9.5px; }
+}

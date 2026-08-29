@@ -354,6 +354,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             wish: wish,
 
+            avatar: selectedAvatar,
+
             allowDisplay:
 
               allowDisplayInput
@@ -386,6 +388,24 @@ document.addEventListener("DOMContentLoaded", () => {
            ======================================================== */
 
         wishForm.reset();
+
+
+        /* คืนค่า avatar กลับเป็นค่าเริ่มต้น */
+        selectedAvatar = "";
+
+        const avPrev = document.getElementById("avPreview");
+
+        if (avPrev) avPrev.hidden = true;
+
+        document
+          .querySelectorAll(".av-choice[data-avatar]")
+          .forEach((c, i) => {
+
+            c.classList.toggle("is-selected", i === 0);
+
+            c.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+
+          });
 
 
 
@@ -823,6 +843,269 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ============================================================
+     AVATAR — รูปแทนตัวผู้เขียนคำอวยพร
+
+     เก็บได้ 2 แบบ
+       • "hiker-m" / "hiker-f" / "hiker-h"  → รูปวาดสำเร็จ
+       • "data:image/jpeg;base64,..."       → เซลฟี่ที่ย่อแล้ว
+
+     เซลฟี่ถูกย่อเป็นสี่เหลี่ยมจัตุรัส 128px ฝั่งเบราว์เซอร์ก่อนส่ง
+     เพื่อให้ข้อมูลเล็กพอเก็บในเซลล์ของ Google Sheet
+     ============================================================ */
+
+  const AVATAR_SIZE = 128;
+
+  const AVATAR_QUALITY = 0.72;
+
+  let selectedAvatar = "";
+
+
+  function isPhotoAvatar(value) {
+
+    return typeof value === "string" &&
+      value.indexOf("data:image/") === 0;
+
+  }
+
+
+  /* ย่อ + ครอปกลางเป็นสี่เหลี่ยมจัตุรัส คืนค่าเป็น data URL */
+  function shrinkImage(file) {
+
+    return new Promise((resolve, reject) => {
+
+      const reader = new FileReader();
+
+      reader.onerror = () => reject(new Error("read failed"));
+
+      reader.onload = () => {
+
+        const img = new Image();
+
+        img.onerror = () => reject(new Error("decode failed"));
+
+        img.onload = () => {
+
+          const side = Math.min(img.width, img.height);
+
+          const sx = (img.width - side) / 2;
+
+          const sy = (img.height - side) / 2;
+
+
+          const canvas = document.createElement("canvas");
+
+          canvas.width = AVATAR_SIZE;
+
+          canvas.height = AVATAR_SIZE;
+
+
+          const ctx = canvas.getContext("2d");
+
+          if (!ctx) {
+            reject(new Error("no canvas"));
+            return;
+          }
+
+          ctx.drawImage(
+            img,
+            sx, sy, side, side,
+            0, 0, AVATAR_SIZE, AVATAR_SIZE
+          );
+
+
+          resolve(
+            canvas.toDataURL("image/jpeg", AVATAR_QUALITY)
+          );
+
+        };
+
+        img.src = reader.result;
+
+      };
+
+      reader.readAsDataURL(file);
+
+    });
+
+  }
+
+
+  /* สร้าง element สำหรับโชว์ avatar (รูปวาด = svg, เซลฟี่ = img) */
+  function buildAvatarEl(value) {
+
+    if (isPhotoAvatar(value)) {
+
+      const img = document.createElement("img");
+
+      img.className = "wish-avatar";
+
+      img.src = value;
+
+      img.alt = "";
+
+      return img;
+
+    }
+
+
+    const known = ["hiker-m", "hiker-f", "hiker-h"];
+
+    const id = known.indexOf(value) !== -1 ? value : "heart";
+
+
+    const svg =
+      document.createElementNS(SVG_NS, "svg");
+
+    svg.setAttribute("class", "wish-avatar");
+
+    svg.setAttribute("aria-hidden", "true");
+
+
+    const use =
+      document.createElementNS(SVG_NS, "use");
+
+    use.setAttribute("href", "#av-" + id);
+
+    svg.appendChild(use);
+
+    return svg;
+
+  }
+
+
+  function setupAvatarPicker() {
+
+    const choices =
+      Array.from(
+        document.querySelectorAll(".av-choice[data-avatar]")
+      );
+
+    const fileInput =
+      document.getElementById("avatarPhoto");
+
+    const preview =
+      document.getElementById("avPreview");
+
+    const previewImg =
+      document.getElementById("avPreviewImg");
+
+    const clearBtn =
+      document.getElementById("avClear");
+
+
+    if (choices.length === 0) return;
+
+
+    function markSelected(el) {
+
+      choices.forEach((c) => {
+
+        const on = c === el;
+
+        c.classList.toggle("is-selected", on);
+
+        c.setAttribute("aria-pressed", on ? "true" : "false");
+
+      });
+
+    }
+
+
+    function showPreview(dataUrl) {
+
+      if (!preview || !previewImg) return;
+
+      previewImg.src = dataUrl;
+
+      preview.hidden = false;
+
+    }
+
+
+    function hidePreview() {
+
+      if (!preview) return;
+
+      preview.hidden = true;
+
+    }
+
+
+    choices.forEach((choice) => {
+
+      choice.addEventListener("click", () => {
+
+        selectedAvatar = choice.dataset.avatar || "";
+
+        markSelected(choice);
+
+        hidePreview();
+
+      });
+
+    });
+
+
+    if (fileInput) {
+
+      fileInput.addEventListener("change", async () => {
+
+        const file = fileInput.files && fileInput.files[0];
+
+        if (!file) return;
+
+
+        try {
+
+          const dataUrl = await shrinkImage(file);
+
+          selectedAvatar = dataUrl;
+
+          markSelected(null);
+
+          showPreview(dataUrl);
+
+        } catch (err) {
+
+          console.error("Avatar resize failed:", err);
+
+          showWishMessage(
+            "ใช้รูปนี้ไม่ได้ ลองเลือกรูปอื่น",
+            "error"
+          );
+
+        }
+
+
+        /* ล้างค่า input เพื่อให้เลือกไฟล์เดิมซ้ำได้ */
+        fileInput.value = "";
+
+      });
+
+    }
+
+
+    if (clearBtn) {
+
+      clearBtn.addEventListener("click", () => {
+
+        selectedAvatar = "";
+
+        hidePreview();
+
+        markSelected(choices[0]);
+
+      });
+
+    }
+
+  }
+
+
+  setupAvatarPicker();
+
+
+  /* ============================================================
      WISH TIP — ข้อความเต็มเมื่อชี้ (เดสก์ท็อป) หรือแตะ (มือถือ)
 
      แตะแล้วจะ "ปักหมุด" ไว้จนกว่าจะแตะที่อื่น
@@ -855,7 +1138,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (nameEl) {
-      nameEl.textContent = "— " + String(wish.name || "Guest");
+
+      nameEl.textContent = "";
+
+      nameEl.className = "wish-tip-name wish-tip-who";
+
+      nameEl.appendChild(
+        buildAvatarEl(wish.avatar || "")
+      );
+
+      const who = document.createElement("span");
+
+      who.textContent = String(wish.name || "Guest");
+
+      nameEl.appendChild(who);
+
     }
 
 
@@ -1282,6 +1579,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       nameEl.textContent = "";
 
+      nameEl.className = "wish-spotlight-name";
+
       return;
 
     }
@@ -1305,8 +1604,19 @@ document.addEventListener("DOMContentLoaded", () => {
     textEl.textContent =
       "“" + String(wish.wish || "") + "”";
 
-    nameEl.textContent =
-      "— " + String(wish.name || "Guest");
+    nameEl.textContent = "";
+
+    nameEl.className = "wish-spotlight-name wish-spotlight-who";
+
+    nameEl.appendChild(
+      buildAvatarEl(wish.avatar || "")
+    );
+
+    const whoSpot = document.createElement("span");
+
+    whoSpot.textContent = String(wish.name || "Guest");
+
+    nameEl.appendChild(whoSpot);
 
   }
 
