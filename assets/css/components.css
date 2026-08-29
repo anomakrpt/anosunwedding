@@ -1,0 +1,289 @@
+/* =========================================================
+   COMPONENTS — ใช้ร่วมกันทุกหน้า
+   Bottom Navigation (นิยามเดียว แก้ที่นี่ที่เดียว)
+========================================================= */
+
+/* =========================================================
+       BOTTOM NAV
+    ========================================================== */
+
+    .bottom-nav {
+
+      position: fixed;
+
+      left: 50%;
+
+      bottom: 0;
+
+      transform: translateX(-50%);
+
+      width: min(100%, 760px);
+
+      min-height: var(--nav-height);
+
+      padding:
+        8px 12px
+        calc(8px + env(safe-area-inset-bottom));
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(6, 1fr);
+
+      align-items: center;
+
+      gap: 2px;
+
+      background:
+        rgba(251, 248, 241, .93);
+
+      border-top:
+        1px solid
+        rgba(112, 106, 81, .13);
+
+      box-shadow:
+        0 -8px 30px
+        rgba(79, 73, 53, .08);
+
+      backdrop-filter:
+        blur(16px);
+
+      -webkit-backdrop-filter:
+        blur(16px);
+
+      z-index: 9999;
+    }
+
+
+    /* =========================================================
+       NAV ITEM
+    ========================================================== */
+
+    .bottom-nav .nav-item {
+
+      position: relative;
+
+      min-width: 0;
+
+      color: var(--nav-muted);
+
+      text-decoration: none;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 4px;
+
+      padding: 4px 2px;
+
+      background: transparent;
+
+      border: 0;
+
+      border-radius: 0;
+
+      box-shadow: none;
+
+      transition:
+        color .2s ease,
+        opacity .2s ease;
+
+      -webkit-tap-highlight-color:
+        transparent;
+    }
+
+
+    /* กัน style.css เก่าใส่พื้นหลังให้ปุ่ม */
+
+    .bottom-nav .nav-item::after {
+
+      display: none;
+    }
+
+
+    /* =========================================================
+       ICON
+    ========================================================== */
+
+    .bottom-nav .nav-item svg {
+
+      display: block;
+
+      width: 21px;
+
+      height: 21px;
+
+      fill: none;
+
+      stroke: currentColor;
+
+      stroke-width: 1.7;
+
+      stroke-linecap: round;
+
+      stroke-linejoin: round;
+
+      margin: 0;
+
+      padding: 0;
+    }
+
+
+    /* =========================================================
+       TEXT
+    ========================================================== */
+
+    .bottom-nav .nav-item span {
+
+      display: block;
+
+      margin: 0;
+
+      padding: 0;
+
+      font-family:
+        "Noto Sans Thai",
+        sans-serif;
+
+      font-size: 10px;
+
+      font-weight: 400;
+
+      line-height: 1;
+
+      letter-spacing: 0;
+
+      white-space: nowrap;
+
+      color: inherit;
+    }
+
+
+    /* =========================================================
+       HOVER
+    ========================================================== */
+
+    .bottom-nav .nav-item:hover {
+
+      color: var(--nav-olive);
+
+      background: transparent;
+    }
+
+
+    /* =========================================================
+       ACTIVE
+    ========================================================== */
+
+    .bottom-nav .nav-item.active {
+
+      color: var(--nav-olive-dark);
+
+      background: transparent;
+
+      font-weight: 500;
+    }
+
+
+    /*
+       เส้น olive บนเมนูที่ active
+       เหมือนหน้า wishes / photos
+    */
+
+    .bottom-nav .nav-item.active::before {
+
+      content: "";
+
+      position: absolute;
+
+      top: -8px;
+
+      left: 50%;
+
+      transform: translateX(-50%);
+
+      width: 34px;
+
+      height: 3px;
+
+      border-radius: 999px;
+
+      background:
+        var(--nav-olive-dark);
+    }
+
+
+    .bottom-nav .nav-item.active svg {
+
+      stroke-width: 2;
+    }
+
+
+    .bottom-nav .nav-item.active span {
+
+      font-weight: 500;
+    }
+
+
+    /* =========================================================
+       MOBILE
+    ========================================================== */
+
+    @media (max-width: 700px) {
+
+      .bottom-nav {
+
+        width: 100%;
+
+        border-radius: 0;
+      }
+
+
+      .bottom-nav .nav-item svg {
+
+        width: 20px;
+
+        height: 20px;
+      }
+
+
+      .bottom-nav .nav-item span {
+
+        font-size: 9px;
+      }
+
+    }
+
+
+    /* =========================================================
+       SMALL MOBILE
+    ========================================================== */
+
+    @media (max-width: 420px) {
+
+      .bottom-nav {
+
+        padding-left: 5px;
+
+        padding-right: 5px;
+      }
+
+
+      .bottom-nav .nav-item span {
+
+        font-size: 8.5px;
+      }
+
+    }
+
+/* ===== focus ให้มองเห็นตอนใช้คีย์บอร์ด ===== */
+.bottom-nav .nav-item:focus-visible {
+  outline: 2px solid var(--nav-olive);
+  outline-offset: -4px;
+  border-radius: 12px;
+}

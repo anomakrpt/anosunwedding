@@ -1,0 +1,197 @@
+/* =========================================================
+   BASE — design tokens + reset + header ใช้ร่วมทุกหน้า
+   หมายเหตุ: home.css มี :root ชุดเก่า (palette ครีมเข้ม)
+   override เฉพาะหน้าแรก — รอ unify ในอนาคต
+========================================================= */
+
+:root {
+  --cream: #f8f4ec;
+  --cream-light: #fbf8f1;
+  --paper: rgba(255, 255, 255, .72);
+  --olive: #777747;
+  --olive-dark: #5f6037;
+  --olive-soft: #9b9870;
+  --text: #403e31;
+  --muted: #918c7e;
+  --line: #ddd5c6;
+  --shadow: 0 12px 35px rgba(85, 76, 54, .11);
+  --radius: 26px;
+  --nav-height: 72px;
+
+  /* token ของ bottom navigation */
+  --nav-cream: #fbf8f1;
+  --nav-olive: #777747;
+  --nav-olive-dark: #5f6037;
+  --nav-muted: #8c8878;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  background: var(--cream);
+  font-family: "Noto Sans Thai", sans-serif;
+  overflow-x: hidden;
+  /* เว้นพื้นที่ให้ bottom navigation */
+  padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom));
+}
+
+button,
+a,
+input,
+textarea {
+  font: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--olive);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+       HEADER
+       ใช้โครงเดียวกับ wishes.html
+    ========================================================== */
+
+    .topbar {
+
+      min-height: 170px;
+
+      padding:
+        26px 28px
+        24px;
+
+      display: grid;
+
+      grid-template-columns:
+        60px 1fr 60px;
+
+      align-items: start;
+
+      position: relative;
+
+      z-index: 5;
+
+      background: #fbf8f1;
+
+      border-bottom:
+        1px solid
+        rgba(126, 119, 92, .08);
+    }
+
+
+    .header-space {
+
+      width: 46px;
+
+      height: 46px;
+
+      margin-top: 12px;
+    }
+
+
+    .brand {
+
+      text-align: center;
+
+      line-height: 1.2;
+    }
+
+
+    .brand-logo {
+
+      display: block;
+
+      width: 74px;
+
+      height: auto;
+
+      max-height: 82px;
+
+      object-fit: contain;
+
+      margin:
+        0 auto 10px;
+    }
+
+
+    .brand h1 {
+
+      margin:
+        8px 0 3px;
+
+      font:
+        600 18px/1.1
+        "Cormorant Garamond",
+        serif;
+
+      letter-spacing: .18em;
+    }
+
+.bow-icon{
+  display:block;
+  width:32px;
+  height:32px;
+  object-fit:contain;
+  margin:0 auto 5px;
+  opacity:.72;
+}
+
+.bow-icon.small{
+  width:28px;
+  height:28px;
+  margin:0;
+}
+
+@media (max-width: 700px) {
+
+  .topbar {
+  
+    min-height: 142px;
+  
+    padding:
+      18px 14px 18px;
+  
+    grid-template-columns:
+      46px 1fr 46px;
+  }
+
+  .header-space {
+  
+    width: 40px;
+  
+    height: 40px;
+  
+    margin-top: 8px;
+  }
+
+  .brand-logo {
+  
+    width: 58px;
+  
+    max-height: 66px;
+  
+    margin-bottom: 7px;
+  }
+
+  .brand h1 {
+  
+    font-size: 14px;
+  
+    margin-top: 7px;
+  }
+
+}

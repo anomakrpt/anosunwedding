@@ -1,0 +1,1820 @@
+/* =========================================================
+   HOME PAGE (index.html)
+   หมายเหตุ: :root ด้านล่างเป็น palette ชุดเก่าของหน้าแรก
+   ตั้งใจ override token จาก base.css เฉพาะหน้านี้
+========================================================= */
+
+:root {
+  --bg: #f7edd6;
+  --bg-2: #efe5d9;
+  --white: #ffffff;
+  --warm-white:#FCFAF5;
+  --text: #332b26;
+  --muted: #6b6157;
+  --brown: #7a6257;
+  --line: #e8ddd1;
+  --line-1: rgba(74,61,51,.16);
+  --line-2: #e4d5c3;
+  --line-soft: rgba(74,61,51,.09);
+  --cream: #f7edd6;
+  --cream-soft: #fbf5e8;
+  --cream-dark: #efe5d2;
+  --green: #717d62;
+  --olive:#5C6B4A;
+  --green-dark: #606d56;
+  --shadow: 0 18px 45px rgba(80, 62, 48, 0.08);
+  --radius-lg: 32px;
+  --copper:#B17F52;
+
+
+  
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--cream-soft);
+  color: var(--text);
+  font-family: "Noto Sans Thai", sans-serif;
+  line-height: 1.8;
+  padding-bottom: 94px;
+}
+
+h1,
+h2,
+h3,
+.footer-title,
+.footer-monogram {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 500;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Intro Video */
+#intro {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
+  height: 100svh;
+  background: #000;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s ease;
+}
+
+#introVideo {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100svh;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+  background: #000;
+}
+
+#skipBtn {
+  position: absolute;
+  left: 50%;
+  bottom: max(34px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 3;
+  padding: 13px 28px;
+  min-width: 190px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 20px;
+  letter-spacing: 1px;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: 0.3s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+#skipBtn:hover {
+  transform: translateX(-50%) translateY(-2px);
+  background: rgba(255, 255, 255, 0.24);
+}
+
+#skipBtn.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#main {
+  display: none;
+}
+
+
+/* Hero */
+.hero-layout {
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: 42% 58%;
+  background: var(--cream);
+}
+
+
+.image-left {
+  width: 100%;
+  min-height: 100svh;
+  background: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.image-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
+
+.hero-right {
+  min-height: 100svh;
+  background: var(--green);
+  color: #f8f0dd;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(46px, 7vw, 110px);
+  text-align: center;
+}
+
+.script-title {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: clamp(32px, 4vw, 50px);
+  color: #f8f0dd;
+  margin-bottom: clamp(42px, 7vw, 78px);
+}
+
+.hero-right h1 {
+  font-size: clamp(70px, 9vw, 132px);
+  font-weight: 400;
+  line-height: 0.86;
+  color: #f8f0dd;
+  margin-bottom: clamp(46px, 6vw, 74px);
+}
+
+.hero-right h1 span {
+  font-style: italic;
+}
+
+.hero-line {
+  width: 76px;
+  height: 2px;
+  background: rgba(248, 240, 221, 0.85);
+  margin-bottom: 46px;
+}
+
+.hero-desc {
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: clamp(15px, 2vw, 18px);
+  line-height: 1.8;
+  color: rgba(248, 240, 221, 0.9);
+}
+
+.scroll-down {
+  margin-top: 34px;
+  display: flex;
+  justify-content: center;
+}
+
+.scroll-down span {
+  width: 24px;
+  height: 24px;
+  border-right: 2px solid rgba(248, 240, 221, 0.9);
+  border-bottom: 2px solid rgba(248, 240, 221, 0.9);
+  transform: rotate(45deg);
+  animation: bounce 1.6s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0) rotate(45deg);
+  }
+  50% {
+    transform: translateY(8px) rotate(45deg);
+  }
+}
+
+.scroll-hint {
+  margin-top: 30px;
+  font-size: 10px;
+  color: rgba(248, 240, 221, 0.85);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* General */
+.section {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.eyebrow,
+.section-label {
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.center {
+  text-align: center;
+}
+
+.card {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 34px;
+}
+
+.card.large {
+  padding: 52px 34px;
+}
+
+.card.white,
+.card.large,
+.card.quote-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+}
+
+.card.soft {
+  background: var(--bg-2);
+  border: 1px solid var(--line-2);
+}
+
+.card h2,
+.gallery-section h2 {
+  font-size: clamp(24px, 4vw, 46px);
+  line-height: 1.05;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.card p {
+  color: #554d46;
+}
+
+.intro-card {
+  margin-top: 30px;
+  position: relative;
+  z-index: 5;
+}
+
+.intro-card .card {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 999px;
+  transition: 0.25s ease;
+  font-size: 14px;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-dark {
+  background: var(--text);
+  color: #fff;
+}
+
+.btn-soft {
+  display: inline-flex;
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  color: #5a4e46;
+  background-color: #f3eee8;
+  border: 1px solid #e0d6cc;
+}
+
+.btn-soft:hover {
+  background-color: #e9dfd4;
+  border-color: #d6c8bb;
+  color: #3e342e;
+}
+
+/* ============================================================
+   BLESSING
+============================================================ */
+
+.blessing {
+  position: relative;
+  padding: 92px 20px 96px;
+  background: var(--cream-soft);
+  text-align: center;
+  overflow: hidden;
+}
+
+/* โบว์ + เส้นแนวตั้งด้านล่าง */
+.blessing .wrap.thread {
+  position: relative;
+  width: 70px;
+  height: 82px;
+  margin: 0 auto 54px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  color: var(--olive);
+}
+
+.blessing .wrap.thread svg {
+  width: 38px;
+  height: 24px;
+  color: var(--olive);
+  opacity: 0.95;
+}
+
+.blessing .wrap.thread .line {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    width: 2px;
+    height: 58px;
+    transform: translateX(-50%);
+    background: var(--olive);
+    opacity: .35;
+    border-radius: 99px;
+}
+
+
+/* ============================================================
+   Blessing Quote
+============================================================ */
+
+.blessing blockquote{
+    width:min(1180px,92%);
+    margin:0 auto;
+    text-align:center;
+    color:var(--olive);
+}
+
+/* ---------------- English ---------------- */
+
+.blessing .quote-en{
+
+    display:block;
+    width:min(980px,88%);
+    max-width:none;
+    margin:0 auto;
+    font-family: var(--display);
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(1.6rem,2.1vw,2.6rem);
+    line-height:1.55;
+    letter-spacing:.015em;
+    color:var(--olive);
+}
+
+/* ---------------- Thai ---------------- */
+
+.blessing .quote-th{
+
+    display:block;
+    width:min(900px,88%);
+    max-width:none;
+    margin:14px auto 0;
+    font-family:"Noto Sans Thai", serif;
+    font-weight:400;
+    font-size:clamp(1rem,1.15vw,1.15rem);
+    line-height:2;
+    letter-spacing:.01em;
+    color:rgba(111,127,93,.82);
+}
+
+/* ---------------- Citation ---------------- */
+
+.blessing .caption{
+
+    display:block;
+    margin-top:20px;
+    font-family: var(--display);
+    font-style:normal;
+    font-weight:500;
+    font-size:clamp(.5rem,.95vw,1.05rem);
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:rgba(111,127,93,.58);
+}
+
+/* animation */
+.blessing.observe .reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: blessingFadeUp 0.9s ease forwards;
+}
+
+@keyframes blessingFadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .blessing {
+    padding: 72px 22px 78px;
+  }
+
+  .blessing .wrap.thread {
+    margin-bottom: 32px;
+  }
+
+  .blessing blockquote {
+    max-width: 42ch;
+    font-size: clamp(2rem, 6vw, 3.4rem);
+  }
+
+   .blessing .quote-th{
+
+        width:min(700px,90%);
+        font-size:1rem;
+        line-height:1.9;
+
+    }
+  .blessing .quote-en{
+
+        width:min(760px,90%);
+
+        font-size:1.5rem;
+
+        line-height:1.55;
+
+    }
+
+}
+
+@media (max-width:900px){
+
+    .blessing blockquote{
+        width:92%;
+    }
+
+    .blessing .quote-en{
+
+        max-width:28ch;
+        font-size:1.5rem;
+        line-height:1.45;
+    }
+
+    .blessing .quote-th{
+
+        max-width:42ch;
+        margin-top:22px;
+        font-size:1rem;
+        line-height:1.95;
+    }
+
+
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .blessing {
+    padding: 58px 18px 62px;
+  }
+
+  .blessing .wrap.thread {
+    width: 70px;
+    height: 78px;
+    margin-bottom: 34px;
+  }
+
+  .blessing .wrap.thread svg {
+    width: 34px;
+    height: 21px;
+  }
+
+  .blessing .wrap.thread .line {
+    top: 30px;
+    height: 48px;
+  }
+
+
+  .blessing .caption{
+    margin-top:7px;
+    font-size:.68rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+
+    opacity:.55;
+}
+
+.blessing .quote-en{
+
+        width:92%;
+        font-size:1.45rem;
+        line-height:1.65;
+
+    }
+
+.blessing .quote-th{
+
+        width:92%;
+        font-size:.95rem;
+        line-height:1.85;
+        margin-top:18px;
+    }
+
+
+}
+
+
+/* ============================================================
+   STORY - Full Split Image
+============================================================ */
+
+.split-section {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+
+  min-height: 620px;
+}
+
+/* ฝั่งซ้าย: รูปเต็มพื้นที่ */
+.split-section .image-card {
+  width: 100%;
+  height: 100%;
+
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+.placeholder-photo {
+  width: 100%;
+  height: 100%;
+  min-height: 620px;
+
+  border-radius: 0;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.38) 0%,
+      rgba(0, 0, 0, 0.12) 38%,
+      rgba(0, 0, 0, 0.02) 70%
+    ),
+    url("../../pic/Doiluang1.jpg");
+
+  background-size: cover;
+  background-position: center;
+  box-shadow: none;
+
+  position: relative;
+  overflow: hidden;
+}
+
+/* caption อยู่บนภาพ */
+.image-caption {
+  position: absolute;
+  left: 42px;
+  right: 42px;
+  bottom: 42px;
+
+  color: rgba(255, 255, 255, 0.94);
+  text-align: center;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 21px;
+  line-height: 1.55;
+  letter-spacing: 0.02em;
+
+  z-index: 2;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.42);
+}
+
+/* ฝั่งขวา: เต็มพื้นที่ ไม่มีกรอบ */
+.split-section .soft {
+  width: 100%;
+  min-height: 620px;
+
+  background: var(--cream);
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+
+  padding: clamp(46px, 6vw, 96px);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ข้อความฝั่งขวา */
+.split-section .soft h2 {
+  font-family: var(--display, "Cormorant Garamond", serif);
+  font-size: clamp(2rem, 3.6vw, 4rem);
+  line-height: 0.98;
+  font-weight: 600;
+
+  color: var(--green);
+  margin-bottom: 32px;
+}
+
+/* รูปเล็กฝั่งขวา */
+.story-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+
+  width: 100%;
+  margin-top: 26px;
+  padding: 0;
+}
+
+.story-gallery img {
+  width: 100%;
+  height: 240px;
+
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  display: block;
+}
+
+/* ============================================================
+   STORY Responsive
+============================================================ */
+
+@media (max-width: 900px) {
+  .split-section {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .placeholder-photo {
+    min-height: 58svh;
+  }
+
+  .split-section .soft {
+    min-height: auto;
+    padding: 48px 24px 54px;
+    text-align: center;
+  }
+
+  .split-section .soft h2 {
+    font-size: clamp(2.6rem, 10vw, 4rem);
+  }
+
+  .story-gallery img {
+    height: 190px;
+  }
+
+  .image-caption {
+    left: 24px;
+    right: 24px;
+    bottom: 28px;
+    font-size: 19px;
+  }
+}
+
+@media (max-width: 640px) {
+  .placeholder-photo {
+    min-height: 52svh;
+  }
+
+  .split-section .soft {
+    padding: 38px 18px 44px;
+  }
+
+  .split-section .soft h2 {
+    font-size: 1.45rem;
+    line-height: 1.05;
+  }
+
+  .story-gallery {
+    gap: 12px;
+  }
+
+  .story-gallery img {
+    height: 150px;
+    border-radius: 16px;
+  }
+
+  .image-caption {
+    bottom: 20px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+}
+
+/* ============================================================
+   CEREMONY + LOCATION
+   Desktop / iPad = 2 columns
+   Mobile = 1 column
+============================================================ */
+
+.image-card-details {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+/* กล่องแม่ของ Ceremony + Location */
+.split-section-details,
+.details-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 22px;
+  align-items: start;
+}
+
+/* สำคัญ: อนุญาตให้ card หดตาม grid ได้ */
+.ceremony-card,
+.location-card {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* กัน content ด้านใน Ceremony ล้นไปทับ Location */
+.ceremony-card {
+  overflow: hidden;
+}
+
+/* ---------------- Ceremony details ---------------- */
+
+.detail-list {
+  width: 100%;
+  min-width: 0;
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.detail-note {
+  display: block;
+  margin: 2px 0 10px;
+  font-family: var(--display);
+  font-size: 10px;
+  font-style: italic;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  color: rgba(122, 98, 87, 0.48);
+}
+
+.detail-item,
+.detail-card {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(247, 242, 235, 0.72);
+}
+
+.detail-item span,
+.detail-card .label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---------------- Countdown ---------------- */
+
+.countdown-wrap {
+  width: 100%;
+  min-width: 0;
+}
+
+.countdown {
+  width: 100%;
+  min-width: 0;
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr) auto
+    minmax(0, 1fr) auto
+    minmax(0, 1fr) auto
+    minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+}
+
+.time-box {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.time-box span,
+.separator {
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: 1px;
+  color: #d9a29a;
+}
+
+.time-box small {
+  margin-top: 4px;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 1px;
+  color: #bfa39a;
+}
+
+.separator {
+  transform: translateY(2px);
+}
+
+/* ---------------- Location ---------------- */
+
+.venue-info {
+  margin-top: 18px;
+}
+
+.venue-address {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.9;
+  color: #4a403a;
+}
+
+.venue-note {
+  margin: 10px 0 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #8b7d72;
+}
+
+.venue-transport,
+.venue-carparking {
+  margin-top: 16px;
+}
+
+.transport-label,
+.carparking-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #a18f82;
+}
+
+.venue-transport p,
+.venue-carparking p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #5a4e46;
+}
+
+/* ---------------- Dress Code ---------------- */
+
+.dress-card {
+  text-align: center;
+}
+
+.dress-mini-grid {
+  width: 100%;
+  min-width: 0;
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  align-items: start;
+}
+
+.dress-mini-item {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dress-mini-item svg {
+  width: min(70px, 100%);
+  height: auto;
+  aspect-ratio: 100 / 90;
+  display: block;
+  fill: currentColor;
+}
+
+.dress-mini-item small {
+  margin-top: 8px;
+  font-size: 10px;
+  line-height: 1.2;
+  text-align: center;
+  white-space: normal;
+  color: currentColor;
+}
+
+/* Dress code colors */
+.dress-sage   { color: #9fad94; }
+.dress-olive  { color: #7e824c; }
+.dress-brown  { color: #a9826a; }
+.dress-cream  { color: #d7c9b5; }
+.dress-copper { color: #c06f45; }
+
+/* ============================================================
+   iPAD / TABLET PORTRAIT
+   แก้ปัญหา card ฝั่งซ้ายล้นไปทับ Location
+============================================================ */
+@media (min-width: 641px) and (max-width: 1100px) {
+
+  .split-section-details,
+  .details-wrap {
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+    gap: 16px;
+  }
+
+  .ceremony-card,
+  .location-card {
+    padding: 24px 20px;
+  }
+
+  .detail-item,
+  .detail-card {
+    padding: 14px 14px;
+  }
+
+  .detail-item span,
+  .detail-card .label {
+    font-size: 11px;
+  }
+
+  .detail-item strong {
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .countdown {
+    gap: 4px;
+  }
+
+  .time-box span,
+  .separator {
+    font-size: 18px;
+  }
+
+  .time-box small {
+    font-size: 8px;
+    letter-spacing: 0.6px;
+  }
+
+  .dress-mini-grid {
+    gap: 5px;
+  }
+
+  .dress-mini-item svg {
+    width: min(52px, 100%);
+  }
+
+  .dress-mini-item small {
+    margin-top: 5px;
+    font-size: 8px;
+    line-height: 1.15;
+  }
+
+  .venue-address {
+    font-size: 14px;
+  }
+
+  .venue-note,
+  .venue-transport p,
+  .venue-carparking p {
+    font-size: 12px;
+  }
+}
+
+/* ============================================================
+   MOBILE
+   Ceremony + Location เรียงลงมาเป็น 1 คอลัมน์
+============================================================ */
+@media (max-width: 640px) {
+
+  .split-section-details,
+  .details-wrap {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .ceremony-card {
+    overflow: visible;
+  }
+
+  .detail-item,
+  .detail-card {
+    padding: 14px 14px;
+  }
+
+  .countdown {
+    gap: 3px;
+  }
+
+  .time-box span,
+  .separator {
+    font-size: 17px;
+  }
+
+  .time-box small {
+    font-size: 7px;
+    letter-spacing: 0.5px;
+  }
+
+  .dress-mini-grid {
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .dress-mini-item svg {
+    width: min(42px, 100%);
+  }
+
+  .dress-mini-item small {
+    margin-top: 4px;
+    font-size: 7px;
+    line-height: 1.15;
+  }
+}
+
+/* Gallery */
+.gallery-section {
+  padding-top: 40px;
+}
+
+.gallery-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr 0.9fr;
+  grid-template-rows: 260px 260px;
+  gap: 18px;
+  filter: brightness(0.95) contrast(1.05);
+}
+
+.gallery-item {
+  border-radius: 18px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  box-shadow: var(--shadow);
+}
+
+.gallery-item:nth-child(1) {
+  background-image: url("../../pic/couple1.jpg");
+}
+
+.gallery-item:nth-child(2) {
+  background-image: url("../../pic/photo/photo-02.jpg");
+}
+
+.gallery-item:nth-child(3) {
+  background-image: url("../../pic/photo/photo-01.jpg");
+}
+
+.gallery-item:nth-child(4) {
+  background-image: url("../../pic/photo/photo-07.jpg");
+}
+
+.gallery-item.tall {
+  grid-row: span 2;
+}
+
+.gallery-item.wide {
+  grid-column: span 2;
+}
+
+/* ==========================================
+   Gallery carmera
+========================================== */
+.gallery-camera {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 18px auto 18px;
+  color: var(--olive);
+  opacity: 0.55;
+  pointer-events: none;
+  user-select: none;
+}
+
+.gallery-camera svg {
+  width: 34px;
+  height: auto;
+  display: block;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  fill: none;
+}
+
+@media (max-width: 640px) {
+  .gallery-camera {
+    margin: 24px auto 22px;
+  }
+
+  .gallery-camera svg {
+    width: 34px;
+  }
+}
+
+/* ==========================================
+   Gallery Leaf
+========================================== */
+
+.gallery-leaf{
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:48px auto;
+    color:var(--olive);
+    opacity:.45;
+    pointer-events:none;
+    user-select:none;
+
+}
+
+.gallery-leaf svg{
+    width:58px;
+    height:auto;
+    stroke:currentColor;
+    stroke-width:1.3;
+    opacity:.85;
+    transition:transform .3s ease;
+}
+
+.gallery-leaf:hover svg{
+    transform:translateY(-2px);
+}
+
+/* Quote / RSVP / Ending */
+.quote-section .quote-card {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.quote-text {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(30px, 4vw, 48px);
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.rsvp-info {
+  margin-top: 18px;
+}
+
+.rsvp-info p {
+  margin-bottom: 8px;
+}
+
+.center-actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.sub-text {
+  font-family: "Noto Sans Thai", sans-serif;
+  font-size: 14px;
+  color: #9c877d;
+  margin: 10px 0 25px;
+  line-height: 1.6;
+}
+
+
+/* ============================================================
+   Final Ending / Contact Footer
+============================================================ */
+
+.final-ending {
+  padding: 86px 20px 118px;
+  background: #f3ede6;
+  text-align: center;
+}
+
+.final-ending .ending-inner {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.ending-monogram {
+  font-family: var(--display, "Cormorant Garamond", serif);
+  font-size: clamp(3rem, 6vw, 4.8rem);
+  line-height: 1;
+  color: rgba(122, 98, 87, 0.86);
+  margin-bottom: 34px;
+}
+
+.ending-title{
+
+    max-width:20ch;
+
+    margin:0 auto 18px;
+
+    font-family: var(--display);
+
+    font-size:2rem;
+
+    font-weight:400;
+
+    line-height:1.28;
+
+    letter-spacing:.01em;
+
+    color:#4f443f;
+
+
+} 
+
+.ending-sub {
+  max-width: 520px;
+  margin: 0 auto;
+  font-family: var(--body, "Noto Sans Thai", serif);
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  line-height: 1.8;
+  letter-spacing: 0.06em;
+  color: rgba(122, 98, 87, 0.72);
+}
+
+.ending-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin: 42px auto 36px;
+}
+
+.ending-divider.small {
+  margin: 38px auto 30px;
+}
+
+.ending-divider .line {
+  width: 84px;
+  height: 1px;
+  background: rgba(122, 98, 87, 0.18);
+}
+
+.ending-divider .heart {
+  font-family: var(--display, "Cormorant Garamond", serif);
+  font-size: 1.45rem;
+  line-height: 1;
+  color: var(--olive);
+  opacity: 0.62;
+}
+
+.footer-label{
+
+    margin-bottom:28px;
+
+    font-family: var(--display);
+
+    font-size:1.5rem;
+
+    color:#5b504a;
+
+}
+
+.footer-contact-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:22px;
+
+}
+
+.contact-person{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:4px;
+
+}
+
+.contact-name{
+
+    font-family:Inter,sans-serif;
+
+    font-size:.78rem;
+
+    text-transform:uppercase;
+
+    letter-spacing:.18em;
+
+    color:rgba(122,98,87,.55);
+
+}
+
+.contact-phone{
+
+    font-family:Inter,sans-serif;
+
+    font-size:1.02rem;
+
+    font-weight:500;
+
+    letter-spacing:.02em;
+
+    color:#4f443f;
+
+    text-decoration:none;
+
+}
+
+.contact-phone:hover{
+
+    color:var(--olive);
+
+}
+/* ==========================================
+   Footer Credits
+========================================== */
+
+.ending-credit,
+.website-credit{
+
+    margin:0;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+.website-credit{
+
+    margin-top:34px;
+
+}
+
+/* Heading */
+
+.ending-credit::before{
+
+    content:"Photography";
+
+}
+
+.website-credit::before{
+
+    content:"Website";
+
+}
+
+.ending-credit::before,
+.website-credit::before{
+
+    font-size:.88rem;
+
+    letter-spacing:.18em;
+
+    text-transform:uppercase;
+
+    color:rgba(122,98,87,.55);
+
+    font-weight:500;
+
+}
+
+/* Name */
+
+.ending-credit a,
+.website-credit span{
+
+    font-family: var(--display);
+
+    font-size:1.05rem;
+
+    font-weight:500;
+
+    color:rgba(79,68,63,.88);
+
+    text-decoration:none;
+
+    border-bottom:1px solid rgba(122,98,87,.18);
+
+    transition:.25s;
+
+}
+
+.ending-credit a:hover,
+.website-credit span:hover{
+
+    color:var(--olive);
+
+    border-color:var(--olive);
+
+}
+
+.ending-credit span{
+
+    margin:0 8px;
+
+    color:rgba(122,98,87,.35);
+
+}
+
+/* Mobile */
+
+@media (max-width:640px){
+
+    .website-credit{
+
+        margin-top:28px;
+
+    }
+
+    .ending-credit::before,
+    .website-credit::before{
+
+        font-size:.74rem;
+
+        letter-spacing:.16em;
+
+    }
+
+    .ending-credit a,
+    .website-credit span{
+
+        font-size:.95rem;
+
+    }
+
+     .ending-title{
+
+        max-width:16ch;
+
+        font-size:1.55rem;
+
+        line-height:1.28;
+
+    }
+
+}
+
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .hero-layout {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .image-left{
+
+    height:58px;
+
+    padding:20px;
+}
+
+.image-left img{
+
+    width:85%;
+
+    height:100%;
+
+    object-fit:contain;
+}
+
+  /* ฝั่งข้อความสีเขียว */
+  .hero-right {
+    min-height: auto;
+    padding: 34px 22px 30px;
+  }
+
+  .hero-right h1 {
+    font-size: clamp(56px, 15vw, 82px);
+    margin-bottom: 30px;
+  }
+
+  .script-title {
+    font-size: 32px;
+    margin-bottom: 28px;
+  }
+
+  .hero-line {
+    margin-bottom: 24px;
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .hero-right .button-group {
+    margin-top: 18px;
+  }
+
+  /* Story เปลี่ยนเป็น 1 คอลัมน์บน tablet */
+  .split-section {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .gallery-item,
+  .gallery-item.tall,
+  .gallery-item.wide {
+    grid-column: auto;
+    grid-row: auto;
+    min-height: 260px;
+  }
+
+  .placeholder-photo {
+    min-height: 360px;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    padding-bottom: 72px;
+  }
+
+  #skipBtn {
+    bottom: max(24px, env(safe-area-inset-bottom));
+    padding: 12px 22px;
+    min-width: 170px;
+    font-size: 18px;
+  }
+
+  /* ให้ Welcome อยู่กลางจอพอดี ไม่เว้นหัวท้ายเยอะ */
+  .image-left {
+    height: 58svh;
+    min-height: 360px;
+    padding: 10px 14px 6px;
+  }
+
+  .image-left img {
+    max-height: 100%;
+    max-width: 100%;
+  }
+
+  .hero-right {
+    padding: 28px 18px 26px;
+  }
+
+  .hero-right h1 {
+    font-size: 50px;
+    line-height: 0.9;
+    margin-bottom: 24px;
+  }
+
+  .script-title {
+    font-size: 28px;
+    margin-bottom: 22px;
+  }
+
+  .hero-line {
+    width: 58px;
+    margin-bottom: 20px;
+  }
+
+  .hero-desc {
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  .hero-desc br {
+    display: none;
+  }
+
+  .scroll-down {
+    margin-top: 22px;
+  }
+
+  .scroll-hint {
+    margin-top: 24px;
+    font-size: 9px;
+  }
+
+  .section {
+    padding: 26px 16px;
+  }
+
+  .card,
+  .card.large {
+    padding: 26px 22px;
+    border-radius: 24px;
+  }
+
+  .story-gallery img {
+    height: 160px;
+  }
+
+
+}
+
+@media (max-width: 390px) {
+  .image-left {
+    height: 56svh;
+    min-height: 340px;
+    padding: 8px 12px 4px;
+  }
+
+  .hero-right {
+    padding: 24px 16px 22px;
+  }
+
+  .hero-right h1 {
+    font-size: 46px;
+  }
+
+  .script-title {
+    font-size: 26px;
+  }
+
+}
+
+
+/* =========================================================
+   DETAILS TWO-COLUMN LAYOUT (ย้ายจาก inline ใน index.html)
+========================================================= */
+
+/* =========================================================
+   EVENT + LOCATION RESPONSIVE LAYOUT
+
+   Mobile:
+   - Ceremony อยู่ด้านบน
+   - Location อยู่ด้านล่าง
+   - คงหน้าตาเดิม
+
+   iPad / Desktop (>= 768px):
+   - Ceremony อยู่ฝั่งซ้าย
+   - Location อยู่ฝั่งขวา
+   ========================================================= */
+
+#details.details-wrap {
+  display: block;
+}
+
+#details > .ceremony-card,
+#details > .location-card {
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  box-sizing: border-box;
+}
+
+#details > .location-card {
+  margin-top: 20px;
+}
+
+
+/* =========================================================
+   iPad + Desktop
+   ========================================================= */
+
+@media (min-width: 768px) {
+
+  #details.details-wrap {
+    display: grid !important;
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(0, 1fr);
+
+    gap: 28px;
+    align-items: start;
+
+    width: min(1180px, calc(100% - 40px)) !important;
+    max-width: 1180px !important;
+
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+
+  /* Ceremony ฝั่งซ้าย */
+
+  #details > .ceremony-card {
+    grid-column: 1;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+  }
+
+
+  /* Location ฝั่งขวา */
+
+  #details > .location-card {
+    grid-column: 2;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+  }
+
+
+  /* ป้องกัน card ภายในโดน CSS เก่าบังคับความกว้าง */
+
+  #details .detail-list,
+  #details .venue-info {
+    width: 100%;
+    max-width: none;
+  }
+
+}
+
+
+/* =========================================================
+   Desktop ใหญ่
+   เพิ่มช่องว่างระหว่าง 2 ฝั่ง
+   ========================================================= */
+
+@media (min-width: 1200px) {
+
+  #details.details-wrap {
+    gap: 40px;
+  }
+
+}
+
+
+/* =========================================================
+   ลดการเคลื่อนไหวตามการตั้งค่าผู้ใช้
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

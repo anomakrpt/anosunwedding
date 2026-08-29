@@ -5,11 +5,23 @@
 
   <meta charset="UTF-8" />
 
-  <title>Wedding Invitation</title>
+  <title>Wedding Invitation — Ausamah & Mizahasan</title>
+
+  <meta name="description" content="ขอเชิญร่วมงานแต่งงานของ Ausamah & Mizahasan — 16-17 มกราคม 2027" />
+  <meta name="theme-color" content="#f8f4ec" />
+
+  <link rel="icon" type="image/png" href="pic/logo.png" />
+  <link rel="apple-touch-icon" href="pic/logo.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Wedding Invitation — Ausamah & Mizahasan" />
+  <meta property="og:description" content="ขอเชิญร่วมงานแต่งงานของ Ausamah & Mizahasan — 16-17 มกราคม 2027" />
+  <meta property="og:image" content="https://anomakrpt.github.io/anosunwedding/pic/WELCOME.png" />
+  <meta name="twitter:card" content="summary_large_image" />
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   />
 
 
@@ -29,7 +41,7 @@
   />
 
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Noto+Serif+Thai:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500&display=swap"
     rel="stylesheet"
   />
 
@@ -38,420 +50,12 @@
        MAIN CSS
   ========================================================== -->
 
-  <link
-    rel="stylesheet"
-    href="style.css?v=20260820-1"
-  />
+    <link rel="stylesheet" href="assets/css/base.css?v=20260829-1" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260829-1" />
+  <link rel="stylesheet" href="assets/css/home.css?v=20260829-1" />
 
 
-  <!-- =========================================================
-       BOTTOM NAVIGATION OVERRIDE
-
-       ปรับเฉพาะ Bottom Navigation
-       ให้เหมือน wishes.html / photos.html
-
-       ใส่ไว้หลัง style.css
-       เพื่อให้ CSS ชุดนี้ทับค่าเก่า
-  ========================================================== -->
-
-  <style>
-
-    :root {
-
-      --nav-cream: #fbf8f1;
-
-      --nav-olive: #777747;
-
-      --nav-olive-dark: #5f6037;
-
-      --nav-muted: #8c8878;
-
-      --nav-height: 72px;
-    }
-
-
-    /* =========================================================
-       BOTTOM NAV
-    ========================================================== */
-
-    .bottom-nav {
-
-      position: fixed;
-
-      left: 50%;
-
-      bottom: 0;
-
-      transform: translateX(-50%);
-
-      width: min(100%, 760px);
-
-      min-height: var(--nav-height);
-
-      padding:
-        8px 12px
-        calc(8px + env(safe-area-inset-bottom));
-
-      display: grid;
-
-      grid-template-columns:
-        repeat(6, 1fr);
-
-      align-items: center;
-
-      gap: 2px;
-
-      background:
-        rgba(251, 248, 241, .93);
-
-      border-top:
-        1px solid
-        rgba(112, 106, 81, .13);
-
-      box-shadow:
-        0 -8px 30px
-        rgba(79, 73, 53, .08);
-
-      backdrop-filter:
-        blur(16px);
-
-      -webkit-backdrop-filter:
-        blur(16px);
-
-      z-index: 9999;
-    }
-
-
-    /* =========================================================
-       NAV ITEM
-    ========================================================== */
-
-    .bottom-nav .nav-item {
-
-      position: relative;
-
-      min-width: 0;
-
-      color: var(--nav-muted);
-
-      text-decoration: none;
-
-      display: flex;
-
-      flex-direction: column;
-
-      align-items: center;
-
-      justify-content: center;
-
-      gap: 4px;
-
-      padding: 4px 2px;
-
-      background: transparent;
-
-      border: 0;
-
-      border-radius: 0;
-
-      box-shadow: none;
-
-      transition:
-        color .2s ease,
-        opacity .2s ease;
-
-      -webkit-tap-highlight-color:
-        transparent;
-    }
-
-
-    /* กัน style.css เก่าใส่พื้นหลังให้ปุ่ม */
-
-    .bottom-nav .nav-item::after {
-
-      display: none;
-    }
-
-
-    /* =========================================================
-       ICON
-    ========================================================== */
-
-    .bottom-nav .nav-item svg {
-
-      display: block;
-
-      width: 21px;
-
-      height: 21px;
-
-      fill: none;
-
-      stroke: currentColor;
-
-      stroke-width: 1.7;
-
-      stroke-linecap: round;
-
-      stroke-linejoin: round;
-
-      margin: 0;
-
-      padding: 0;
-    }
-
-
-    /* =========================================================
-       TEXT
-    ========================================================== */
-
-    .bottom-nav .nav-item span {
-
-      display: block;
-
-      margin: 0;
-
-      padding: 0;
-
-      font-family:
-        "Inter",
-        sans-serif;
-
-      font-size: 10px;
-
-      font-weight: 400;
-
-      line-height: 1;
-
-      letter-spacing: 0;
-
-      white-space: nowrap;
-
-      color: inherit;
-    }
-
-
-    /* =========================================================
-       HOVER
-    ========================================================== */
-
-    .bottom-nav .nav-item:hover {
-
-      color: var(--nav-olive);
-
-      background: transparent;
-    }
-
-
-    /* =========================================================
-       ACTIVE
-    ========================================================== */
-
-    .bottom-nav .nav-item.active {
-
-      color: var(--nav-olive-dark);
-
-      background: transparent;
-
-      font-weight: 500;
-    }
-
-
-    /*
-       เส้น olive บนเมนูที่ active
-       เหมือนหน้า wishes / photos
-    */
-
-    .bottom-nav .nav-item.active::before {
-
-      content: "";
-
-      position: absolute;
-
-      top: -8px;
-
-      left: 50%;
-
-      transform: translateX(-50%);
-
-      width: 34px;
-
-      height: 3px;
-
-      border-radius: 999px;
-
-      background:
-        var(--nav-olive-dark);
-    }
-
-
-    .bottom-nav .nav-item.active svg {
-
-      stroke-width: 2;
-    }
-
-
-    .bottom-nav .nav-item.active span {
-
-      font-weight: 500;
-    }
-
-
-    /* =========================================================
-       MOBILE
-    ========================================================== */
-
-    @media (max-width: 700px) {
-
-      .bottom-nav {
-
-        width: 100%;
-
-        border-radius: 0;
-      }
-
-
-      .bottom-nav .nav-item svg {
-
-        width: 20px;
-
-        height: 20px;
-      }
-
-
-      .bottom-nav .nav-item span {
-
-        font-size: 9px;
-      }
-
-    }
-
-
-    /* =========================================================
-       SMALL MOBILE
-    ========================================================== */
-
-    @media (max-width: 420px) {
-
-      .bottom-nav {
-
-        padding-left: 5px;
-
-        padding-right: 5px;
-      }
-
-
-      .bottom-nav .nav-item span {
-
-        font-size: 8.5px;
-      }
-
-    }
-
-
-
-    /* =========================================================
-       EVENT + LOCATION RESPONSIVE LAYOUT
-
-       Mobile:
-       - Ceremony อยู่ด้านบน
-       - Location อยู่ด้านล่าง
-       - คงหน้าตาเดิม
-
-       iPad / Desktop (>= 768px):
-       - Ceremony อยู่ฝั่งซ้าย
-       - Location อยู่ฝั่งขวา
-       ========================================================= */
-
-    #details.details-wrap {
-      display: block;
-    }
-
-    #details > .ceremony-card,
-    #details > .location-card {
-      width: 100%;
-      max-width: none;
-      margin-left: 0;
-      margin-right: 0;
-      box-sizing: border-box;
-    }
-
-    #details > .location-card {
-      margin-top: 20px;
-    }
-
-
-    /* =========================================================
-       iPad + Desktop
-       ========================================================= */
-
-    @media (min-width: 768px) {
-
-      #details.details-wrap {
-        display: grid !important;
-        grid-template-columns:
-          minmax(0, 1fr)
-          minmax(0, 1fr);
-
-        gap: 28px;
-        align-items: start;
-
-        width: min(1180px, calc(100% - 40px)) !important;
-        max-width: 1180px !important;
-
-        margin-left: auto !important;
-        margin-right: auto !important;
-
-        padding-left: 0;
-        padding-right: 0;
-      }
-
-
-      /* Ceremony ฝั่งซ้าย */
-
-      #details > .ceremony-card {
-        grid-column: 1;
-        width: 100% !important;
-        max-width: none !important;
-        margin: 0 !important;
-      }
-
-
-      /* Location ฝั่งขวา */
-
-      #details > .location-card {
-        grid-column: 2;
-        width: 100% !important;
-        max-width: none !important;
-        margin: 0 !important;
-      }
-
-
-      /* ป้องกัน card ภายในโดน CSS เก่าบังคับความกว้าง */
-
-      #details .detail-list,
-      #details .venue-info {
-        width: 100%;
-        max-width: none;
-      }
-
-    }
-
-
-    /* =========================================================
-       Desktop ใหญ่
-       เพิ่มช่องว่างระหว่าง 2 ฝั่ง
-       ========================================================= */
-
-    @media (min-width: 1200px) {
-
-      #details.details-wrap {
-        gap: 40px;
-      }
-
-    }
-
-  </style>
+  
 
 </head>
 
@@ -514,6 +118,8 @@
 
         <img
           src="pic/WELCOME.png"
+          width="848"
+          height="1200"
           alt="Wedding invitation cover"
         />
 
@@ -720,6 +326,9 @@
 
             <img
               src="pic/sun.JPG"
+              width="1348"
+              height="1400"
+              loading="lazy"
               alt="Groom portrait"
             />
 
@@ -727,6 +336,9 @@
             
             <img
               src="pic/ano.JPG"
+              width="1400"
+              height="1400"
+              loading="lazy"
               alt="Bride portrait"
             />
 
@@ -747,7 +359,6 @@
 
       <section
         class="blessing observe"
-        id="blessing"
       >
 
 
@@ -1337,7 +948,6 @@
 
       <section
         class="blessing observe"
-        id="blessing"
       >
 
 
@@ -1410,6 +1020,9 @@
 
         <img
           src="pic/logo.png"
+          width="289"
+          height="300"
+          loading="lazy"
           alt="Ausamah & Mizahasan Logo"
           class="brand-logo"
         >
@@ -1826,7 +1439,7 @@
        JAVASCRIPT
   ========================================================== -->
 
-  <script src="script.js?v=20260820-1"></script>
+  <script src="script.js?v=20260829-1"></script>
 
 
   <script
