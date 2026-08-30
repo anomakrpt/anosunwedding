@@ -23,9 +23,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="assets/css/base.css?v=20260830-83" />
-  <link rel="stylesheet" href="assets/css/components.css?v=20260830-83" />
-  <link rel="stylesheet" href="assets/css/wishes.css?v=20260830-83" />
+    <link rel="stylesheet" href="assets/css/base.css?v=20260830-85" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260830-85" />
+  <link rel="stylesheet" href="assets/css/wishes.css?v=20260830-85" />
 </head>
 
 <body>
@@ -412,6 +412,17 @@
           aria-hidden="true"
         >
 
+          <!-- หยดน้ำระหว่างรอโหลด — ต้นไม้ยังไม่ขึ้น จึงต้องมีอะไรบอกว่ากำลังทำงานอยู่
+               ไม่ใช่ปล่อยพื้นที่ว่างจนคนคิดว่าหน้าเสีย -->
+          <g class="tree-rain" id="treeRain" aria-hidden="true">
+            <ellipse class="drop d1" rx="3.2" ry="5" cx="392" cy="0" />
+            <ellipse class="drop d2" rx="2.6" ry="4.2" cx="468" cy="0" />
+            <ellipse class="drop d3" rx="3.4" ry="5.4" cx="548" cy="0" />
+            <ellipse class="drop d4" rx="2.4" ry="3.8" cx="614" cy="0" />
+            <ellipse class="drop d5" rx="3" ry="4.8" cx="430" cy="0" />
+            <ellipse class="drop d6" rx="2.8" ry="4.4" cx="586" cy="0" />
+          </g>
+
           <g class="tree-branches" id="treeBranches"></g>
 
           <g class="tree-hearts" id="treeHearts"></g>
@@ -640,11 +651,11 @@
        - Google Apps Script Web App URL แก้ที่ assets/js/config.js
        - ?v=... ใช้บังคับ browser โหลดไฟล์ใหม่ ต้องแก้ให้ตรงกันทุกหน้า
        ========================================================= -->
-  <script src="assets/js/main.js?v=20260830-83"></script>
-  <script src="assets/js/config.js?v=20260830-83"></script>
-  <script src="assets/js/wishes.js?v=20260830-83"></script>
+  <script src="assets/js/main.js?v=20260830-85"></script>
+  <script src="assets/js/config.js?v=20260830-85"></script>
+  <script src="assets/js/wishes.js?v=20260830-85"></script>
 
-  <script src="assets/js/viewtoggle.js?v=20260830-83"></script>
+  <script src="assets/js/viewtoggle.js?v=20260830-85"></script>
 
 </body>
 </html>

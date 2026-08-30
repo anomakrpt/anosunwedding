@@ -1426,7 +1426,7 @@ document.addEventListener("DOMContentLoaded", () => {
     branchGroup.textContent = "";
 
 
-    tree.paths.forEach((p) => {
+    tree.paths.forEach((p, i) => {
 
       const el =
         document.createElementNS(SVG_NS, "path");
@@ -1436,6 +1436,27 @@ document.addEventListener("DOMContentLoaded", () => {
       el.setAttribute("stroke-width", p.w.toFixed(2));
 
       branchGroup.appendChild(el);
+
+
+      /* กิ่งงอกทีละเส้น ไล่จากลำต้นออกไปปลายกิ่ง
+         ความยาวต้องวัดจากเส้นจริง ไม่ใช่เดา ไม่งั้นบางเส้นจะเปิดไม่สุด
+         (paths เรียงตามลำดับที่ grow() สร้าง = โคนก่อนปลาย) */
+      let len = 0;
+
+      try {
+        len = el.getTotalLength();
+      } catch (e) {
+        len = 0;
+      }
+
+      if (len > 0) {
+        el.style.setProperty("--len", Math.ceil(len));
+        el.style.setProperty(
+          "--grow-delay",
+          Math.min(i * 12, 900) + "ms"
+        );
+        el.classList.add("is-growing");
+      }
 
     });
 
@@ -1542,6 +1563,12 @@ document.addEventListener("DOMContentLoaded", () => {
         document.createElementNS(SVG_NS, "g");
 
       g.setAttribute("class", "wish-heart");
+
+      /* ผลิทีละดวง ไล่ตามลำดับ หลังกิ่งงอกเสร็จ */
+      g.style.setProperty(
+        "--bloom-delay",
+        (900 + Math.min(i * 26, 1600)) + "ms"
+      );
 
       g.dataset.index = String(i);
 
@@ -2183,6 +2210,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     wishesLoading = true;
 
+    /* บอกด้วยภาพว่ากำลังโหลด — หยดน้ำร่วงลงพื้นที่ที่ต้นไม้จะขึ้น
+       ของเดิมปล่อยว่างเปล่าจนดูเหมือนหน้าเสีย */
+    if (treeStage && !treeTips.length) {
+      treeStage.classList.add("is-watering");
+    }
+
 
     /* ตัดคำขอทิ้งถ้าเกิน 15 วินาที — กันปุ่มค้าง "กำลังโหลด..." */
     const abortCtrl = new AbortController();
@@ -2407,6 +2440,10 @@ document.addEventListener("DOMContentLoaded", () => {
       clearTimeout(abortTimer);
 
       wishesLoading = false;
+
+      if (treeStage) {
+        treeStage.classList.remove("is-watering");
+      }
 
 
       if (reloadBtn) {
