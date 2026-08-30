@@ -636,9 +636,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (treeCount) {
 
+      /* ถ้าคำอวยพรมากกว่าที่ต้นไม้แขวนไหว ให้ตัวเลขบอกความจริงทั้งสองค่า
+         ไม่งั้นคนอ่านจะเห็นเลขหนึ่งอย่างแต่นับหัวใจได้อีกอย่าง
+         (เพดานปัจจุบันราว 381 ดวงที่ความลึกสูงสุด) */
+
+      const shown =
+        Math.min(total, treeTips.length || total);
+
       treeCount.textContent =
         total > 0
-          ? `คำอวยพร ${total} ข้อความ`
+          ? (shown < total
+              ? `คำอวยพร ${total} ข้อความ · บนต้นไม้ ${shown} ดวงล่าสุด`
+              : `คำอวยพร ${total} ข้อความ`)
           : "";
 
     }
@@ -1290,7 +1299,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  function buildTree() {
+  /* ความลึกของการแตกกิ่ง กำหนดจำนวนปลายกิ่งที่ใช้แขวนหัวใจ
+     depth 5 ≈ 67 ปลาย, 6 ≈ 150, 7 ≈ 330 (โตประมาณสองเท่าครึ่งต่อชั้น) */
+  function buildTree(depth) {
 
     const rng = makeRng(20270117);
 
@@ -1357,7 +1368,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    grow(500, 700, -Math.PI / 2, 152, 19, 5);
+    grow(
+      500, 700, -Math.PI / 2, 152, 19,
+      typeof depth === "number" ? depth : 5
+    );
 
 
     return { paths: paths, tips: tips };
@@ -1365,7 +1379,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  function drawTree() {
+  /* ความลึกที่ใช้วาดครั้งล่าสุด — วาดใหม่เฉพาะตอนที่ต้องเปลี่ยนชั้น */
+  let treeDepth = 0;
+
+  /* ปลายกิ่งที่ใช้แขวนได้ = ปลายกิ่งที่อยู่ในทรงพุ่มวงรี
+     กันหัวใจไปเกาะกิ่งโดดที่ยื่นออกนอกพุ่ม */
+  function inCanopy(t) {
+    const dx = (t.x - 500) / 310;
+    const dy = (t.y - 268) / 200;
+    return (dx * dx + dy * dy) <= 1;
+  }
+
+  /* ความลึกสูงสุด — ลึกกว่านี้จำนวนเส้นกิ่งเพิ่มเร็วกว่าที่ตาจะแยกออก */
+  const MAX_TREE_DEPTH = 8;
+
+  function drawTree(needed) {
 
     const branchGroup =
       document.getElementById("treeBranches");
@@ -1373,7 +1401,26 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!branchGroup) return;
 
 
-    const tree = buildTree();
+    /* โตจน "นับแล้วพอ" ไม่ใช่เดาจากตารางที่คำนวณไว้ล่วงหน้า
+
+       เคยตั้งเป็นตายตัวว่า depth 6 ได้ 135 ปลาย แต่ของจริงได้ 103
+       เพราะลำดับการดึงค่าจาก rng ในโค้ดจริงไม่เหมือนที่จำลองไว้
+       วิธีนี้จึงสร้างแล้วนับปลายกิ่งจริง ถ้ายังไม่พอค่อยแตกเพิ่มอีกชั้น */
+
+    const want =
+      Math.max(1, typeof needed === "number" ? needed : 1);
+
+    let depth = 5;
+    let tree = buildTree(depth);
+    let tips = tree.tips.filter(inCanopy);
+
+    while (tips.length < want && depth < MAX_TREE_DEPTH) {
+      depth += 1;
+      tree = buildTree(depth);
+      tips = tree.tips.filter(inCanopy);
+    }
+
+    treeDepth = depth;
 
 
     branchGroup.textContent = "";
@@ -1393,17 +1440,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    /* เก็บเฉพาะปลายกิ่งที่อยู่ในทรงพุ่มวงรี
-       กันหัวใจไปเกาะกิ่งโดดที่ยื่นออกนอกพุ่ม */
-    treeTips = tree.tips.filter((t) => {
-
-      const dx = (t.x - 500) / 310;
-
-      const dy = (t.y - 268) / 200;
-
-      return (dx * dx + dy * dy) <= 1;
-
-    });
+    treeTips = tips;
 
 
     /* เรียงแบบสลับซ้าย-ขวา-กลาง เพื่อให้หัวใจกระจายทั่วพุ่ม
@@ -1414,6 +1451,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
     treeTips.sort((a, b) => a.k - b.k);
 
+  }
+
+
+  /* ============================================================
+     DEDUPE — คำอวยพรเดียวกันต้องขึ้นหัวใจดวงเดียว
+     ============================================================ */
+
+  function dedupeWishes(list) {
+
+    const seen = new Set();
+    const out = [];
+
+    (list || []).forEach((w) => {
+
+      if (!w) return;
+
+      const key =
+        String(w.name || "").trim() + "\u0000" +
+        String(w.wish || "").trim() + "\u0000" +
+        String(w.timestamp || "");
+
+      if (seen.has(key)) return;
+
+      seen.add(key);
+      out.push(w);
+
+    });
+
+    return out;
   }
 
 
@@ -1429,9 +1495,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!heartGroup) return;
 
 
-    if (!treeTips.length) {
+    /* วาดใหม่เมื่อยังไม่เคยวาด หรือปลายกิ่งไม่พอกับจำนวนคำอวยพรตอนนี้
+       (ไม่ต้องวาดใหม่ตอนคนน้อยลง ต้นไม้ที่โตแล้วไม่ควรหดกลับ) */
+    if (!treeTips.length || treeTips.length < allWishes.length) {
 
-      drawTree();
+      drawTree(allWishes.length);
 
     }
 
@@ -1454,6 +1522,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const total =
       Math.min(allWishes.length, treeTips.length);
+
+
+    /* อัปเดตตัวเลขหลังรู้จำนวนปลายกิ่งจริงของรอบนี้แล้ว
+       ถ้าเรียกก่อนหน้านี้ จะไปอ่าน treeTips ของรอบก่อนซึ่งยังไม่ตรง */
+    updateTree();
 
 
     for (let i = 0; i < total; i++) {
@@ -2205,8 +2278,19 @@ document.addEventListener("DOMContentLoaded", () => {
         ดังนั้นรอบแรกไม่ต้อง Shuffle
       ======================================================== */
 
+      /* กรองรายการซ้ำก่อนเสมอ
+
+         ที่มา: ชีตส่งกลับมา 580 แถว แต่เป็นคำอวยพรจริงแค่ 21 ข้อความ
+         แต่ละข้อความซ้ำ 5 ครั้งเป๊ะ ๆ โดย timestamp ตรงกันถึงระดับมิลลิวินาที
+         (บางข้อความซ้ำมากกว่านั้นเพราะมีแถวซ้ำในชีตอยู่ก่อนแล้ว)
+         สองแถวที่ผู้ใช้กดส่งคนละครั้งเป็นไปไม่ได้ที่จะได้เวลาเดียวกันระดับ ms
+         ดังนั้นชื่อ+ข้อความ+เวลา ที่ตรงกันทั้งสามอย่าง = แถวเดียวกัน
+
+         กรองฝั่งนี้ไว้เลย เพราะเป็นด่านที่คุมได้จริง
+         ไม่ว่าต้นทางจะส่งซ้ำมาด้วยเหตุใด ต้นไม้ก็จะไม่ขึ้นหัวใจซ้ำ */
+
       allWishes =
-        data.items || [];
+        dedupeWishes(data.items || []);
 
 
       /* เริ่มจากชุดแรก = คำอวยพรล่าสุด */
