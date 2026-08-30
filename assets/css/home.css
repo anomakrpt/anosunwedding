@@ -164,7 +164,15 @@ a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: clamp(46px, 7vw, 110px);
+
+  /* เผื่อแถบเมนูล่างไว้ในระยะขอบล่าง เนื้อหาที่จัดกลางจะได้ขยับขึ้นมา
+     อยู่กลาง "พื้นที่ที่มองเห็นจริง" ไม่ใช่กลางจอที่มีแถบทับอยู่
+     ไม่งั้นบรรทัด SCROLL TO BEGIN จะไปอยู่ใต้แถบ */
+  padding:
+    clamp(46px, 7vw, 110px)
+    clamp(46px, 7vw, 110px)
+    calc(clamp(46px, 7vw, 110px) + var(--nav-space) + 16px);
+
   text-align: center;
 }
 
@@ -1908,7 +1916,7 @@ a {
 
     /* แถบเมนูล่างเป็น fixed จึงต้องเผื่อความสูงไว้ */
     box-sizing: border-box;
-    padding-bottom: var(--nav-height);
+    padding-bottom: var(--nav-space);
   }
 
   .image-left {
@@ -2764,7 +2772,7 @@ a {
 
   /* แถบเมนูล่างเป็น fixed จึงลอยทับเนื้อหา
      ฉากเต็มจอต้องเผื่อความสูงแถบไว้ ไม่งั้นบรรทัดล่างสุดโดนบัง */
-  padding-bottom: calc(clamp(60px, 9vh, 110px) + var(--nav-height));
+  padding-bottom: calc(clamp(60px, 9vh, 110px) + var(--nav-space));
 }
 
 .blessing.is-fullscreen .wrap.thread {
@@ -3592,7 +3600,7 @@ a {
 
 .gallery-quote {
   width: min(620px, 88%);
-  margin: 18px auto 34px;
+  margin: 14px auto 6px;
   text-align: center;
   color: #627152;
 }
@@ -3953,7 +3961,7 @@ a {
      ถ้าไม่เผื่อ บรรทัด "Doi Luang Chiang Dao" จะหายไปใต้แถบเมนู
      ความสูงรวมของ section ยังเท่าหนึ่งจอ การ snap จึงไม่เพี้ยน */
   box-sizing: border-box;
-  padding-bottom: var(--nav-height);
+  padding-bottom: var(--nav-space);
 }
 
 @media (min-height: 620px) and (prefers-reduced-motion: no-preference) {
@@ -3993,10 +4001,12 @@ a {
   display: flex;
   width: fit-content;
   align-items: center;
-  gap: 7px;
-  margin: 0 0 14px auto;
-  padding: 7px 15px;
-  min-height: 34px;
+  gap: 6px;
+  margin: 0 0 6px auto;
+  padding: 4px 12px;
+  /* 28px ยังพ้นเกณฑ์เป้ากด 24px ของ WCAG SC 2.5.8 */
+  min-height: 28px;
+  font-size: 12px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--warm-white, #fff);
@@ -4145,7 +4155,7 @@ a {
     padding:
       clamp(20px, 3.5vh, 48px)
       clamp(16px, 2vw, 40px)
-      calc(var(--nav-height) + clamp(14px, 2.5vh, 34px));
+      calc(var(--nav-space) + clamp(14px, 2.5vh, 34px));
   }
 
   .hero-card {

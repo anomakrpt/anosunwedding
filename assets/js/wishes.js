@@ -1844,10 +1844,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (on) {
 
-        li.scrollIntoView({
-          block: "nearest",
-          behavior: "smooth"
-        });
+        /* เลื่อนเฉพาะ "ในกล่องรายการ" เท่านั้น
+
+           เดิมใช้ scrollIntoView ซึ่งเขียนไว้ตอนที่รายการนี้โผล่เฉพาะโหมดเต็มจอ
+           (เป็นแถบขวามือที่เลื่อนในตัวเอง) พอย้ายมาแสดงในหน้าปกติด้วย
+           รายการกลายเป็นบล็อกธรรมดาที่ไม่มีสกรอลล์ของตัวเอง
+           scrollIntoView จึงไปเลื่อน "ทั้งหน้า" แทน — ทุก ๆ ห้าวินาที
+           หน้าจะกระตุกไปหาคำอวยพรที่กำลังไฮไลต์ คนที่กำลังเลื่อนอ่านอยู่
+           ก็โดนดีดไปอีกที่หนึ่ง
+
+           แก้โดยขยับ scrollTop ของกล่องเอง และทำก็ต่อเมื่อกล่องนั้น
+           เลื่อนได้จริง ๆ ตำแหน่งสกรอลล์ของหน้าจึงไม่ถูกแตะเลย */
+
+        const canScroll =
+          list.scrollHeight > list.clientHeight + 4;
+
+        if (canScroll) {
+
+          const liBox = li.getBoundingClientRect();
+          const listBox = list.getBoundingClientRect();
+
+          let delta = 0;
+
+          if (liBox.top < listBox.top) {
+            delta = liBox.top - listBox.top;
+          } else if (liBox.bottom > listBox.bottom) {
+            delta = liBox.bottom - listBox.bottom;
+          }
+
+          if (delta !== 0) {
+            list.scrollTo({
+              top: list.scrollTop + delta,
+              behavior: "smooth"
+            });
+          }
+
+        }
 
       }
 

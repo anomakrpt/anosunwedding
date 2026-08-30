@@ -18,6 +18,11 @@
   --radius: 26px;
   --nav-height: 72px;
 
+  /* ที่ต้องจองไว้ให้แถบเมนูล่างจริง ๆ = ความสูงแถบ + safe area ของเครื่อง
+     บน iPhone ที่มีแถบ home indicator ตัวแถบจะสูงกว่า 72px
+     ถ้าจองแค่ --nav-height เนื้อหาบรรทัดล่างสุดจะโดนทับ */
+  --nav-space: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px));
+
   /* token ของ bottom navigation */
   --nav-cream: #fbf8f1;
   --nav-olive: #777747;
