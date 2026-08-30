@@ -202,14 +202,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    intro.style.opacity = "0";
+    /* ให้ฉากหน้าแรกเริ่มขยับก่อนม่านจะเปิดเล็กน้อย
+       สองอย่างจะได้คาบเกี่ยวกัน แทนที่จะรอกันเป็นทอด ๆ
+       ของเดิมเริ่มพร้อมกันพอดี ตาเลยเห็นเป็นสองจังหวะแยกกัน */
+
+    const HANDOVER_MS = 200;
+
+    setTimeout(() => {
+
+      intro.classList.add("is-leaving");
+
+    }, HANDOVER_MS);
 
 
     setTimeout(() => {
 
       intro.style.display = "none";
 
-    }, 1100); /* ให้ตรงกับ transition 1.1s ของ #intro */
+    }, HANDOVER_MS + 950); /* ให้ยาวกว่า transition ที่ช้าสุดของ #intro */
 
   }
 
