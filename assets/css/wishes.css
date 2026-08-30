@@ -1523,3 +1523,58 @@ body.wish-fs-lock{
   }
 
 }
+
+
+/* =========================================================
+   TABLET — ให้ส่วนเขียนคำอวยพรจบในหน้าจอเดียวเช่นกัน
+
+   ที่ 820x1180 ของเดิมเลยขอบแถบเมนูไป 29px ปุ่มส่งจึงไม่พ้นจอ
+   และฟอร์มกว้าง 776px ซึ่งกว้างเกินกว่าจะกวาดสายตาอ่านสบาย
+========================================================= */
+
+@media (min-width: 701px) and (max-width: 1024px) {
+
+  .form-section {
+    padding-top: 18px;
+    padding-bottom: 8px;
+  }
+
+  .wish-icon {
+    width: 46px;
+    margin-bottom: 8px;
+  }
+
+  .form-section .section-title {
+    font-size: 30px;
+    line-height: 1.15;
+    margin-bottom: 3px;
+  }
+
+  .form-section .section-subtitle {
+    font-size: 15px;
+    margin-bottom: 16px;
+  }
+
+  /* ฟอร์มไม่ต้องยืดเต็มความกว้าง — อ่านง่ายกว่าเมื่อคุมความกว้างไว้ */
+  .wish-form {
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px 22px 16px;
+    gap: 13px;
+  }
+
+  #wish {
+    min-height: 96px;
+    height: 96px;
+  }
+
+  .wish-form .divider {
+    margin: 2px 0;
+  }
+
+  .wish-form .submit-btn {
+    min-height: 50px;
+  }
+
+}

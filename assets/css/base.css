@@ -236,3 +236,38 @@ button:focus-visible {
   }
 
 }
+
+
+/* =========================================================
+   TABLET — หัวหน้ายังใช้ขนาดของจอเดสก์ท็อป (170px)
+
+   กฎย่อก่อนหน้าตั้งไว้ที่ ≤700px แท็บเล็ตจึงไม่เข้าเงื่อนไข
+   เนื้อหาจริงเลยถูกดันลงไปจนปุ่มหลักตกขอบจอ
+========================================================= */
+
+@media (min-width: 701px) and (max-width: 1024px) {
+
+  .topbar {
+    min-height: 0;
+    padding: 16px 20px 12px;
+    grid-template-columns: 44px 1fr 44px;
+  }
+
+  .brand-logo {
+    width: 52px;
+    max-height: 58px;
+    margin-bottom: 4px;
+  }
+
+  .brand h1 {
+    font-size: 14px;
+    margin-top: 5px;
+  }
+
+  .header-space {
+    width: 40px;
+    height: 40px;
+    margin-top: 4px;
+  }
+
+}
