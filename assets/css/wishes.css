@@ -1460,3 +1460,66 @@ body.wish-fs-lock{
   .wish-new-badge{ animation:none !important; }
 
 }
+
+
+/* =========================================================
+   MOBILE — ให้ส่วนเขียนคำอวยพรจบในหน้าจอเดียว
+
+   ของเดิมส่วนนี้สูง 926px บนจอ 812px ปุ่มส่งจึงอยู่ใต้แถบเมนู
+   ต้องเลื่อนถึงจะเห็นว่ากดส่งตรงไหน
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .form-section {
+    padding-top: 12px;
+    padding-bottom: 0;
+  }
+
+  .wish-icon {
+    width: 42px;
+    margin-bottom: 6px;
+  }
+
+  .form-section .section-title {
+    font-size: 25px;
+    line-height: 1.16;
+    margin-bottom: 2px;
+  }
+
+  .form-section .section-subtitle {
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+
+  .wish-form {
+    padding: 16px 16px 10px;
+    gap: 11px;
+  }
+
+  .wish-form .field {
+    margin-bottom: 0;
+  }
+
+  .wish-form label {
+    margin-bottom: 5px;
+  }
+
+  #wish {
+    min-height: 84px;
+    height: 84px;
+  }
+
+  .av-field {
+    margin-top: 2px;
+  }
+
+  .wish-form .divider {
+    margin: 2px 0;
+  }
+
+  .wish-form .submit-btn {
+    min-height: 48px;
+  }
+
+}

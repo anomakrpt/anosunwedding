@@ -26,12 +26,12 @@
       /* เนื้อหาข้างในยังคุมความกว้างไว้ ไม่ให้ไอคอนกระจายห่างเกินบนจอใหญ่ */
       padding:
         8px max(12px, calc((100% - 900px) / 2))
-        calc(8px + env(safe-area-inset-bottom));
+        calc(10px + env(safe-area-inset-bottom, 0px));
 
       display: grid;
 
       grid-template-columns:
-        repeat(6, 1fr);
+        repeat(4, 1fr);
 
       align-items: center;
 

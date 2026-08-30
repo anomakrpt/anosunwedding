@@ -496,3 +496,55 @@
     transition: none;
   }
 }
+
+
+/* =========================================================
+   MOBILE — ให้ฟอร์มตอบรับจบในหน้าจอเดียว
+
+   ปุ่ม "ส่งคำตอบรับ" ของเดิมอยู่เลยขอบแถบเมนูลงไป
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .rsvp-heading {
+    padding: 14px 0 16px;
+  }
+
+  .rsvp-heading .bow-icon {
+    width: 38px;
+    margin-bottom: 10px;
+  }
+
+  .rsvp-heading h2 {
+    font-size: 27px;
+    margin-bottom: 5px;
+  }
+
+  .rsvp-heading p {
+    font-size: 14.5px;
+  }
+
+  .rsvp-heading .rsvp-date {
+    margin-top: 6px;
+    font-size: 13px;
+  }
+
+  .rsvp-form {
+    padding: 18px 16px 20px;
+    gap: 16px;
+  }
+
+  .field > label,
+  .field > legend {
+    margin-bottom: 7px;
+  }
+
+  .field input[type="text"] {
+    padding: 12px 16px;
+  }
+
+  .choice-inner {
+    min-height: 48px;
+  }
+
+}

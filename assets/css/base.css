@@ -195,3 +195,39 @@ button:focus-visible {
   }
 
 }
+
+
+/* =========================================================
+   MOBILE — ย่อหัวหน้าให้เนื้อหาจริงได้พื้นที่มากขึ้น
+
+   หัวหน้าเดิมสูง 142px บนจอ 812px คิดเป็น 17% ของจอ
+   ทั้งที่เป็นแค่โลโก้กับชื่อคู่บ่าวสาว ซึ่งซ้ำกับที่เห็นในหน้าแรกแล้ว
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .topbar {
+    min-height: 0;
+    padding: 12px 14px 10px;
+    grid-template-columns: 38px 1fr 38px;
+  }
+
+  .header-space {
+    width: 34px;
+    height: 34px;
+    margin-top: 4px;
+  }
+
+  .brand-logo {
+    width: 44px;
+    max-height: 50px;
+    margin-bottom: 3px;
+  }
+
+  .brand h1 {
+    font-size: 12.5px;
+    letter-spacing: .16em;
+    margin-top: 4px;
+  }
+
+}
