@@ -1216,3 +1216,61 @@ img {
   }
 
 }
+
+
+/* =========================================================
+   จอเตี้ย — ไม่ให้ภาพหลักดันแถบรูปย่อตกขอบจอ
+
+   ที่ 1280x800 ภาพหลักสูง 638px เมื่อรวมหัวข้อกับแถบรูปย่อแล้ว
+   เกินความสูงจอไป 347px ต้องเลื่อนถึงจะเห็นว่ามีรูปย่อให้เลือก
+========================================================= */
+
+@media (max-height: 860px) {
+
+  .photo-heading {
+    padding-top: 10px;
+    padding-bottom: 8px;
+  }
+
+  .photo-heading-icon {
+    width: 34px;
+    margin-bottom: 4px;
+  }
+
+  .photo-heading h2 {
+    font-size: clamp(22px, 2.4vw, 28px);
+    margin-bottom: 2px;
+  }
+
+  .photo-heading p,
+  .photo-heading .photo-sub {
+    font-size: 14px;
+  }
+
+  .photo-heading .photo-heart {
+    margin-top: 2px;
+    font-size: 13px;
+  }
+
+  /* แถบรูปย่อเป็นตัวช่วยเลือก ไม่ใช่ตัวเอก ย่อได้ */
+  .thumbnail-viewport {
+    margin-top: 10px;
+    height: 70px;
+  }
+
+  .thumbnail-viewport img,
+  .thumbnail-track img {
+    height: 62px;
+  }
+
+  .main-slider {
+    /* 300 = หัวข้อที่ย่อแล้ว + แถบรูปย่อ + ระยะห่าง */
+    max-height: calc(100svh - var(--nav-space, 72px) - 425px);
+  }
+
+  .main-slider img {
+    height: 100%;
+    object-fit: cover;
+  }
+
+}

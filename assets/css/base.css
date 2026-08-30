@@ -73,11 +73,13 @@ button:focus-visible {
 
     .topbar {
 
-      min-height: 170px;
+      /* 170px คือ 21% ของโน้ตบุ๊กจอสูง 800px สำหรับโลโก้กับชื่อคู่บ่าวสาว
+         ซึ่งแขกเห็นมาแล้วจากหน้าแรก — ลดลงให้เนื้อหาจริงได้พื้นที่ */
+      min-height: 0;
 
       padding:
-        26px 28px
-        24px;
+        12px 28px
+        10px;
 
       display: grid;
 
@@ -120,11 +122,11 @@ button:focus-visible {
 
       display: block;
 
-      width: 74px;
+      width: 46px;
 
       height: auto;
 
-      max-height: 82px;
+      max-height: 52px;
 
       object-fit: contain;
 
@@ -136,10 +138,10 @@ button:focus-visible {
     .brand h1 {
 
       margin:
-        8px 0 3px;
+        5px 0 2px;
 
       font:
-        600 18px/1.1
+        600 15px/1.1
         "Cormorant Garamond",
         serif;
 
