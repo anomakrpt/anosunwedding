@@ -1237,11 +1237,6 @@ img {
     margin-bottom: 4px;
   }
 
-  .photo-heading h2 {
-    font-size: clamp(22px, 2.4vw, 28px);
-    margin-bottom: 2px;
-  }
-
   .photo-heading p,
   .photo-heading .photo-sub {
     font-size: 14px;
@@ -1263,14 +1258,112 @@ img {
     height: 62px;
   }
 
-  .main-slider {
-    /* 300 = หัวข้อที่ย่อแล้ว + แถบรูปย่อ + ระยะห่าง */
-    max-height: calc(100svh - var(--nav-space, 72px) - 425px);
+  /* ย่อ "ตัวสไลด์" ไม่ใช่ตัดขอบกรอบทิ้ง
+     ของเดิมจำกัดความสูง .main-slider ที่มี overflow:hidden
+     สไลด์ยังสูงตามอัตราส่วน 4:3 เท่าเดิม ส่วนเกินจึงถูกครอปหายไปจากด้านล่าง
+     — ซึ่งเป็นตรงที่คนในรูปมักอยู่ */
+  .photo-heading {
+    margin-bottom: 12px;
   }
 
-  .main-slider img {
-    height: 100%;
-    object-fit: cover;
+  .photo-heading h2 {
+    font-size: clamp(21px, 2.4vw, 26px);
+  }
+
+  .main-slide {
+    min-height: 240px;
+  }
+
+  /* คุมความกว้างให้กรอบยังเป็น 3:2 เมื่อความสูงถูกจำกัด
+     ไม่งั้นกรอบจะกว้างจนเกิดแถบพื้นสองข้าง (รูปแนวนอน 3:2 มีแปดใบจากสิบเอ็ด) */
+  .main-slider {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+}
+
+
+/* =========================================================
+   หัวข้อเล็กลง และแสดงรูปให้เต็มใบ
+
+   ชุดรูปมีทั้งแนวนอน 3:2 (แปดใบ), 16:9 (หนึ่งใบ) และแนวตั้ง 0.56 (สามใบ)
+   กรอบเดียวกับ object-fit:cover จึงต้องครอปทิ้งเสมอ และครอปจากกึ่งกลาง
+   ทำให้คนที่อยู่ครึ่งล่างของเฟรมโดนตัด
+
+   เปลี่ยนเป็น contain บนพื้นสีเดียวกับกรอบ ทุกใบจึงเห็นเต็มภาพ
+   และตั้งกรอบเป็น 3:2 ซึ่งตรงกับรูปส่วนใหญ่ — แปดใบจะพอดีกรอบไม่มีขอบเลย
+========================================================= */
+
+.photo-heading {
+  margin-bottom: 18px;
+}
+
+.photo-heading h2 {
+  margin: 3px 0 2px;
+  font:
+    600 clamp(23px, 3vw, 30px)/1.12
+    "Cormorant Garamond",
+    serif;
+  letter-spacing: .1em;
+}
+
+.main-slide {
+  aspect-ratio: 3 / 2;
+}
+
+.main-slide img {
+  object-fit: contain;
+}
+
+
+/* =========================================================
+   จอเตี้ย (ต่อ) — ต้องอยู่ท้ายไฟล์
+
+   บล็อก @media ก่อนหน้าถูกกฎ .photo-heading h2 ที่ใช้ font shorthand
+   ด้านล่างเขียนทับ เพราะ shorthand มาทีหลังในลำดับซอร์ส
+   ค่าที่ตั้งไว้จึงไม่มีผล — ย้ายมาไว้ท้ายไฟล์เพื่อให้ชนะจริง
+========================================================= */
+
+@media (max-height: 860px) {
+
+  .photo-heading {
+    padding: 8px 0 6px;
+    margin-bottom: 10px;
+  }
+
+  .photo-heading-icon {
+    width: 30px;
+    margin-bottom: 2px;
+  }
+
+  .photo-heading h2 {
+    margin: 2px 0 1px;
+    font-size: 24px;
+    line-height: 1.1;
+  }
+
+  /* หัวใจใต้หัวข้อเป็นของประดับล้วน จอเตี้ยเอาพื้นที่ไปให้รูปดีกว่า */
+  .photo-heading .photo-heart {
+    display: none;
+  }
+
+  .thumbnail-viewport {
+    height: 62px;
+    margin-top: 8px;
+  }
+
+  .thumbnail-viewport img,
+  .thumbnail-track img {
+    height: 54px;
+  }
+
+  /* ไม่ต้องกำหนดความสูงตายตัวให้สไลด์
+     ปล่อยให้เป็น 3:2 ตามอัตราส่วนของรูปส่วนใหญ่ แล้วคุมด้วยความกว้างของกรอบแทน
+     ผลคือจอกว้าง-เตี้ยก็ไม่ล้น ส่วนจอแคบอย่างมือถือความกว้างเป็นตัวกำหนด
+     รูปแนวนอนจึงเต็มกรอบพอดี ไม่มีแถบพื้นบนล่าง */
+  .main-slider {
+    max-width: calc((100svh - var(--nav-space, 72px) - 335px) * 1.5);
   }
 
 }
