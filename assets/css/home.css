@@ -1892,30 +1892,42 @@ a {
 /* Responsive */
 
 @media (max-width: 900px) {
+
+  /* จอแคบกว่านี้เรียงบนล่าง — การ์ดอยู่บน ข้อความอยู่ล่าง
+     ทั้งคู่ต้องอยู่ในหน้าจอเดียว ไม่งั้นชื่อคู่บ่าวสาวจะตกไปอยู่ใต้ fold
+     (ของเดิม .image-left ยังติด min-height:100svh จากกฎหลัก
+      ส่วน height:58px ก็ไม่มีผลเพราะ min-height ชนะ — การ์ดจึงกินเต็มจอ
+      แล้วดันข้อความลงไปทั้งหมด) */
   .hero-layout {
+    /* ต้องเป็น height ไม่ใช่แค่ min-height — ถ้าความสูงไม่แน่นอน
+       1fr จะถอยไปทำตัวเหมือน auto แล้วแถวการ์ดจะโตตามรูปต้นฉบับ (1200px) */
+    height: 100svh;
+    min-height: 100svh;
     grid-template-columns: 1fr;
-    min-height: auto;
+    grid-template-rows: minmax(0, 1fr) auto;
+
+    /* แถบเมนูล่างเป็น fixed จึงต้องเผื่อความสูงไว้ */
+    box-sizing: border-box;
+    padding-bottom: var(--nav-height);
   }
 
-  .image-left{
+  .image-left {
+    min-height: 0;
+    height: 100%;
+    padding: 18px 20px 10px;
+  }
 
-    height:58px;
-
-    padding:20px;
-}
-
-.image-left img{
-
-    width:85%;
-
-    height:100%;
-
-    object-fit:contain;
-}
+  .image-left img {
+    width: auto;
+    max-width: 100%;
+    max-height: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 
   /* ฝั่งข้อความสีเขียว */
   .hero-right {
-    min-height: auto;
+    min-height: 0;
     padding: 34px 22px 30px;
   }
 
@@ -1996,10 +2008,11 @@ a {
     font-size: 18px;
   }
 
-  /* ให้ Welcome อยู่กลางจอพอดี ไม่เว้นหัวท้ายเยอะ */
+  /* ให้ Welcome อยู่กลางจอพอดี ไม่เว้นหัวท้ายเยอะ
+     ความสูงมาจากแถวของ grid ไม่ใช่ค่าคงที่ ไม่งั้นจะไปชนกับ 1fr ด้านบน */
   .image-left {
-    height: 58svh;
-    min-height: 360px;
+    height: 100%;
+    min-height: 0;
     padding: 10px 14px 6px;
   }
 
@@ -2065,8 +2078,8 @@ a {
 
 @media (max-width: 390px) {
   .image-left {
-    height: 56svh;
-    min-height: 340px;
+    height: 100%;
+    min-height: 0;
     padding: 8px 12px 4px;
   }
 
@@ -2128,7 +2141,7 @@ a {
    iPad + Desktop
    ========================================================= */
 
-@media (min-width: 768px) {
+@media (min-width: 901px) {
 
   #details.details-wrap {
     display: block;
@@ -3428,7 +3441,7 @@ a {
 }
 
 /* จอกว้าง: Location อยู่ขวา คั่นด้วยเส้นตั้ง */
-@media (min-width: 768px) {
+@media (min-width: 901px) {
 
   .details-panel > .location-card {
     border-left: 1px solid var(--line);
@@ -3436,8 +3449,9 @@ a {
 
 }
 
-/* จอแคบ: เรียงลงมา คั่นด้วยเส้นนอน */
-@media (max-width: 767px) {
+/* แท็บเล็ตแนวตั้งลงมา: เรียงลงมา คั่นด้วยเส้นนอน
+   คอลัมน์ครึ่งเดียวแคบเกินไปสำหรับแถวหัวใจห้าดวง ป้ายจะตัดสองบรรทัด */
+@media (max-width: 900px) {
 
   .details-panel > .location-card {
     border-top: 1px solid var(--line);
@@ -3729,6 +3743,10 @@ a {
   .ending-message .ending-sub,
   .final-ending .footer-label {
     text-align: center;
+    /* กฎของจอกว้างล็อก margin ซ้าย-ขวาไว้ที่ 0 เพื่อให้ชิดซ้าย
+       จอแคบต้องคืนค่า auto ไม่งั้นตัวบล็อกยังเกาะซ้ายอยู่ */
+    margin-left: auto;
+    margin-right: auto;
   }
 
 }
@@ -3805,8 +3823,10 @@ a {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 18px;
+  /* ชิดบน — space-between เคยดันให้เกิดช่องโหว่กลางคอลัมน์
+     ซึ่งดูเหมือนของหาย มากกว่าจะดูเหมือนการเว้นวรรค */
+  justify-content: flex-start;
+  gap: 16px;
 }
 
 
@@ -4046,6 +4066,90 @@ a {
     font-size: 9px;
     letter-spacing: 0;
     overflow-wrap: anywhere;
+  }
+
+}
+
+
+/* =========================================================
+   TABLET — 641–900px
+
+   ช่วงนี้เรียงบนล่างแล้ว แต่ตัวหนังสือยังใช้ขนาดของจอกว้าง
+   แผงข้อความจึงสูงจนเบียดการ์ดให้เหลือนิดเดียว
+   ลดขนาดลงหนึ่งขั้นเพื่อให้ทั้งสองส่วนได้พื้นที่พอ ๆ กัน
+========================================================= */
+
+@media (min-width: 641px) and (max-width: 900px) {
+
+  /* แผงข้อความกินพื้นที่เท่าที่เนื้อหาต้องการ ที่เหลือเป็นของการ์ด
+     ยิ่งบีบแผงนี้ได้ การ์ดยิ่งใหญ่ขึ้น — แต่ต้องไม่บีบจนตัวหนังสืออึดอัด */
+  .hero-right {
+    padding: 24px 26px 20px;
+  }
+
+  .hero-right h1 {
+    font-size: clamp(44px, 7.4vw, 58px);
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  .script-title {
+    font-size: 24px;
+    margin-bottom: 14px;
+  }
+
+  .hero-line {
+    margin-bottom: 16px;
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .scroll-down {
+    margin-top: 12px;
+  }
+
+  .scroll-hint {
+    margin-top: 10px;
+  }
+
+  /* การ์ดใช้พื้นที่แถวให้เต็มที่ ขอบบางลงเพื่อให้ภาพใหญ่ขึ้น */
+  .image-left {
+    padding: 14px 16px 8px;
+  }
+
+}
+
+
+/* =========================================================
+   การ์ดต้องไม่จมใต้แถบเมนู
+
+   แถบเมนูล่างเป็น fixed ทับทุกอย่าง ส่วนเลย์เอาต์สองคอลัมน์
+   ให้การ์ดสูงเต็ม 100svh พอดี ขอบล่างของภาพจึงไปอยู่ใต้แถบ
+   (เห็นชัดขึ้นหลังครอบ viewBox ให้ลายเต็มกรอบกว่าเดิม)
+   เลย์เอาต์เรียงบนล่างไม่ต้องแก้ เพราะ .hero-layout เผื่อไว้แล้ว
+========================================================= */
+
+@media (min-width: 901px) {
+
+  /* ต้องเป็น height ไม่ใช่ min-height — ถ้าความสูงไม่แน่นอน
+     height:100% ของ <svg> จะ resolve ไม่ได้ แล้วถอยไปคิดจากอัตราส่วน viewBox
+     ทำให้กล่องสูงเกินจอ (784 บนจอ 768) แล้วดันตัวเองลงไปใต้แถบเมนู */
+  .image-left {
+    box-sizing: border-box;
+    height: 100svh;
+
+    /* เว้นขอบให้การ์ดหายใจ ไม่ชนขอบจอบนล่าง */
+    padding:
+      clamp(20px, 3.5vh, 48px)
+      clamp(16px, 2vw, 40px)
+      calc(var(--nav-height) + clamp(14px, 2.5vh, 34px));
+  }
+
+  .hero-card {
+    max-height: 100%;
   }
 
 }
