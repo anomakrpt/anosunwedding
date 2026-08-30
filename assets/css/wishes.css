@@ -80,7 +80,7 @@
       /* กว้าง 790px กวาดสายตาอ่านยาก และไม่ได้ช่วยอะไรกับฟอร์มสามช่อง */
       max-width:560px;
       margin:0 auto;
-      padding:20px 26px 16px;
+      padding:18px 26px 16px;
       text-align:left;
       background:var(--paper);
       border:1px solid rgba(216,207,191,.9);
@@ -1613,7 +1613,7 @@ body.wish-fs-lock{
 }
 
 .wish-form .field {
-  margin-bottom: 11px;
+  margin-bottom: 9px;
 }
 
 .wish-form textarea {
@@ -1647,14 +1647,25 @@ body.wish-fs-lock{
 }
 
 .form-section {
-  padding: 14px 22px 6px;
+  padding: 10px 22px 6px;
 }
 
 .wish-icon {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
 }
 
 .form-section .section-title {
   font-size: clamp(24px, 3vw, 28px);
+}
+
+
+/* ช่องข้อความสถานะ — เหตุผลเดียวกับในหน้าคำเชิญ
+   ยังคงไว้ใน accessibility tree แต่ไม่กินความสูงตอนยังว่าง */
+.wish-form .message {
+  min-height: 0;
+}
+
+.wish-form .message:empty {
+  margin-top: 0;
 }
