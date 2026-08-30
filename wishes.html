@@ -23,9 +23,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="assets/css/base.css?v=20260830-85" />
-  <link rel="stylesheet" href="assets/css/components.css?v=20260830-85" />
-  <link rel="stylesheet" href="assets/css/wishes.css?v=20260830-85" />
+    <link rel="stylesheet" href="assets/css/base.css?v=20260830-89" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260830-89" />
+  <link rel="stylesheet" href="assets/css/wishes.css?v=20260830-89" />
 </head>
 
 <body>
@@ -412,15 +412,113 @@
           aria-hidden="true"
         >
 
-          <!-- หยดน้ำระหว่างรอโหลด — ต้นไม้ยังไม่ขึ้น จึงต้องมีอะไรบอกว่ากำลังทำงานอยู่
-               ไม่ใช่ปล่อยพื้นที่ว่างจนคนคิดว่าหน้าเสีย -->
+          <!-- สายฝนระหว่างรอโหลด — ใช้รูปหัวใจดวงเดียวกับบนต้นไม้ แต่เป็นสีฟ้า
+               ต้นไม้ยังไม่ขึ้น จึงต้องมีอะไรบอกว่ากำลังทำงานอยู่
+
+               จังหวะตกของแต่ละเม็ดต้องไม่สัมพันธ์กับตำแหน่งซ้าย-ขวา
+               ก่อนหน้านี้ตั้ง delay ไล่จากซ้ายไปขวา เม็ดฝนเลยเดินเป็นแถวเฉียง
+               ตอนนี้สุ่มลำดับ delay และความเร็วตกของแต่ละเม็ดแยกกัน
+
+               ตำแหน่งอยู่ที่ <g> ชั้นนอก ส่วนอนิเมชันอยู่ชั้นใน
+               แยกกันเพราะ transform ของอนิเมชันจะทับ transform ที่จัดตำแหน่ง -->
           <g class="tree-rain" id="treeRain" aria-hidden="true">
-            <ellipse class="drop d1" rx="3.2" ry="5" cx="392" cy="0" />
-            <ellipse class="drop d2" rx="2.6" ry="4.2" cx="468" cy="0" />
-            <ellipse class="drop d3" rx="3.4" ry="5.4" cx="548" cy="0" />
-            <ellipse class="drop d4" rx="2.4" ry="3.8" cx="614" cy="0" />
-            <ellipse class="drop d5" rx="3" ry="4.8" cx="430" cy="0" />
-            <ellipse class="drop d6" rx="2.8" ry="4.4" cx="586" cy="0" />
+
+            <g transform="translate(286 93)">
+              <g class="drop" style="--delay:0.812s; --dur:1.68s">
+                <path class="rain-heart" d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" transform="scale(0.181) translate(-50 -45)" />
+              </g>
+            </g>
+
+            <g transform="translate(322 102)">
+              <g class="drop" style="--delay:2.275s; --dur:2.01s">
+                <path class="rain-heart" d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" transform="scale(0.161) translate(-50 -45)" />
+              </g>
+            </g>
+
+            <g transform="translate(358 61)">
+              <g class="drop" style="--delay:0.163s; --dur:1.97s">
+                <path class="rain-heart" d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" transform="scale(0.172) translate(-50 -45)" />
+              </g>
+            </g>
+
+            <g transform="translate(396 64)">
+              <g class="drop" style="--delay:1.625s; --dur:1.84s">
+                <path class="rain-heart" d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" transform="scale(0.141) translate(-50 -45)" />
+              </g>
+            </g>
+
+            <g transform="translate(430 59)">
+              <g class="drop" style="--delay:0.975s; --dur:2.28s">
+                <path class="rain-heart" d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" transform="scale(0.179) translate(-50 -45)" />
+              </g>
+            </g>
+
+            <g transform="translate(468 79)">
+              <g class="drop" style="--delay:2.438s; --dur:1.66s">
+                <path class="rain-heart" d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" transform="scale(0.118) translate(-50 -45)" />
+              </g>
+            </g>
+
+            <g transform="translate(502 107)">
+              <g class="drop" style="--delay:0.65s; --dur:1.75s">
+                <path class="rain-heart" d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" transform="scale(0.144) translate(-50 -45)" />
+              </g>
+            </g>
+
+            <g transform="translate(540 82)">
+              <g class="drop" style="--delay:0.488s; --dur:1.86s">
+                <path class="rain-heart" d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" transform="scale(0.121) translate(-50 -45)" />
+              </g>
+            </g>
+
+            <g transform="translate(576 106)">
+              <g class="drop" style="--delay:1.137s; --dur:1.58s">
+                <path class="rain-heart" d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" transform="scale(0.119) translate(-50 -45)" />
+              </g>
+            </g>
+
+            <g transform="translate(612 67)">
+              <g class="drop" style="--delay:2.113s; --dur:1.57s">
+                <path class="rain-heart" d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" transform="scale(0.181) translate(-50 -45)" />
+              </g>
+            </g>
+
+            <g transform="translate(648 59)">
+              <g class="drop" style="--delay:1.788s; --dur:1.95s">
+                <path class="rain-heart" d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" transform="scale(0.155) translate(-50 -45)" />
+              </g>
+            </g>
+
+            <g transform="translate(684 102)">
+              <g class="drop" style="--delay:0.325s; --dur:2.42s">
+                <path class="rain-heart" d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" transform="scale(0.118) translate(-50 -45)" />
+              </g>
+            </g>
+
+            <g transform="translate(714 80)">
+              <g class="drop" style="--delay:0.0s; --dur:2.28s">
+                <path class="rain-heart" d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" transform="scale(0.118) translate(-50 -45)" />
+              </g>
+            </g>
+
+            <g transform="translate(412 69)">
+              <g class="drop" style="--delay:1.95s; --dur:2.11s">
+                <path class="rain-heart" d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" transform="scale(0.135) translate(-50 -45)" />
+              </g>
+            </g>
+
+            <g transform="translate(596 70)">
+              <g class="drop" style="--delay:1.3s; --dur:1.8s">
+                <path class="rain-heart" d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" transform="scale(0.153) translate(-50 -45)" />
+              </g>
+            </g>
+
+            <g transform="translate(344 91)">
+              <g class="drop" style="--delay:1.463s; --dur:2.0s">
+                <path class="rain-heart" d="M50 82C28 63 10 48 10 29C10 16 20 8 32 8C40 8 46 12 50 20C54 12 60 8 68 8C80 8 90 16 90 29C90 48 72 63 50 82Z" transform="scale(0.154) translate(-50 -45)" />
+              </g>
+            </g>
+
           </g>
 
           <g class="tree-branches" id="treeBranches"></g>
@@ -651,11 +749,11 @@
        - Google Apps Script Web App URL แก้ที่ assets/js/config.js
        - ?v=... ใช้บังคับ browser โหลดไฟล์ใหม่ ต้องแก้ให้ตรงกันทุกหน้า
        ========================================================= -->
-  <script src="assets/js/main.js?v=20260830-85"></script>
-  <script src="assets/js/config.js?v=20260830-85"></script>
-  <script src="assets/js/wishes.js?v=20260830-85"></script>
+  <script src="assets/js/main.js?v=20260830-89"></script>
+  <script src="assets/js/config.js?v=20260830-89"></script>
+  <script src="assets/js/wishes.js?v=20260830-89"></script>
 
-  <script src="assets/js/viewtoggle.js?v=20260830-85"></script>
+  <script src="assets/js/viewtoggle.js?v=20260830-89"></script>
 
 </body>
 </html>

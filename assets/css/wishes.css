@@ -1680,39 +1680,45 @@ body.wish-fs-lock{
    ลำดับใหม่:  รดน้ำ → กิ่งงอกจากโคนไปปลาย → หัวใจผลิทีละดวง
 ========================================================= */
 
-/* ---------- 1. หยดน้ำระหว่างรอ ---------- */
+/* ---------- 1. ฝนหัวใจระหว่างรอ ---------- */
 
 .tree-rain {
   opacity: 0;
   pointer-events: none;
+  transition: opacity .5s ease;
 }
 
 .tree-stage.is-watering .tree-rain {
   opacity: 1;
 }
 
-.tree-rain .drop {
-  fill: #9fb0c4;
+/* หัวใจดวงเดียวกับบนต้นไม้ เปลี่ยนเป็นสีฟ้าให้อ่านเป็นเม็ดฝน */
+.rain-heart {
+  fill: #7ea6c9;
+}
+
+/* หมายเหตุสำคัญ: อย่าใส่ transform ให้ .rain-heart
+   มันถือ scale/translate ที่ใช้จัดขนาดกับจัดกึ่งกลางอยู่
+   อนิเมชันต้องไปอยู่ที่ .drop ซึ่งเป็น <g> ที่ไม่มี transform ของตัวเอง
+   (กับดักเดียวกับหัวใจบนต้นไม้ ที่เคยทำให้ทุกดวงไปกองที่มุมจอ) */
+.drop {
   opacity: 0;
 }
 
+/* จังหวะและความเร็วมาจากตัวแปรของแต่ละเม็ดใน HTML
+   เม็ดที่อยู่ติดกันจึงไม่ตกพร้อมกันเป็นแถว */
 .tree-stage.is-watering .drop {
-  animation: dropFall 1.5s ease-in infinite;
+  animation:
+    dropFall var(--dur, 2s) linear var(--delay, 0s) infinite;
 }
 
-.tree-stage.is-watering .d1 { animation-delay: 0s; }
-.tree-stage.is-watering .d2 { animation-delay: .22s; }
-.tree-stage.is-watering .d3 { animation-delay: .44s; }
-.tree-stage.is-watering .d4 { animation-delay: .66s; }
-.tree-stage.is-watering .d5 { animation-delay: .88s; }
-.tree-stage.is-watering .d6 { animation-delay: 1.1s; }
-
-/* ร่วงจากเหนือพุ่มลงไปแตะพื้นตรงโคนต้น แล้วจางหาย */
+/* ตกตรง ๆ ด้วยความเร็วคงที่แบบฝนจริง
+   เอียงนิดหน่อยคงที่ทั้งเม็ด ไม่หมุนระหว่างตก เพราะฝนไม่หมุน */
 @keyframes dropFall {
-  0%   { transform: translateY(120px); opacity: 0; }
-  18%  { opacity: .55; }
-  78%  { opacity: .55; }
-  100% { transform: translateY(690px); opacity: 0; }
+  0%   { transform: translateY(0);      opacity: 0; }
+  10%  { opacity: .8; }
+  85%  { opacity: .8; }
+  100% { transform: translateY(560px);  opacity: 0; }
 }
 
 
@@ -1766,7 +1772,7 @@ body.wish-fs-lock{
 
   .tree-stage.is-watering .drop {
     animation: none;
-    opacity: .5;
+    opacity: .6;
   }
 
   .tree-branches path.is-growing {
