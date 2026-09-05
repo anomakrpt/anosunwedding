@@ -33,7 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const REVEAL_TARGETS = [
     ".section",
     ".split-section",
-    ".gallery-item",
     ".photo-heading",
     ".gallery-wrap",
     ".drive-card",

@@ -51,9 +51,9 @@
        MAIN CSS
   ========================================================== -->
 
-    <link rel="stylesheet" href="assets/css/base.css?v=20260830-91" />
-  <link rel="stylesheet" href="assets/css/components.css?v=20260830-91" />
-  <link rel="stylesheet" href="assets/css/home.css?v=20260830-91" />
+    <link rel="stylesheet" href="assets/css/base.css?v=20260830-92" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260830-92" />
+  <link rel="stylesheet" href="assets/css/home.css?v=20260830-92" />
 
 
   
@@ -79,7 +79,7 @@
     >
 
       <source
-        src="pic/cardopen.mp4?v=20260830-91"
+        src="pic/cardopen.mp4?v=20260830-92"
         type="video/mp4"
       />
 
@@ -1245,38 +1245,50 @@
         </p>
 
 
-        <!--
-          รูปดึงมาจากชุดเดียวกับหน้า Photos (pic/photo/)
-          ถ้าจะสลับรูป แก้ src ตรงนี้ได้เลย
-          ตำแหน่งในโมเสกกำหนดด้วย class g-1 … g-5 (ดู home.css)
-        -->
+        <!-- =================================================
+             COVERFLOW — เดิมเป็นโมเสกห้าช่องที่สลับรูปเองเงียบ ๆ
+             ตอนนี้เล่าทีละใบ: ใบกลางหันตรงเข้าหาคนดู
+             ใบข้างเอียงถอยเข้าไปในระยะทีละขั้น
 
-        <!-- SC 2.2.2 Pause, Stop, Hide — เนื้อหาที่ขยับเองต้องมีปุ่มให้หยุดได้
-             ค่าที่เลือกถูกจำไว้ใน localStorage เหมือนปุ่มเปิด/ปิดเสียง -->
-        <button
-          type="button"
-          class="gallery-toggle"
-          id="galleryToggle"
-          aria-pressed="true"
+             ทั้งชั้นวางคำนวณใน home.js (ดู GALLERY COVERFLOW)
+             CSS ที่นี่ดูแลแค่หน้าตาการ์ดกับกรอบมุมมอง
+             ถ้าไม่มี JS จะกลายเป็นแถบเลื่อนแนวนอนธรรมดาที่ยังใช้งานได้
+
+             ลำดับรูปแก้ได้ตรงนี้เลย รูปแนวตั้งบางใบตั้ง object-position
+             ไว้ค่อนไปทางล่าง เพราะกรอบเป็นสี่เหลี่ยมจัตุรัส
+             ถ้าครอปกลางจะตัดคนออกจากภาพ
+        ================================================== -->
+
+        <div
+          class="coverflow"
+          id="galleryCoverflow"
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="ภาพความทรงจำของเรา"
         >
 
-          <svg class="gt-pause" viewBox="0 0 24 24" aria-hidden="true">
-            <rect x="7" y="5" width="3.4" height="14" rx="1.2" />
-            <rect x="13.6" y="5" width="3.4" height="14" rx="1.2" />
-          </svg>
 
-          <svg class="gt-play" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M8 5.2v13.6L19 12z" />
-          </svg>
-
-          <span class="gt-label">หยุดสไลด์</span>
-
-        </button>
+          <div class="cf-viewport">
 
 
-        <div class="gallery-grid">
+            <!-- tabindex ให้กรอบรับโฟกัสได้ ลูกศรซ้าย/ขวาจึงเลื่อนรูปได้ -->
+            <div
+              class="cf-frame"
+              id="cfFrame"
+              tabindex="0"
+            >
 
-          <figure class="gallery-item g-1">
+              <div
+                class="cf-track"
+                id="cfTrack"
+              >
+
+          <figure
+            class="cf-card"
+            role="group"
+            aria-roledescription="slide"
+            aria-label="1 จาก 11"
+          >
             <img
               src="pic/photo/photo-10.jpg"
               alt="คู่บ่าวสาวริมทะเลยามพระอาทิตย์ตก"
@@ -1284,10 +1296,16 @@
               height="1800"
               loading="lazy"
               decoding="async"
+              draggable="false"
+              style="object-position: center 80%"
             >
           </figure>
-
-          <figure class="gallery-item g-2">
+          <figure
+            class="cf-card"
+            role="group"
+            aria-roledescription="slide"
+            aria-label="2 จาก 11"
+          >
             <img
               src="pic/photo/photo-01.jpg"
               alt="จับมือกันวิ่งบนทุ่งหญ้า"
@@ -1295,10 +1313,15 @@
               height="1200"
               loading="lazy"
               decoding="async"
+              draggable="false"
             >
           </figure>
-
-          <figure class="gallery-item g-3">
+          <figure
+            class="cf-card"
+            role="group"
+            aria-roledescription="slide"
+            aria-label="3 จาก 11"
+          >
             <img
               src="pic/photo/photo-11.jpg"
               alt="เดินขึ้นเขาใต้ท้องฟ้ากว้าง"
@@ -1306,10 +1329,16 @@
               height="1800"
               loading="lazy"
               decoding="async"
+              draggable="false"
+              style="object-position: center 75%"
             >
           </figure>
-
-          <figure class="gallery-item g-4">
+          <figure
+            class="cf-card"
+            role="group"
+            aria-roledescription="slide"
+            aria-label="4 จาก 11"
+          >
             <img
               src="pic/photo/photo-03.jpg"
               alt="ระหว่างทางเดินป่าด้วยกัน"
@@ -1317,10 +1346,15 @@
               height="1200"
               loading="lazy"
               decoding="async"
+              draggable="false"
             >
           </figure>
-
-          <figure class="gallery-item g-5">
+          <figure
+            class="cf-card"
+            role="group"
+            aria-roledescription="slide"
+            aria-label="5 จาก 11"
+          >
             <img
               src="pic/photo/photo-09.jpg"
               alt="ขับเจ็ตสกีกลางทะเล"
@@ -1328,10 +1362,180 @@
               height="1012"
               loading="lazy"
               decoding="async"
+              draggable="false"
+            >
+          </figure>
+          <figure
+            class="cf-card"
+            role="group"
+            aria-roledescription="slide"
+            aria-label="6 จาก 11"
+          >
+            <img
+              src="pic/photo/photo-02.jpg"
+              alt="นั่งพักบนเนินหญ้า"
+              width="1800"
+              height="1200"
+              loading="lazy"
+              decoding="async"
+              draggable="false"
+            >
+          </figure>
+          <figure
+            class="cf-card"
+            role="group"
+            aria-roledescription="slide"
+            aria-label="7 จาก 11"
+          >
+            <img
+              src="pic/photo/photo-04.jpg"
+              alt="ที่หมายบนยอดดอย"
+              width="1800"
+              height="1200"
+              loading="lazy"
+              decoding="async"
+              draggable="false"
+            >
+          </figure>
+          <figure
+            class="cf-card"
+            role="group"
+            aria-roledescription="slide"
+            aria-label="8 จาก 11"
+          >
+            <img
+              src="pic/photo/photo-05.jpg"
+              alt="ช่วงเวลาสบาย ๆ กลางทุ่ง"
+              width="1800"
+              height="1200"
+              loading="lazy"
+              decoding="async"
+              draggable="false"
+            >
+          </figure>
+          <figure
+            class="cf-card"
+            role="group"
+            aria-roledescription="slide"
+            aria-label="9 จาก 11"
+          >
+            <img
+              src="pic/photo/photo-06.jpg"
+              alt="ท้องฟ้าและหมู่เมฆ"
+              width="1800"
+              height="1200"
+              loading="lazy"
+              decoding="async"
+              draggable="false"
+            >
+          </figure>
+          <figure
+            class="cf-card"
+            role="group"
+            aria-roledescription="slide"
+            aria-label="10 จาก 11"
+          >
+            <img
+              src="pic/photo/photo-07.jpg"
+              alt="เดินเคียงกันบนสันเขา"
+              width="1800"
+              height="1200"
+              loading="lazy"
+              decoding="async"
+              draggable="false"
+            >
+          </figure>
+          <figure
+            class="cf-card"
+            role="group"
+            aria-roledescription="slide"
+            aria-label="11 จาก 11"
+          >
+            <img
+              src="pic/photo/photo-08.jpg"
+              alt="ภาพความทรงจำระหว่างทาง"
+              width="724"
+              height="1086"
+              loading="lazy"
+              decoding="async"
+              draggable="false"
+              style="object-position: center 80%"
             >
           </figure>
 
+              </div>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="cf-nav cf-prev"
+              id="cfPrev"
+              aria-label="ภาพก่อนหน้า"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15 5l-7 7 7 7" />
+              </svg>
+            </button>
+
+
+            <button
+              type="button"
+              class="cf-nav cf-next"
+              id="cfNext"
+              aria-label="ภาพถัดไป"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+
+
+          </div>
+
+
+          <!-- แถวควบคุม: จุดบอกตำแหน่ง + ปุ่มหยุดสไลด์ -->
+          <div class="cf-controls">
+
+
+            <!-- จุดสร้างจาก JS เพราะถ้าไม่มี JS จุดก็กดไม่ได้อยู่ดี -->
+            <div
+              class="cf-dots"
+              id="cfDots"
+              role="tablist"
+              aria-label="เลือกภาพ"
+            ></div>
+
+
+            <!-- SC 2.2.2 Pause, Stop, Hide — เนื้อหาที่ขยับเองต้องมีปุ่มให้หยุดได้
+                 ค่าที่เลือกถูกจำไว้ใน localStorage เหมือนปุ่มเปิด/ปิดเสียง -->
+            <button
+              type="button"
+              class="gallery-toggle"
+              id="galleryToggle"
+              aria-pressed="true"
+            >
+
+              <svg class="gt-pause" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="7" y="5" width="3.4" height="14" rx="1.2" />
+                <rect x="13.6" y="5" width="3.4" height="14" rx="1.2" />
+              </svg>
+
+              <svg class="gt-play" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8 5.2v13.6L19 12z" />
+              </svg>
+
+              <span class="gt-label">หยุดสไลด์</span>
+
+            </button>
+
+
+          </div>
+
+
         </div>
+
 
 
         <p class="gallery-more">
@@ -1737,10 +1941,10 @@
        JAVASCRIPT
   ========================================================== -->
 
-  <script src="assets/js/main.js?v=20260830-91"></script>
-  <script src="assets/js/config.js?v=20260830-91"></script>
-  <script src="assets/js/music.js?v=20260830-91"></script>
-  <script src="assets/js/home.js?v=20260830-91"></script>
+  <script src="assets/js/main.js?v=20260830-92"></script>
+  <script src="assets/js/config.js?v=20260830-92"></script>
+  <script src="assets/js/music.js?v=20260830-92"></script>
+  <script src="assets/js/home.js?v=20260830-92"></script>
 
 
   <script
@@ -1748,7 +1952,7 @@
   ></script>
 
 
-  <script src="assets/js/viewtoggle.js?v=20260830-91"></script>
+  <script src="assets/js/viewtoggle.js?v=20260830-92"></script>
 
 </body>
 

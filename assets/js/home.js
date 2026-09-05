@@ -729,28 +729,47 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ============================================================
-     HOME GALLERY SLIDESHOW
+     GALLERY COVERFLOW
 
-     กรอบ mosaic คงเดิม แต่รูปในแต่ละช่องสลับเองอัตโนมัติ
-     • สลับทีละช่อง (ไล่ไปเรื่อย ๆ) ไม่เปลี่ยนพร้อมกันทั้งหมด
-     • ไม่ให้รูปซ้ำกันในเวลาเดียวกัน
-     • หยุดเมื่อเลื่อนพ้นจอ / สลับแท็บ เพื่อไม่กินเน็ตและแบต
-     • ผู้ใช้ที่ปิดอนิเมชันจะเห็นรูปนิ่งชุดแรก
+     การ์ดทุกใบวางซ้อนกันอยู่ที่กลางเวที (position:absolute; left:50%)
+     ตำแหน่งจริงมาจาก transform ที่คำนวณใหม่ทุกเฟรมจากค่าเดียว: pos
+     ซึ่งเป็น "ดัชนีการ์ดแบบทศนิยม" ของใบที่อยู่ตรงกลางพอดี
+
+     ทำไมต้องเป็นทศนิยม: ระหว่างลากนิ้ว pos = 3.42 ได้ ทั้งฉากจึงขยับ
+     ตามนิ้วอย่างต่อเนื่อง ไม่ใช่กระโดดทีละใบ
+
+     ระยะห่าง ความลึก และองศาเอียง ผูกกับความกว้างการ์ดทั้งหมด
+     เปลี่ยน --cf-card ใน CSS ค่าเดียว ฉากย่อ/ขยายตามได้ทั้งชุด
+
+     เขียนลง element.style ตรง ๆ ไม่ผ่าน class เพราะค่าเปลี่ยนหกสิบครั้ง
+     ต่อวินาที และเป็นตัวเลขที่ไม่มีใครนอกจากตัวเลย์เอาต์ต้องรู้
      ============================================================ */
 
-  function startHomeGallery() {
+  function startGalleryCoverflow() {
 
-    const tiles =
-      Array.from(
-        document.querySelectorAll(".gallery-item")
-      );
+    const root = document.getElementById("galleryCoverflow");
+    const frame = document.getElementById("cfFrame");
+    const track = document.getElementById("cfTrack");
+    const dotsBox = document.getElementById("cfDots");
 
-    if (
-      tiles.length === 0 ||
-      typeof HOME_GALLERY_PHOTOS === "undefined"
-    ) {
-      return;
-    }
+    if (!root || !frame || !track) return;
+
+    const cards = Array.from(track.querySelectorAll(".cf-card"));
+    const count = cards.length;
+
+    if (count < 3) return;
+
+
+    /* ---- รูปทรงของฉาก ----
+       ค่าพวกนี้มาจากคอมโพเนนต์ต้นแบบ ปรับให้การ์ดใหญ่ขึ้นเล็กน้อย
+       เพราะเป็นรูปถ่ายคน ไม่ใช่ปกอัลบั้ม */
+
+    const ROTATE = 42;      /* องศาที่ใบข้างแรกเอียง */
+    const DEPTH = 0.58;     /* ใบข้างแรกถอยลึกเท่าไร คิดเป็นสัดส่วนความกว้างการ์ด */
+    const FALLOFF = 0.56;   /* เลขชี้กำลังของระยะ ต่ำกว่า 1 = ยิ่งไกลยิ่งเอียงเพิ่มช้าลง */
+    const FADE = 0.1;       /* ความจางที่เสียไปต่อหนึ่งขั้นจากกลาง */
+    const GAP = 0.06;       /* ช่องไฟระหว่างการ์ด คิดเป็นสัดส่วนความกว้างการ์ด */
+    const MAX_TILT = 82;    /* กันไม่ให้ใบไกล ๆ หันข้างจนมองไม่เห็นหน้า */
 
 
     const reduceMotion =
@@ -758,150 +777,364 @@ document.addEventListener("DOMContentLoaded", () => {
         "(prefers-reduced-motion: reduce)"
       ).matches;
 
-    if (reduceMotion) return;
+
+    /* pos = ดัชนีทศนิยมของใบที่อยู่กลางเวที — แหล่งความจริงเพียงที่เดียว */
+    let pos = 0;
+
+    /* target = ปลายทางที่กำลังไถลไปหา
+       แยกจาก pos เพราะถ้ากดลูกศรซ้ำระหว่างที่ยังไถลไม่ถึง
+       การนับต่อจาก pos จะกลืนการกดครั้งนั้นหายไป */
+    let target = 0;
+
+    let cardWidth = 0;
+    let raf = null;
+    let selected = 0;
+    let drag = null;
 
 
-    const pool = HOME_GALLERY_PHOTOS;
+    /* ใบที่ใกล้ที่สุดเมื่อปัดกลับเข้าช่วง 0..count-1 */
+    function indexAt(p) {
+      return ((Math.round(p) % count) + count) % count;
+    }
 
-    if (pool.length <= tiles.length) return;
+
+    function paint() {
+
+      if (!cardWidth) return;
+
+      const pitch = cardWidth * (1 + GAP);
+
+      cards.forEach((card, index) => {
+
+        /* พับระยะให้เป็นทางที่สั้นกว่าเมื่อเดินรอบวง
+           นี่คือกลไกวนลูปทั้งหมด — ไม่ต้องโคลนโหนด ไม่ต้องสลับ DOM */
+        let offset = index - pos;
+        offset = ((offset % count) + count) % count;
+        if (offset > count / 2) offset -= count;
+
+        const distance = Math.abs(offset);
+
+        /* ทั้งองศาเอียงและความลึกค่อย ๆ ผ่อนลงเมื่อไกลออกไป
+           ระยะเพิ่มเท่าตัวได้เพิ่มมาอีกราวครึ่งเดียว
+           ถ้าไล่แบบเส้นตรง ใบที่สองจะพับปิดจนอ่านภาพไม่ออก */
+        const ramp = Math.pow(distance, FALLOFF);
+
+        const tilt =
+          Math.min(ROTATE * ramp, MAX_TILT) * Math.sign(offset);
+
+        card.style.transform =
+          "translateX(calc(-50% + " + (offset * pitch) + "px)) " +
+          "translateZ(" + (-DEPTH * cardWidth * ramp) + "px) " +
+          "rotateY(" + (-tilt) + "deg)";
+
+        /* ใบที่ถูกย้ายข้ามวงจะสลับฝั่งตอนห่างครึ่งรอบพอดี
+           จึงต้องจางหายไปก่อนถึงจุดนั้น ไม่งั้นจะเห็นมันกระโดด */
+        const edge =
+          Math.min(1, Math.max(0, count / 2 - distance));
+
+        card.style.opacity =
+          String(Math.max(0, 1 - FADE * distance) * edge);
+
+        card.style.zIndex =
+          String(100 - Math.round(distance));
+
+        /* ใบที่ไม่ได้อยู่กลางไม่ควรถูกอ่านออกเสียงหรือรับโฟกัส */
+        card.setAttribute(
+          "aria-hidden",
+          distance > 0.5 ? "true" : "false"
+        );
+
+      });
+
+    }
 
 
-    /* รูปที่กำลังโชว์อยู่ตอนนี้ (ตรงกับที่เขียนไว้ใน index.html) */
-    const showing = tiles.map((tile) => {
+    function syncDots() {
 
-      const img = tile.querySelector("img");
+      if (!dotsBox) return;
 
-      return img ? img.getAttribute("src") : "";
+      Array.from(dotsBox.children).forEach((dot, i) => {
+        dot.setAttribute("aria-selected", String(i === selected));
+        dot.tabIndex = i === selected ? 0 : -1;
+      });
+
+    }
+
+
+    function select(index) {
+
+      if (index === selected) return;
+
+      selected = index;
+
+      syncDots();
+
+    }
+
+
+    function settle(to) {
+
+      if (raf !== null) cancelAnimationFrame(raf);
+
+      target = to;
+
+      select(indexAt(to));
+
+      /* ปิดอนิเมชันไว้ ก็ไปถึงเลยไม่ต้องไถล */
+      if (reduceMotion) {
+        pos = to;
+        paint();
+        raf = null;
+        return;
+      }
+
+      function step() {
+
+        const remaining = target - pos;
+
+        if (Math.abs(remaining) < 0.0004) {
+          pos = target;
+          paint();
+          raf = null;
+          return;
+        }
+
+        /* ผ่อนแบบ exponential ไม่ใช่สปริง — ไม่มีการเลยเป้าแล้วดีดกลับ */
+        pos += remaining * 0.16;
+
+        paint();
+
+        raf = requestAnimationFrame(step);
+
+      }
+
+      raf = requestAnimationFrame(step);
+
+    }
+
+
+    function goTo(index) {
+
+      /* เดินทางสั้นที่สุด แทนที่จะคลายวงกลับทีละใบจนครบรอบ */
+      const to =
+        index + Math.round((target - index) / count) * count;
+
+      settle(to);
+
+    }
+
+
+    function nudge(by) {
+      settle(Math.round(target) + by);
+    }
+
+
+    /* ---- จุดบอกตำแหน่ง ----
+       สร้างจาก JS เพราะถ้าไม่มี JS จุดก็กดไม่ได้อยู่ดี */
+
+    if (dotsBox) {
+
+      cards.forEach((card, i) => {
+
+        const dot = document.createElement("button");
+
+        dot.type = "button";
+        dot.className = "cf-dot";
+        dot.setAttribute("role", "tab");
+        dot.setAttribute("aria-selected", String(i === 0));
+        dot.setAttribute(
+          "aria-label",
+          "ภาพที่ " + (i + 1) + " จาก " + count
+        );
+        dot.tabIndex = i === 0 ? 0 : -1;
+
+        dot.addEventListener("click", () => {
+          pause();
+          goTo(i);
+        });
+
+        dotsBox.appendChild(dot);
+
+      });
+
+    }
+
+
+    /* ---- ปุ่มลูกศร ---- */
+
+    const prevBtn = document.getElementById("cfPrev");
+    const nextBtn = document.getElementById("cfNext");
+
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        pause();
+        nudge(-1);
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener("click", () => {
+        pause();
+        nudge(1);
+      });
+    }
+
+
+    /* ---- คีย์บอร์ด ---- */
+
+    frame.addEventListener("keydown", (e) => {
+
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        pause();
+        nudge(-1);
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        pause();
+        nudge(1);
+      }
 
     });
 
 
-    /* คิวรูปที่ยังไม่ได้โชว์ */
-    let queue = pool
-      .map((p) => p.src)
-      .filter((src) => showing.indexOf(src) === -1);
+    /* ---- ลากด้วยนิ้ว/เมาส์ ---- */
 
-    let tileIndex = 0;
+    frame.addEventListener("pointerdown", (e) => {
 
-    let timer = null;
-
-
-    function nextPhoto() {
-
-      if (queue.length === 0) {
-
-        /* ครบรอบแล้ว เติมคิวใหม่จากรูปที่ไม่ได้อยู่บนจอ */
-        queue = pool
-          .map((p) => p.src)
-          .filter((src) => showing.indexOf(src) === -1);
-
+      if (raf !== null) {
+        cancelAnimationFrame(raf);
+        raf = null;
       }
 
-      return queue.shift();
+      frame.setPointerCapture(e.pointerId);
+
+      target = pos;
+
+      drag = {
+        id: e.pointerId,
+        x: e.clientX,
+        pos: pos,
+        v: 0,
+        t: performance.now(),
+        moved: false
+      };
+
+    });
+
+
+    frame.addEventListener("pointermove", (e) => {
+
+      if (!drag || drag.id !== e.pointerId) return;
+
+      const pitch = cardWidth * (1 + GAP);
+
+      if (!pitch) return;
+
+      const dx = e.clientX - drag.x;
+
+      if (Math.abs(dx) > 3) drag.moved = true;
+
+      const now = performance.now();
+      const previous = pos;
+
+      pos = drag.pos - dx / pitch;
+
+      /* หน่วยเป็น "การ์ดต่อวินาที" ไว้ใช้ตอนสะบัดปล่อย */
+      drag.v =
+        ((pos - previous) / Math.max(now - drag.t, 1)) * 1000;
+
+      drag.t = now;
+
+      select(indexAt(pos));
+
+      paint();
+
+    });
+
+
+    function endDrag(e) {
+
+      if (!drag || drag.id !== e.pointerId) return;
+
+      const moved = drag.moved;
+      const v = drag.v;
+
+      drag = null;
+
+      if (!moved) return;
+
+      pause();
+
+      /* ปล่อยให้แรงสะบัดพาไปต่อได้ แต่ไม่เกินสองใบ */
+      const carried = Math.max(-2, Math.min(2, v * 0.18));
+
+      settle(Math.round(pos + carried));
 
     }
 
-
-    function swapTile(tile, index) {
-
-      const src = nextPhoto();
-
-      if (!src) return;
+    frame.addEventListener("pointerup", endDrag);
+    frame.addEventListener("pointercancel", endDrag);
 
 
-      const meta =
-        pool.find((p) => p.src === src) || { alt: "" };
+    /* ---- วัดขนาด ----
+       ความกว้างการ์ดเป็นตัวตั้งของทั้งระยะห่าง ความลึก และระยะมอง
+       จึงเป็นสิ่งเดียวที่ต้องวัด และวัดเฉพาะตอนกล่องเปลี่ยนขนาดจริง ๆ */
 
-      const current = tile.querySelector("img");
+    function measure() {
 
-      if (!current) return;
+      const w = cards[0].offsetWidth;
 
+      if (!w || w === cardWidth) return;
 
-      const next = document.createElement("img");
+      cardWidth = w;
 
-      next.src = src;
-
-      next.alt = meta.alt || "";
-
-      next.loading = "eager";
-
-      next.decoding = "async";
-
-      next.style.opacity = "0";
-
-
-      next.addEventListener("load", () => {
-
-        /* รอเฟรมถัดไปให้ browser วางภาพก่อน แล้วค่อยไล่ opacity */
-        requestAnimationFrame(() => {
-
-          requestAnimationFrame(() => {
-
-            next.style.opacity = "1";
-
-            current.style.opacity = "0";
-
-          });
-
-        });
-
-
-        setTimeout(() => {
-
-          if (current.parentNode) {
-
-            current.remove();
-
-          }
-
-        }, 800);
-
-      }, { once: true });
-
-
-      /* โหลดไม่สำเร็จ ให้ทิ้งไปเงียบ ๆ ไม่ต้องเปลี่ยนอะไร */
-      next.addEventListener("error", () => {
-
-        next.remove();
-
-      }, { once: true });
-
-
-      tile.appendChild(next);
-
-      showing[index] = src;
+      paint();
 
     }
 
-
-    function tick() {
-
-      swapTile(
-        tiles[tileIndex % tiles.length],
-        tileIndex % tiles.length
-      );
-
-      tileIndex++;
-
+    if ("ResizeObserver" in window) {
+      new ResizeObserver(measure).observe(frame);
+    } else {
+      window.addEventListener("resize", measure);
     }
 
+
+    /* ---- เล่นเอง + ปุ่มหยุด (WCAG SC 2.2.2 Pause, Stop, Hide) ----
+       wantsPlay คือความตั้งใจของผู้ใช้ จำไว้ใน localStorage
+       แยกจาก start()/stop() ที่ใช้หยุดชั่วคราวตอนเลื่อนพ้นจอหรือสลับแท็บ */
+
+    const GALLERY_KEY = "wedding-gallery";
+
+    function wantsPlay() {
+      if (reduceMotion) return false;
+      try {
+        return localStorage.getItem(GALLERY_KEY) !== "paused";
+      } catch (e) {
+        return true;
+      }
+    }
+
+    const toggle = document.getElementById("galleryToggle");
+
+    let timer = null;
 
     function start() {
 
       if (timer) return;
 
-      /* ผู้ใช้กดหยุดไว้ — การเลื่อนกลับเข้ามาในจอต้องไม่เริ่มเล่นเอง */
+      /* ผู้ใช้กดหยุดไว้ — เลื่อนกลับเข้ามาในจอต้องไม่เริ่มเล่นเอง */
       if (!wantsPlay()) return;
 
       timer = setInterval(
-        tick,
+        () => nudge(1),
         typeof HOME_GALLERY_INTERVAL !== "undefined"
           ? HOME_GALLERY_INTERVAL
           : 3600
       );
 
-    }
+      syncLive();
 
+    }
 
     function stop() {
 
@@ -911,26 +1144,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
       timer = null;
 
+      syncLive();
+
     }
 
 
-    /* ---- ปุ่มหยุด/เล่น (SC 2.2.2 Pause, Stop, Hide) ----
-       เนื้อหาที่ขยับเองต่อเนื่องเกินห้าวินาที ต้องมีวิธีให้ผู้ใช้หยุดได้
-       wantsPlay คือความตั้งใจของผู้ใช้ แยกจาก start()/stop()
-       ที่ใช้หยุดชั่วคราวตอนเลื่อนพ้นจอหรือสลับแท็บ */
+    /* APG carousel: ระหว่างที่ยังหมุนเอง ต้องไม่ประกาศทุกครั้งที่เปลี่ยนรูป
+       ไม่งั้นโปรแกรมอ่านหน้าจอจะพูดแทรกทุกสองวินาที
+       พอผู้ใช้กดหยุดแล้วค่อยเปิด live region ให้ประกาศตอนกดเลื่อนเอง */
+    function syncLive() {
+      track.setAttribute("aria-live", timer ? "off" : "polite");
+    }
 
-    const GALLERY_KEY = "wedding-gallery";
+    syncLive();
 
-    function wantsPlay() {
+
+    /* ผู้ใช้สั่งหยุดเอง — ใช้ตอนกดลูกศร/จุด/ลากนิ้ว
+       เนื้อหาที่ผู้ใช้กำลังดูอยู่ไม่ควรถูกสไลด์แย่งไปเอง */
+    function pause() {
+
+      if (!timer) return;
+
+      stop();
+
       try {
-        return localStorage.getItem(GALLERY_KEY) !== "paused";
-      } catch (e) {
-        return true;
-      }
+        localStorage.setItem(GALLERY_KEY, "paused");
+      } catch (e) { /* โหมดส่วนตัว — ใช้ได้แค่รอบนี้ */ }
+
+      syncToggle();
+
     }
 
-    const toggle =
-      document.getElementById("galleryToggle");
 
     function syncToggle() {
 
@@ -948,6 +1192,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
     }
+
 
     if (toggle) {
 
@@ -977,20 +1222,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* เดินเฉพาะตอนที่แกลเลอรีอยู่ในจอ */
-    const grid =
-      document.querySelector(".gallery-grid");
+    /* ---- เริ่มทำงาน ----
+       ต้องติด is-ready ก่อนวัด เพราะก่อนหน้านั้น CSS ยังจัดการ์ด
+       เป็นแถบเลื่อนแนวนอน (ทางถอยของเครื่องที่ JS ไม่ทำงาน) */
 
-    if (
-      grid &&
-      "IntersectionObserver" in window
-    ) {
+    root.classList.add("is-ready");
+
+    measure();
+    paint();
+    syncDots();
+
+
+    /* เดินเฉพาะตอนที่แกลเลอรีอยู่ในจอ */
+    if ("IntersectionObserver" in window) {
 
       new IntersectionObserver((entries) => {
 
         entries.forEach((entry) => {
 
           if (entry.isIntersecting) {
+
+            /* กล่องอาจเพิ่งได้ความกว้างจริงตอนถูกเลื่อนเข้ามา */
+            measure();
 
             start();
 
@@ -1002,7 +1255,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         });
 
-      }, { threshold: 0.1 }).observe(grid);
+      }, { threshold: 0.1 }).observe(root);
 
     } else {
 
@@ -1014,18 +1267,14 @@ document.addEventListener("DOMContentLoaded", () => {
     /* สลับแท็บไปแล้วหยุดไว้ก่อน */
     document.addEventListener("visibilitychange", () => {
 
-      if (document.hidden) {
-
-        stop();
-
-      }
+      if (document.hidden) stop();
 
     });
 
   }
 
 
-  startHomeGallery();
+  startGalleryCoverflow();
 
 
   /* ============================================================
