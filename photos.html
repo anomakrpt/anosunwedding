@@ -52,9 +52,9 @@
   >
 
 
-    <link rel="stylesheet" href="assets/css/base.css?v=20260905-96" />
-  <link rel="stylesheet" href="assets/css/components.css?v=20260905-96" />
-  <link rel="stylesheet" href="assets/css/photos.css?v=20260905-96" />
+    <link rel="stylesheet" href="assets/css/base.css?v=20260905-101" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260905-101" />
+  <link rel="stylesheet" href="assets/css/photos.css?v=20260905-101" />
 
 </head>
 
@@ -141,98 +141,272 @@
 
     <!-- =======================================================
          PHOTO GALLERY
+
+         การนำเสนอชุดเดียวกับ "A Glimpse of Us" บนหน้าแรก
+         เดิมเป็นสไลด์ใบใหญ่ใบเดียวพร้อมแถบรูปย่อด้านล่าง
+
+         เครื่องยนต์อยู่ใน assets/js/coverflow.js
+         สไตล์อยู่ใน components.css — photos.css แค่ตั้งขนาดการ์ดให้ใหญ่ขึ้น
+         เพราะหน้านี้มีทั้งจอให้รูป ไม่ต้องแบ่งที่กับเนื้อหาอื่น
     ======================================================== -->
 
     <section class="gallery-wrap">
 
-
-      <!-- =====================================================
-           MAIN SLIDER
-      ====================================================== -->
-
       <div
-        class="main-slider"
-        id="mainSlider"
+        class="coverflow"
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="ภาพความทรงจำของเรา"
       >
 
 
-        <!--
-          JavaScript จะสร้างรูปทั้งหมด
-          จาก array ด้านล่างให้อัตโนมัติ
-        -->
-
-        <div
-          class="main-slider-track"
-          id="mainSliderTrack"
-        ></div>
-
-
-
-        <!-- Previous -->
-
+        <!-- SC 2.2.2 Pause, Stop, Hide — ซ่อนจนกว่าจะถูกโฟกัสด้วยคีย์บอร์ด
+             เมาส์หยุดด้วยการชี้ค้าง นิ้วหยุดด้วยการแตะเลื่อน -->
         <button
-          class="slider-arrow prev"
-          id="photoPrev"
           type="button"
-          aria-label="Previous photo"
+          class="cf-pause"
+          aria-pressed="true"
         >
-
-          <svg
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path d="M15 5l-7 7 7 7"></path>
-          </svg>
-
+          หยุดสไลด์
         </button>
 
 
+        <div class="cf-viewport">
 
-        <!-- Next -->
 
-        <button
-          class="slider-arrow next"
-          id="photoNext"
-          type="button"
-          aria-label="Next photo"
-        >
-
-          <svg
-            viewBox="0 0 24 24"
-            aria-hidden="true"
+          <div
+            class="cf-frame"
+            tabindex="0"
           >
-            <path d="M9 5l7 7-7 7"></path>
-          </svg>
 
-        </button>
+            <div class="cf-track">
+
+            <figure
+              class="cf-card"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="1 จาก 11"
+            >
+              <img
+                src="pic/photo/photo-10.jpg"
+                alt="คู่บ่าวสาวริมทะเลยามพระอาทิตย์ตก"
+                width="1012"
+                height="1800"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+                style="object-position: center 80%"
+              >
+            </figure>
+            <figure
+              class="cf-card"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="2 จาก 11"
+            >
+              <img
+                src="pic/photo/photo-01.jpg"
+                alt="จับมือกันวิ่งบนทุ่งหญ้า"
+                width="1800"
+                height="1200"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+              >
+            </figure>
+            <figure
+              class="cf-card"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="3 จาก 11"
+            >
+              <img
+                src="pic/photo/photo-11.jpg"
+                alt="เดินขึ้นเขาใต้ท้องฟ้ากว้าง"
+                width="1012"
+                height="1800"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+                style="object-position: center 75%"
+              >
+            </figure>
+            <figure
+              class="cf-card"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="4 จาก 11"
+            >
+              <img
+                src="pic/photo/photo-03.jpg"
+                alt="ระหว่างทางเดินป่าด้วยกัน"
+                width="1800"
+                height="1200"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+              >
+            </figure>
+            <figure
+              class="cf-card"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="5 จาก 11"
+            >
+              <img
+                src="pic/photo/photo-09.jpg"
+                alt="ขับเจ็ตสกีกลางทะเล"
+                width="1800"
+                height="1012"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+              >
+            </figure>
+            <figure
+              class="cf-card"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="6 จาก 11"
+            >
+              <img
+                src="pic/photo/photo-02.jpg"
+                alt="นั่งพักบนเนินหญ้า"
+                width="1800"
+                height="1200"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+              >
+            </figure>
+            <figure
+              class="cf-card"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="7 จาก 11"
+            >
+              <img
+                src="pic/photo/photo-04.jpg"
+                alt="ที่หมายบนยอดดอย"
+                width="1800"
+                height="1200"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+              >
+            </figure>
+            <figure
+              class="cf-card"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="8 จาก 11"
+            >
+              <img
+                src="pic/photo/photo-05.jpg"
+                alt="ช่วงเวลาสบาย ๆ กลางทุ่ง"
+                width="1800"
+                height="1200"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+              >
+            </figure>
+            <figure
+              class="cf-card"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="9 จาก 11"
+            >
+              <img
+                src="pic/photo/photo-06.jpg"
+                alt="ท้องฟ้าและหมู่เมฆ"
+                width="1800"
+                height="1200"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+              >
+            </figure>
+            <figure
+              class="cf-card"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="10 จาก 11"
+            >
+              <img
+                src="pic/photo/photo-07.jpg"
+                alt="เดินเคียงกันบนสันเขา"
+                width="1800"
+                height="1200"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+              >
+            </figure>
+            <figure
+              class="cf-card"
+              role="group"
+              aria-roledescription="slide"
+              aria-label="11 จาก 11"
+            >
+              <img
+                src="pic/photo/photo-08.jpg"
+                alt="ภาพความทรงจำระหว่างทาง"
+                width="724"
+                height="1086"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+                style="object-position: center 80%"
+              >
+            </figure>
+
+            </div>
+
+          </div>
 
 
+          <button
+            type="button"
+            class="cf-nav cf-prev"
+            aria-label="ภาพก่อนหน้า"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 5l-7 7 7 7" />
+            </svg>
+          </button>
 
-        <!-- Dots -->
 
-        <div
-          class="photo-dots"
-          id="photoDots"
-        ></div>
+          <button
+            type="button"
+            class="cf-nav cf-next"
+            aria-label="ภาพถัดไป"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
 
-      </div>
+
+        </div>
 
 
+        <div class="cf-controls">
 
-      <!-- =====================================================
-           THUMBNAILS
-      ====================================================== -->
+          <!-- จุดสร้างจาก JS เพราะถ้าไม่มี JS จุดก็กดไม่ได้อยู่ดี -->
+          <div
+            class="cf-dots"
+            role="tablist"
+            aria-label="เลือกภาพ"
+          ></div>
 
-      <div class="thumbnail-viewport">
+        </div>
 
-        <div
-          class="thumbnail-track"
-          id="thumbnailTrack"
-        ></div>
 
       </div>
 
     </section>
+
 
 
 
@@ -607,8 +781,8 @@
   <!-- =========================================================
        PHOTO JAVASCRIPT
 
-       สไลด์ภาพอยู่ที่ assets/js/gallery.js
-       (แยกจาก assets/js/wishes.js เพื่อไม่ให้สองหน้าชนกัน)
+       ชั้นวางรูปใช้ assets/js/coverflow.js ร่วมกับหน้าแรก
+       รายการรูปอยู่ใน markup ของหน้านี้ ไม่ได้อยู่ใน JS แล้ว
 
        รูป Gallery อยู่ที่:
 
@@ -617,11 +791,12 @@
        ...
   ========================================================== -->
 
-  <script src="assets/js/main.js?v=20260905-96"></script>
-  <script src="assets/js/gallery.js?v=20260905-96"></script>
+  <script src="assets/js/main.js?v=20260905-101"></script>
+  <script src="assets/js/config.js?v=20260905-101"></script>
+  <script src="assets/js/coverflow.js?v=20260905-101"></script>
 
 
-  <script src="assets/js/viewtoggle.js?v=20260905-96"></script>
+  <script src="assets/js/viewtoggle.js?v=20260905-101"></script>
 
 </body>
 

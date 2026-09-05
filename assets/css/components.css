@@ -470,3 +470,337 @@ html.is-viewframe body {
     padding: 0 9px;
   }
 }
+
+/* =========================================================
+   COVERFLOW — ชั้นวางรูปสามมิติ ใช้ร่วมกันระหว่างหน้าแรกกับหน้ารูปภาพ
+
+   ย้ายมาจาก home.css ตอนที่หน้า Photos เปลี่ยนมาใช้การนำเสนอแบบเดียวกัน
+   ทั้งสองหน้าโหลด components.css อยู่แล้ว จึงไม่ต้องมีสไตล์ชุดที่สอง
+
+   ส่วนที่เป็นของฉากใดฉากหนึ่ง (ความสูงของ section, จังหวะการเผย,
+   ขนาดการ์ดเฉพาะหน้า) ยังอยู่ใน home.css / photos.css ตามเดิม
+   ที่นี่มีแต่ตัวคอมโพเนนต์
+========================================================= */
+/* =========================================================
+   GALLERY COVERFLOW
+
+   การ์ดทุกใบซ้อนทับกันที่กลางเวที แล้ว home.js เป็นคนสั่ง
+   transform ราย ๆ ใบว่าให้เลื่อนออกไปเท่าไร ถอยเข้าไปลึกแค่ไหน
+   และเอียงกี่องศา — CSS ที่นี่จึงไม่ควรกำหนด transform ให้ .cf-card
+   เพราะจะไปทับค่าที่คำนวณไว้
+
+   --cf-card คือความกว้างการ์ด และเป็นหน่วยตั้งต้นของทุกอย่าง
+   ทั้งระยะห่าง ความลึก และระยะมอง ปรับค่าเดียวแล้วฉากขยายตามทั้งชุด
+========================================================= */
+
+.coverflow {
+  --cf-card: clamp(200px, 30vw, 380px);
+
+  /* สีของคอมโพเนนต์ประกาศไว้ในตัวเอง ไม่ดึงจาก palette ของหน้า
+
+     home.css กับ base.css นิยาม --olive/--line/--text คนละค่า
+     ถ้าอ้าง var พวกนั้นตรง ๆ ชั้นวางบนหน้าแรกกับหน้ารูปภาพจะสีไม่ตรงกัน
+     ทั้งที่ควรเป็นของชิ้นเดียวกัน — ค่าที่ใช้คือชุดของหน้าแรก
+     หน้าไหนอยากเปลี่ยน ก็ทับ token พวกนี้ที่ระดับหน้านั้นได้ */
+  --cf-ink: #7a6257;
+  --cf-accent: #5c6b4a;
+  --cf-line: #e8ddd1;
+  --cf-surface: #fcfaf5;
+  --cf-card-bg: #efe5d2;
+
+  margin-top: 18px;
+
+  /* ปุ่มหยุดสไลด์ตอนถูกโฟกัสจะลอยขึ้นมาเกาะขอบบนของกล่องนี้ */
+  position: relative;
+}
+
+.cf-viewport {
+  position: relative;
+}
+
+.cf-frame {
+  /* ระยะมองสั้นกว่าความกว้างการ์ดสามเท่า = เลนส์กว้าง เห็นการเอียงชัด */
+  perspective: calc(var(--cf-card) * 3);
+
+  /* เว้นบน-ล่างให้เงาการ์ดไม่โดนขอบ overflow ตัด */
+  padding: 30px 0 34px;
+  overflow: hidden;
+  outline: none;
+  cursor: grab;
+
+  /* ลากแนวนอนเป็นของเรา แนวตั้งปล่อยให้หน้าเว็บเลื่อนตามปกติ */
+  touch-action: pan-y;
+}
+
+.cf-frame:active {
+  cursor: grabbing;
+}
+
+.cf-frame:focus-visible {
+  outline: 2px solid var(--cf-accent);
+  outline-offset: 4px;
+  border-radius: 22px;
+}
+
+.cf-track {
+  position: relative;
+  height: var(--cf-card);
+  transform-style: preserve-3d;
+  user-select: none;
+}
+
+.cf-card {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: var(--cf-card);
+  aspect-ratio: 1 / 1;
+  margin: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--cf-card-bg);
+  box-shadow: 0 18px 40px rgba(64, 62, 49, .22);
+  will-change: transform, opacity;
+
+  /* ค่าตั้งต้นก่อน JS วาดรอบแรก กันไม่ให้การ์ดทั้งกองแวบขึ้นมาซ้อนกัน */
+  opacity: 0;
+}
+
+.cf-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ไล่เฉดอ่อน ๆ ที่ขอบล่าง ให้ภาพดูมีมิติและเข้ากับโทนกระดาษ */
+.cf-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to top,
+      rgba(64, 62, 49, .18) 0%,
+      rgba(64, 62, 49, 0) 42%
+    );
+  pointer-events: none;
+}
+
+
+/* ---- ปุ่มเลื่อนซ้าย/ขวา ---- */
+
+.cf-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  /* 44px ตามเกณฑ์เป้ากดของ WCAG SC 2.5.5 ไม่ใช่แค่ขั้นต่ำ 24px ของ 2.5.8 */
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* เหนือการ์ดทุกใบ — JS ไล่ z-index การ์ดไว้ที่ 100 ลงมา */
+  z-index: 200;
+  padding: 0;
+  border: 1px solid var(--cf-line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .86);
+  backdrop-filter: blur(6px);
+  color: var(--cf-ink);
+  cursor: pointer;
+  transition: background .25s ease, border-color .25s ease, transform .25s ease;
+}
+
+.cf-prev { left: clamp(4px, 3vw, 40px); }
+.cf-next { right: clamp(4px, 3vw, 40px); }
+
+.cf-nav svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cf-nav:hover {
+  background: #fff;
+  border-color: var(--cf-accent);
+}
+
+.cf-nav:focus-visible {
+  outline: 2px solid var(--cf-accent);
+  outline-offset: 2px;
+}
+
+
+/* ---- จุดบอกตำแหน่ง ---- */
+
+.cf-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+.cf-dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* เป้ากดจริงกว้าง 20px สูง 24px แต่จุดที่เห็นเล็กแค่ 7px
+   (SC 2.5.8 นับพื้นที่กดได้ ไม่ใช่ขนาดที่วาด) */
+.cf-dot {
+  width: 20px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cf-dot::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--cf-ink);
+  opacity: .26;
+  transition: opacity .3s ease, transform .3s ease;
+}
+
+.cf-dot[aria-selected="true"]::before {
+  opacity: 1;
+  background: var(--cf-accent);
+  transform: scale(1.25);
+}
+
+.cf-dot:focus-visible {
+  outline: 2px solid var(--cf-accent);
+  outline-offset: 1px;
+  border-radius: 6px;
+}
+
+
+/* ---- ไม่มี JS: ถอยไปเป็นแถบเลื่อนแนวนอนที่ยังดูรูปได้ครบ ---- */
+
+.coverflow:not(.is-ready) .cf-frame {
+  perspective: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
+.coverflow:not(.is-ready) .cf-track {
+  display: flex;
+  gap: 12px;
+  height: auto;
+  padding: 0 12px;
+}
+
+.coverflow:not(.is-ready) .cf-card {
+  position: static;
+  flex: none;
+  opacity: 1;
+  scroll-snap-align: center;
+}
+
+.coverflow:not(.is-ready) .cf-nav {
+  display: none;
+}
+
+/* ---- จอแคบ ---- */
+
+@media (max-width: 900px) {
+
+  /* จอแคบ: การ์ดเล็กลงและปุ่มลูกศรขยับเข้ามาชิดขอบ
+     ระยะห่างกับความลึกอิง --cf-card อยู่แล้ว จึงย่อตามเองทั้งฉาก */
+  .coverflow {
+    --cf-card: clamp(168px, 52vw, 260px);
+  }
+
+  .cf-frame {
+    padding: 22px 0 26px;
+  }
+
+  .cf-nav {
+    width: 40px;
+    height: 40px;
+  }
+
+  .cf-prev { left: 2px; }
+  .cf-next { right: 2px; }
+
+}
+
+/* =========================================================
+   ปุ่มหยุดสไลด์ — WCAG SC 2.2.2 Pause, Stop, Hide
+
+   เนื้อหาที่ขยับเองต่อเนื่องเกินห้าวินาทีต้องมีวิธีให้ผู้ใช้หยุด
+   แต่ชิปที่เห็นอยู่ตลอดแย่งสายตาไปจากรูป จึงซ่อนไว้แบบเดียวกับ
+   skip link คือโผล่มาเมื่อถูกโฟกัสด้วยคีย์บอร์ดเท่านั้น
+
+   ทางหยุดของแต่ละกลุ่มผู้ใช้:
+     เมาส์      ชี้ค้างไว้บนแกลเลอรี — หยุดทันที ขยับออกแล้วเล่นต่อ
+     นิ้ว       แตะเลื่อน กดลูกศร หรือกดจุด — หยุดค้างไว้เลย
+     คีย์บอร์ด  โฟกัสเข้ามาแล้วเจอปุ่มนี้เป็นอย่างแรก
+========================================================= */
+
+.cf-pause {
+  /* ซ่อนแบบยังอยู่ในลำดับโฟกัสและยังถูกอ่านออกเสียงได้
+     (display:none หรือ visibility:hidden จะตัดออกจากทั้งสองอย่าง) */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ใช้ :focus ไม่ใช่ :focus-visible — ปุ่มที่มองไม่เห็นจะถูกโฟกัส
+   ได้ด้วยคีย์บอร์ดหรือโปรแกรมอ่านหน้าจอเท่านั้นอยู่แล้ว */
+.cf-pause:focus {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 300;
+  width: auto;
+  height: auto;
+  min-height: 32px;
+  margin: 0;
+  padding: 5px 16px;
+  overflow: visible;
+  clip-path: none;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--cf-accent);
+  border-radius: 999px;
+  background: var(--cf-surface);
+  color: var(--cf-ink);
+  font-family: inherit;
+  font-size: 12.5px;
+  letter-spacing: .02em;
+  cursor: pointer;
+  outline: 2px solid var(--cf-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  /* ไม่มีสไลด์ให้หยุด เพราะสคริปต์ไม่เริ่มเล่นตั้งแต่แรก */
+  .cf-pause { display: none; }
+
+}

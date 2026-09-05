@@ -20,7 +20,7 @@
 │       ├── music.js        เพลงพื้นหลัง YouTube (หน้าแรก)
 │       ├── home.js         intro, countdown แบบป้ายสนามบิน, พลุวันงาน, ปุ่มแผนที่
 │       ├── wishes.js       ฟอร์มคำอวยพร + ต้นไม้ + โหมดเต็มจอ
-│       ├── gallery.js      สไลด์ภาพ
+│       ├── coverflow.js    ชั้นวางรูปสามมิติ (หน้าแรก + หน้ารูปภาพ)
 │       └── rsvp.js         แบบตอบรับ + การ์ดยืนยัน PNG + .ics
 ├── pic/                รูปภาพ (บีบอัดแล้ว; ต้นฉบับเก็บนอก repo ที่ ../originals/)
 ├── favicon.ico / favicon-32.png / apple-touch-icon.png
@@ -163,8 +163,11 @@ python3 -m http.server 8765
 ## เพิ่มรูปในแกลเลอรี
 
 1. บีบอัดรูปก่อน (กว้างสุด ~1800px): `sips -Z 1800 -s format jpeg -s formatOptions 78 IN.jpg --out pic/photo/photo-12.jpg`
-2. สร้าง thumbnail: `sips -Z 300 -s format jpeg -s formatOptions 70 pic/photo/photo-12.jpg --out pic/photo/thumb/photo-12.jpg`
-3. เพิ่ม path ใน array `photos` ที่ `assets/js/gallery.js`
+2. เพิ่ม `<figure class="cf-card">` ใบใหม่ใน `.cf-track` ทั้งใน `photos.html`
+   และ `index.html` (ถ้าอยากให้ขึ้นหน้าแรกด้วย) — ก๊อปใบที่มีอยู่แล้วแก้ `src`/`alt`
+3. แก้ `aria-label="N จาก M"` ของทุกใบให้ M ตรงกับจำนวนรูปใหม่
+4. รูปแนวตั้งให้ใส่ `style="object-position: center 80%"` ด้วย
+   เพราะกรอบการ์ดเป็นสี่เหลี่ยมจัตุรัส ครอปกลางแล้วจะตัดคนออกจากภาพ
 
 **ห้าม commit รูปต้นฉบับจากกล้อง (15-25MB) ลง repo** — ทำให้ repo บวมถาวร
 
