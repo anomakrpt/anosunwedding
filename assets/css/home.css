@@ -3650,6 +3650,46 @@ a {
 }
 
 
+/* =========================================================
+   BUILD STAMP
+
+   บรรทัดสุดท้ายจริง ๆ ของหน้า บอกว่ากำลังเปิดรุ่นไหนอยู่
+   ค่าถูกเติมโดย main.js จาก ?v= ของตัวมันเอง (ดู BUILD STAMP ใน main.js)
+
+   ตัวเล็กแต่ไม่จาง — สีเดียวกับบรรทัดเครดิตซึ่งผ่านเกณฑ์ 4.5:1 มาแล้ว
+   ข้อความที่มีไว้ให้อ่านบนมือถือ จะทำให้อ่านยากเพื่อความสวยไม่ได้
+========================================================= */
+
+.footer-version {
+  margin: 14px 0 0;
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: #7a6257;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ไม่มี JS ก็ไม่มีเลข — :empty กันไม่ให้เหลือช่องว่างค้างไว้เฉย ๆ */
+.footer-version:empty {
+  display: none;
+}
+
+.final-ending:not(.in-view) .footer-version {
+  opacity: 0;
+}
+
+.final-ending.in-view .footer-version {
+  animation: sceneFade .9s ease 1.75s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .final-ending:not(.in-view) .footer-version {
+    opacity: 1;
+  }
+
+}
+
+
 /* จังหวะการเผยของบรรทัดเครดิต */
 .final-ending:not(.in-view) .footer-credits {
   opacity: 0;

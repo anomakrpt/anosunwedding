@@ -14,6 +14,83 @@
    เคารพ prefers-reduced-motion (ผู้ใช้ปิดอนิเมชัน = แสดงทันที)
 ============================================================ */
 
+/* ============================================================
+   BUILD STAMP
+
+   เลขรุ่นมาจาก ?v= ของ src ของสคริปต์ตัวนี้เอง ซึ่งเป็นเลขเดียวกับ
+   ที่ใช้ล้างแคชอยู่แล้ว จึงไม่มีเลขชุดที่สองให้หลุดจากกัน
+   และค่าที่ได้คือรุ่นที่เบราว์เซอร์ "กำลังรัน" จริง ไม่ใช่รุ่นที่ควรจะรัน
+   ถ้ามือถือยังติดไฟล์เก่าในแคช ตัวเลขจะฟ้องเอง
+
+   อ่าน currentScript ตอนถูก parse ไม่ใช่ใน DOMContentLoaded
+   เพราะตอนนั้น currentScript กลายเป็น null ไปแล้ว
+
+   เลขถูกบวกอัตโนมัติทุก commit โดย .githooks/pre-commit
+============================================================ */
+
+(function stampBuildVersion() {
+
+  const src =
+    document.currentScript
+      ? document.currentScript.src
+      : "";
+
+  const found = /[?&]v=([^&#]+)/.exec(src);
+
+  if (!found) {
+    return;
+  }
+
+  const raw = found[1];
+
+  const MONTHS = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
+
+  /* รูปแบบ YYYYMMDD-NN → "v95 · 5 Sep 2026"
+     ถ้าวันข้างหน้าเปลี่ยนรูปแบบ ก็โชว์ค่าดิบไปตรง ๆ ดีกว่าโชว์ผิด */
+  function pretty(value) {
+
+    const parts =
+      /^(\d{4})(\d{2})(\d{2})-(\d+)$/.exec(value);
+
+    if (!parts) {
+      return "v" + value;
+    }
+
+    const month = MONTHS[Number(parts[2]) - 1];
+
+    if (!month) {
+      return "v" + value;
+    }
+
+    return "v" + Number(parts[4])
+      + " \u00b7 " + Number(parts[3])
+      + " " + month
+      + " " + parts[1];
+
+  }
+
+  function paint() {
+
+    document
+      .querySelectorAll("[data-build-version]")
+      .forEach((el) => {
+        el.textContent = pretty(raw);
+      });
+
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", paint);
+  } else {
+    paint();
+  }
+
+})();
+
+
 document.addEventListener("DOMContentLoaded", () => {
 
   /* ฉากที่คุมจังหวะเองใน home.css */

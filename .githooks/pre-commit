@@ -1,0 +1,39 @@
+#!/bin/sh
+#
+# บวกเลขรุ่นหนึ่งขั้นทุกครั้งที่ commit
+#
+# เลขนี้ทำสองหน้าที่ด้วยตัวเดียว:
+#   1. ?v= ท้าย URL ของ css/js ทุกไฟล์ — ล้างแคชของเบราว์เซอร์
+#   2. บรรทัดล่างสุดของ footer — main.js อ่านจาก ?v= ของ src ตัวเอง
+#      แล้วเอามาแสดง (ดู BUILD STAMP ใน assets/js/main.js)
+#
+# มีเลขชุดเดียว จึงไม่มีทางที่เลขในฟุตเตอร์กับไฟล์ที่โหลดจริงจะไม่ตรงกัน
+#
+# รูปแบบ: YYYYMMDD-NN   วันที่ = วันที่ commit, NN = นับขึ้นเรื่อย ๆ ไม่รีเซ็ต
+# NN ไม่รีเซ็ตตามวัน เพราะอยากให้เลขที่มากกว่าแปลว่าใหม่กว่าเสมอ
+#
+# เปิดใช้งานหลัง clone ใหม่ด้วย:  git config core.hooksPath .githooks
+
+set -e
+
+FILES="index.html photos.html wishes.html rsvp.html"
+
+# หาเลขปัจจุบันจากไฟล์แรกที่มี
+CURRENT=$(grep -ho '?v=[0-9]\{8\}-[0-9]\{1,\}' $FILES 2>/dev/null | head -1 | sed 's/^?v=//')
+
+if [ -z "$CURRENT" ]; then
+  echo "pre-commit: ไม่พบเลขรุ่น (?v=YYYYMMDD-NN) — ข้ามการบวกเลข" >&2
+  exit 0
+fi
+
+NEXT=$(( ${CURRENT#*-} + 1 ))
+NEW="$(date +%Y%m%d)-$NEXT"
+
+for f in $FILES; do
+  [ -f "$f" ] || continue
+  perl -pi -e "s/\Q?v=$CURRENT\E/?v=$NEW/g" "$f"
+done
+
+git add -- $FILES
+
+echo "pre-commit: เลขรุ่น $CURRENT -> $NEW"
