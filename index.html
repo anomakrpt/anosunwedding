@@ -51,9 +51,9 @@
        MAIN CSS
   ========================================================== -->
 
-    <link rel="stylesheet" href="assets/css/base.css?v=20260830-92" />
-  <link rel="stylesheet" href="assets/css/components.css?v=20260830-92" />
-  <link rel="stylesheet" href="assets/css/home.css?v=20260830-92" />
+    <link rel="stylesheet" href="assets/css/base.css?v=20260830-94" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260830-94" />
+  <link rel="stylesheet" href="assets/css/home.css?v=20260830-94" />
 
 
   
@@ -79,7 +79,7 @@
     >
 
       <source
-        src="pic/cardopen.mp4?v=20260830-92"
+        src="pic/cardopen.mp4?v=20260830-94"
         type="video/mp4"
       />
 
@@ -1212,7 +1212,11 @@
 
 
         <!-- คำคมปิดเรื่อง ย้ายมาอยู่ใต้หัวข้อแกลเลอรี เล่าเป็นคำโปรย
-             ไม่ใช่ฉากเต็มหน้าจอของตัวเองอีกต่อไป -->
+             ไม่ใช่ฉากเต็มหน้าจอของตัวเองอีกต่อไป
+
+             ใบไม้ถูกขนาบด้วยเส้นบาง ๆ ให้เป็นเส้นคั่นเต็มตัว
+             (ภาษาเดียวกับเส้นคั่นรูปหัวใจในฟุตเตอร์) เส้นวาดด้วย
+             ::before/::after ของ .gallery-leaf จึงไม่มีอะไรเพิ่มใน markup -->
         <p class="gallery-quote" lang="en">
 
           <span class="gallery-leaf" aria-hidden="true">
@@ -1266,6 +1270,20 @@
           aria-roledescription="carousel"
           aria-label="ภาพความทรงจำของเรา"
         >
+
+
+          <!-- SC 2.2.2 Pause, Stop, Hide — ต้องมีวิธีหยุดสิ่งที่ขยับเอง
+               ปุ่มนี้ซ่อนจนกว่าจะถูกโฟกัสด้วยคีย์บอร์ด (แบบเดียวกับ skip link)
+               เมาส์กับนิ้วมีทางหยุดของตัวเองอยู่แล้ว — ชี้ค้างไว้ หรือแตะเลื่อน
+               วางเป็นลูกตัวแรกเพื่อให้เจอปุ่มก่อนจะเข้าไปในตัวสไลด์ -->
+          <button
+            type="button"
+            class="cf-pause"
+            id="cfPause"
+            aria-pressed="true"
+          >
+            หยุดสไลด์
+          </button>
 
 
           <div class="cf-viewport">
@@ -1495,11 +1513,9 @@
           </div>
 
 
-          <!-- แถวควบคุม: จุดบอกตำแหน่ง + ปุ่มหยุดสไลด์ -->
+          <!-- จุดบอกตำแหน่ง — สร้างจาก JS เพราะถ้าไม่มี JS จุดก็กดไม่ได้อยู่ดี -->
           <div class="cf-controls">
 
-
-            <!-- จุดสร้างจาก JS เพราะถ้าไม่มี JS จุดก็กดไม่ได้อยู่ดี -->
             <div
               class="cf-dots"
               id="cfDots"
@@ -1507,54 +1523,11 @@
               aria-label="เลือกภาพ"
             ></div>
 
-
-            <!-- SC 2.2.2 Pause, Stop, Hide — เนื้อหาที่ขยับเองต้องมีปุ่มให้หยุดได้
-                 ค่าที่เลือกถูกจำไว้ใน localStorage เหมือนปุ่มเปิด/ปิดเสียง -->
-            <button
-              type="button"
-              class="gallery-toggle"
-              id="galleryToggle"
-              aria-pressed="true"
-            >
-
-              <svg class="gt-pause" viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="7" y="5" width="3.4" height="14" rx="1.2" />
-                <rect x="13.6" y="5" width="3.4" height="14" rx="1.2" />
-              </svg>
-
-              <svg class="gt-play" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M8 5.2v13.6L19 12z" />
-              </svg>
-
-              <span class="gt-label">หยุดสไลด์</span>
-
-            </button>
-
-
           </div>
 
 
         </div>
 
-
-
-        <p class="gallery-more">
-
-          <a
-            href="photos.html"
-            class="gallery-more-link"
-          >
-            ดูภาพทั้งหมด
-
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path d="M5 12h13M13 6l6 6-6 6" />
-            </svg>
-          </a>
-
-        </p>
 
 
       </section>
@@ -1941,10 +1914,10 @@
        JAVASCRIPT
   ========================================================== -->
 
-  <script src="assets/js/main.js?v=20260830-92"></script>
-  <script src="assets/js/config.js?v=20260830-92"></script>
-  <script src="assets/js/music.js?v=20260830-92"></script>
-  <script src="assets/js/home.js?v=20260830-92"></script>
+  <script src="assets/js/main.js?v=20260830-94"></script>
+  <script src="assets/js/config.js?v=20260830-94"></script>
+  <script src="assets/js/music.js?v=20260830-94"></script>
+  <script src="assets/js/home.js?v=20260830-94"></script>
 
 
   <script
@@ -1952,7 +1925,7 @@
   ></script>
 
 
-  <script src="assets/js/viewtoggle.js?v=20260830-92"></script>
+  <script src="assets/js/viewtoggle.js?v=20260830-94"></script>
 
 </body>
 

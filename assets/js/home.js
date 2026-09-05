@@ -1099,31 +1099,58 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* ---- เล่นเอง + ปุ่มหยุด (WCAG SC 2.2.2 Pause, Stop, Hide) ----
-       wantsPlay คือความตั้งใจของผู้ใช้ จำไว้ใน localStorage
-       แยกจาก start()/stop() ที่ใช้หยุดชั่วคราวตอนเลื่อนพ้นจอหรือสลับแท็บ */
+    /* ---- เล่นเอง + วิธีหยุด (WCAG SC 2.2.2 Pause, Stop, Hide) ----
 
-    const GALLERY_KEY = "wedding-gallery";
+       แยกการหยุดเป็นสองชั้น เพราะเจตนาไม่เหมือนกัน:
 
-    function wantsPlay() {
-      if (reduceMotion) return false;
-      try {
-        return localStorage.getItem(GALLERY_KEY) !== "paused";
-      } catch (e) {
-        return true;
-      }
-    }
+       held   หยุดชั่วคราวและคลายเอง — ชี้เมาส์ค้าง โฟกัสอยู่ในนี้
+              เลื่อนพ้นจอ หรือสลับแท็บ พอเงื่อนไขหมดไปก็เล่นต่อ
+       userStopped  ผู้ใช้ลงมือคุมเอง — กดลูกศร กดจุด ลากนิ้ว หรือกดปุ่มหยุด
+              จากนั้นสไลด์เป็นของผู้ใช้ไปจนกว่าจะโหลดหน้าใหม่
+              เพราะรูปที่คนกำลังดูอยู่ไม่ควรถูกเลื่อนหนีไปเอง
 
-    const toggle = document.getElementById("galleryToggle");
+       ไม่จำลง localStorage แล้ว: ปุ่มหยุดถูกซ่อนไว้จนกว่าจะโฟกัส
+       ถ้าจำสถานะข้ามการเข้าเว็บ คนที่เผลอกดลูกศรครั้งเดียว
+       จะไม่มีทางเปิดสไลด์กลับมาได้อีกเลยโดยไม่รู้ตัว */
+
+    let userStopped = reduceMotion;
+
+    const pauseBtn = document.getElementById("cfPause");
 
     let timer = null;
+
+    /* เงื่อนไขที่ทำให้หยุดชั่วคราว เก็บเป็นสถานะจริงของแต่ละอย่าง
+       ไม่ใช่ตัวนับ เพราะ event ที่หายไปหนึ่งครั้ง (เช่น pointerleave
+       ที่ไม่ยิงตอนเมาส์ออกนอกหน้าต่าง) จะทำให้ตัวนับค้างแล้วไม่เล่นอีกเลย */
+    const held = {
+      offScreen: true,   /* ยังไม่รู้ว่าอยู่ในจอไหม จนกว่า observer จะบอก */
+      hovering: false,
+      focused: false,
+      tabHidden: false
+    };
+
+    function canPlay() {
+
+      if (userStopped) return false;
+
+      return !held.offScreen
+        && !held.hovering
+        && !held.focused
+        && !held.tabHidden;
+
+    }
+
+    function sync() {
+      if (canPlay()) {
+        start();
+      } else {
+        stop();
+      }
+    }
 
     function start() {
 
       if (timer) return;
-
-      /* ผู้ใช้กดหยุดไว้ — เลื่อนกลับเข้ามาในจอต้องไม่เริ่มเล่นเอง */
-      if (!wantsPlay()) return;
 
       timer = setInterval(
         () => nudge(1),
@@ -1151,7 +1178,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* APG carousel: ระหว่างที่ยังหมุนเอง ต้องไม่ประกาศทุกครั้งที่เปลี่ยนรูป
        ไม่งั้นโปรแกรมอ่านหน้าจอจะพูดแทรกทุกสองวินาที
-       พอผู้ใช้กดหยุดแล้วค่อยเปิด live region ให้ประกาศตอนกดเลื่อนเอง */
+       พอหยุดแล้วค่อยเปิด live region ให้ประกาศตอนกดเลื่อนเอง */
     function syncLive() {
       track.setAttribute("aria-live", timer ? "off" : "polite");
     }
@@ -1159,67 +1186,69 @@ document.addEventListener("DOMContentLoaded", () => {
     syncLive();
 
 
-    /* ผู้ใช้สั่งหยุดเอง — ใช้ตอนกดลูกศร/จุด/ลากนิ้ว
-       เนื้อหาที่ผู้ใช้กำลังดูอยู่ไม่ควรถูกสไลด์แย่งไปเอง */
     function pause() {
 
-      if (!timer) return;
+      if (userStopped) return;
+
+      userStopped = true;
 
       stop();
 
-      try {
-        localStorage.setItem(GALLERY_KEY, "paused");
-      } catch (e) { /* โหมดส่วนตัว — ใช้ได้แค่รอบนี้ */ }
-
-      syncToggle();
+      syncPauseBtn();
 
     }
 
 
-    function syncToggle() {
+    function syncPauseBtn() {
 
-      if (!toggle) return;
+      if (!pauseBtn) return;
 
-      const playing = wantsPlay();
-
-      toggle.classList.toggle("is-paused", !playing);
-      toggle.setAttribute("aria-pressed", String(playing));
-
-      const label = toggle.querySelector(".gt-label");
-
-      if (label) {
-        label.textContent = playing ? "หยุดสไลด์" : "เล่นสไลด์";
-      }
+      pauseBtn.setAttribute("aria-pressed", String(!userStopped));
+      pauseBtn.textContent = userStopped ? "เล่นสไลด์" : "หยุดสไลด์";
 
     }
 
 
-    if (toggle) {
+    if (pauseBtn) {
 
-      toggle.addEventListener("click", () => {
+      pauseBtn.addEventListener("click", () => {
 
-        const nowPaused = wantsPlay();
+        userStopped = !userStopped;
 
-        try {
-          localStorage.setItem(
-            GALLERY_KEY,
-            nowPaused ? "paused" : "playing"
-          );
-        } catch (e) { /* โหมดส่วนตัว — ใช้ได้แค่รอบนี้ */ }
+        syncPauseBtn();
 
-        syncToggle();
-
-        if (nowPaused) {
-          stop();
-        } else {
-          start();
-        }
+        sync();
 
       });
 
-      syncToggle();
+      syncPauseBtn();
 
     }
+
+
+    /* ชี้เมาส์ค้างบนแกลเลอรี = กำลังดูรูปใบนี้อยู่ ไม่ควรถูกเลื่อนหนี
+       ใช้ pointerenter/leave ไม่ใช่ mouseenter เพราะนิ้วก็ยิง pointerenter
+       แล้วยิง pointerleave ตามตอนยกนิ้ว จึงไม่ค้างหยุดบนมือถือ */
+    root.addEventListener("pointerenter", () => {
+      held.hovering = true;
+      sync();
+    });
+
+    root.addEventListener("pointerleave", () => {
+      held.hovering = false;
+      sync();
+    });
+
+    /* โฟกัสอยู่ในแกลเลอรี = ผู้ใช้คีย์บอร์ดกำลังอ่านอยู่ตรงนี้ */
+    root.addEventListener("focusin", () => {
+      held.focused = true;
+      sync();
+    });
+
+    root.addEventListener("focusout", () => {
+      held.focused = false;
+      sync();
+    });
 
 
     /* ---- เริ่มทำงาน ----
@@ -1240,18 +1269,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         entries.forEach((entry) => {
 
-          if (entry.isIntersecting) {
+          held.offScreen = !entry.isIntersecting;
 
-            /* กล่องอาจเพิ่งได้ความกว้างจริงตอนถูกเลื่อนเข้ามา */
-            measure();
+          /* กล่องอาจเพิ่งได้ความกว้างจริงตอนถูกเลื่อนเข้ามา */
+          if (entry.isIntersecting) measure();
 
-            start();
-
-          } else {
-
-            stop();
-
-          }
+          sync();
 
         });
 
@@ -1259,15 +1282,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     } else {
 
-      start();
+      /* ไม่มี IntersectionObserver ก็ไม่มีทางรู้ว่าอยู่ในจอไหม — ถือว่าอยู่ */
+      held.offScreen = false;
+
+      sync();
 
     }
 
 
-    /* สลับแท็บไปแล้วหยุดไว้ก่อน */
+    /* สลับแท็บไปแล้วหยุดไว้ก่อน กลับมาแล้วเล่นต่อ */
     document.addEventListener("visibilitychange", () => {
 
-      if (document.hidden) stop();
+      held.tabHidden = document.hidden;
+
+      sync();
 
     });
 

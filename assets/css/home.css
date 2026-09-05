@@ -1360,8 +1360,20 @@ a {
 }
 
 /* Gallery */
+
+/* พอถอดปุ่ม "ดูภาพทั้งหมด" ออก เนื้อหาสั้นลงราว 75px ถ้าปล่อยให้ชิดบน
+   ช่องว่างจะไปกองอยู่ข้างล่างก้อนเดียว ดูเหมือนของหายมากกว่าดูเหมือนเว้นวรรค
+   จัดกลางแนวตั้งแทน ช่องว่างจึงถูกแบ่งขึ้นบนกับล่างเท่า ๆ กัน
+
+   แถบเมนูล่างเป็น fixed ทับทุกอย่าง จึงต้องเผื่อ --nav-space ไว้ที่ padding
+   ไม่งั้นจุดบอกตำแหน่งจะไปจมอยู่ใต้แถบ */
 .gallery-section {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   padding-top: 40px;
+  padding-bottom: calc(var(--nav-space) + 24px);
 }
 
 /* =========================================================
@@ -1377,8 +1389,11 @@ a {
 ========================================================= */
 
 .coverflow {
-  --cf-card: clamp(190px, 27vw, 330px);
+  --cf-card: clamp(200px, 30vw, 380px);
   margin-top: 18px;
+
+  /* ปุ่มหยุดสไลด์ตอนถูกโฟกัสจะลอยขึ้นมาเกาะขอบบนของกล่องนี้ */
+  position: relative;
 }
 
 .cf-viewport {
@@ -1507,14 +1522,12 @@ a {
 }
 
 
-/* ---- แถวควบคุม: จุดบอกตำแหน่ง + ปุ่มหยุดสไลด์ ---- */
+/* ---- จุดบอกตำแหน่ง ---- */
 
 .cf-controls {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px 16px;
   margin-top: 14px;
 }
 
@@ -1522,12 +1535,6 @@ a {
   display: flex;
   align-items: center;
   gap: 4px;
-}
-
-/* ปุ่มหยุดสไลด์เดิมวางลอยชิดขวาด้วย margin-left:auto
-   ในแถวควบคุมมันจะดันตัวเองไปสุดขอบแล้วเบียดจุดไปทางซ้าย */
-.cf-controls .gallery-toggle {
-  margin: 0;
 }
 
 /* เป้ากดจริงกว้าง 20px สูง 24px แต่จุดที่เห็นเล็กแค่ 7px
@@ -1594,50 +1601,6 @@ a {
 }
 
 
-
-/* ==========================================
-   ลิงก์ไปหน้า Photos
-========================================== */
-
-.gallery-more {
-  margin-top: 26px;
-  text-align: center;
-}
-
-.gallery-more-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 11px 24px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--white);
-  color: var(--brown);
-  font-size: 14px;
-  letter-spacing: .04em;
-  transition: border-color .3s ease, transform .3s ease, box-shadow .3s ease;
-}
-
-.gallery-more-link svg {
-  width: 17px;
-  height: 17px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: transform .3s ease;
-}
-
-.gallery-more-link:hover {
-  border-color: var(--olive);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(80, 62, 48, .12);
-}
-
-.gallery-more-link:hover svg {
-  transform: translateX(4px);
-}
 
 /* ==========================================
    Gallery carmera
@@ -3379,8 +3342,7 @@ a {
 .gallery-section:not(.in-view) .gallery-camera,
 .gallery-section:not(.in-view) .section-label,
 .gallery-section:not(.in-view) h2,
-.gallery-section:not(.in-view) .coverflow,
-.gallery-section:not(.in-view) .gallery-more {
+.gallery-section:not(.in-view) .coverflow {
   opacity: 0;
 }
 
@@ -3409,10 +3371,6 @@ a {
     opacity: 1;
     transform: none;
   }
-}
-
-.gallery-section.in-view .gallery-more {
-  animation: sceneRise .9s var(--ease-scene) 1.15s both;
 }
 
 
@@ -3517,7 +3475,6 @@ a {
   .gallery-section:not(.in-view) .section-label,
   .gallery-section:not(.in-view) h2,
   .gallery-section:not(.in-view) .coverflow,
-  .gallery-section:not(.in-view) .gallery-more,
   .final-ending:not(.in-view) .brand-logo,
   .final-ending:not(.in-view) .ending-title,
   .final-ending:not(.in-view) .ending-sub,
@@ -3759,34 +3716,74 @@ a {
 ========================================================= */
 
 .gallery-quote {
-  width: min(620px, 88%);
-  margin: 14px auto 6px;
+  width: min(560px, 88%);
+  margin: 18px auto 4px;
   text-align: center;
   color: #627152;
 }
 
+/* ใบไม้กลายเป็นเส้นคั่น: เส้นบางสองข้างวิ่งออกจากตัวใบ
+   ใช้ flex เพื่อให้เส้นยืดเองตามความกว้างที่เหลือ ไม่ต้องตั้งความยาวตายตัว */
 .gallery-quote .gallery-leaf {
-  display: block;
-  width: 30px;
-  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  margin: 0 auto 16px;
   color: var(--olive);
-  opacity: .6;
+}
+
+.gallery-quote .gallery-leaf::before,
+.gallery-quote .gallery-leaf::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  max-width: 96px;
+  background:
+    linear-gradient(
+      to right,
+      transparent,
+      currentColor
+    );
+  opacity: .38;
+}
+
+/* เส้นฝั่งขวาต้องไล่เฉดกลับทาง ไม่งั้นจะจางเข้าหาใบไม้ทั้งสองข้าง */
+.gallery-quote .gallery-leaf::after {
+  background:
+    linear-gradient(
+      to left,
+      transparent,
+      currentColor
+    );
 }
 
 .gallery-quote .gallery-leaf svg {
-  width: 100%;
+  width: 30px;
   height: auto;
+  flex: none;
   display: block;
+  opacity: .75;
 }
 
 .gallery-quote-text {
   display: block;
+
+  /* จำกัดความยาวบรรทัดด้วยหน่วยตัวอักษร คำคมจึงตกสองบรรทัดเสมอ
+     ไม่ว่าฟอนต์จะ render กว้างแค่ไหน */
+  max-width: 30rem;
+  margin: 0 auto;
   font-family: var(--display);
   font-style: italic;
   font-weight: 500;
-  font-size: clamp(1rem, 1.35vw, 1.2rem);
-  line-height: 1.75;
+  font-size: clamp(1.05rem, 1.5vw, 1.32rem);
+  line-height: 1.7;
   letter-spacing: .01em;
+
+  /* ให้เบราว์เซอร์เกลี่ยความยาวสองบรรทัดให้เท่ากัน
+     ไม่ปล่อยให้ "its way." ตกไปอยู่บรรทัดเดียวโดด ๆ */
+  text-wrap: balance;
 }
 
 /* จังหวะ: ขึ้นต่อจากหัวข้อ ก่อนที่รูปจะไล่ขึ้นมา */
@@ -4141,7 +4138,8 @@ a {
 @media (max-height: 619px) {
 
   .story-scene,
-  .blessing.is-fullscreen {
+  .blessing.is-fullscreen,
+  .gallery-section {
     min-height: 0;
   }
 
@@ -4149,70 +4147,65 @@ a {
 
 
 /* =========================================================
-   ปุ่มหยุด/เล่นสไลด์แกลเลอรี — WCAG SC 2.2.2 Pause, Stop, Hide
+   ปุ่มหยุดสไลด์ — WCAG SC 2.2.2 Pause, Stop, Hide
 
    เนื้อหาที่ขยับเองต่อเนื่องเกินห้าวินาทีต้องมีวิธีให้ผู้ใช้หยุด
-   วางไว้เหนือโมเสก ชิดขวา ให้เห็นแต่ไม่แย่งความสนใจจากรูป
+   แต่ชิปที่เห็นอยู่ตลอดแย่งสายตาไปจากรูป จึงซ่อนไว้แบบเดียวกับ
+   skip link คือโผล่มาเมื่อถูกโฟกัสด้วยคีย์บอร์ดเท่านั้น
+
+   ทางหยุดของแต่ละกลุ่มผู้ใช้:
+     เมาส์      ชี้ค้างไว้บนแกลเลอรี — หยุดทันที ขยับออกแล้วเล่นต่อ
+     นิ้ว       แตะเลื่อน กดลูกศร หรือกดจุด — หยุดค้างไว้เลย
+     คีย์บอร์ด  โฟกัสเข้ามาแล้วเจอปุ่มนี้เป็นอย่างแรก
 ========================================================= */
 
-.gallery-toggle {
-  /* block-level + width:fit-content เพื่อให้ margin-left:auto ดันไปชิดขวาได้
-     (inline-flex จะถูกจัดกลางตาม text-align ของ section แทน) */
-  display: flex;
-  width: fit-content;
+.cf-pause {
+  /* ซ่อนแบบยังอยู่ในลำดับโฟกัสและยังถูกอ่านออกเสียงได้
+     (display:none หรือ visibility:hidden จะตัดออกจากทั้งสองอย่าง) */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ใช้ :focus ไม่ใช่ :focus-visible — ปุ่มที่มองไม่เห็นจะถูกโฟกัส
+   ได้ด้วยคีย์บอร์ดหรือโปรแกรมอ่านหน้าจอเท่านั้นอยู่แล้ว */
+.cf-pause:focus {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 300;
+  width: auto;
+  height: auto;
+  min-height: 32px;
+  margin: 0;
+  padding: 5px 16px;
+  overflow: visible;
+  clip-path: none;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  margin: 0 0 6px auto;
-  padding: 4px 12px;
-  /* 28px ยังพ้นเกณฑ์เป้ากด 24px ของ WCAG SC 2.5.8 */
-  min-height: 28px;
-  font-size: 12px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--olive);
   border-radius: 999px;
   background: var(--warm-white, #fff);
-  color: var(--muted);
+  color: var(--brown);
   font-family: inherit;
   font-size: 12.5px;
   letter-spacing: .02em;
   cursor: pointer;
-  transition: color .25s ease, border-color .25s ease, background .25s ease;
-}
-
-.gallery-toggle svg {
-  width: 13px;
-  height: 13px;
-  fill: currentColor;
-  flex: none;
-}
-
-/* แสดงไอคอนเดียวตามสถานะ */
-.gallery-toggle .gt-play  { display: none; }
-.gallery-toggle.is-paused .gt-pause { display: none; }
-.gallery-toggle.is-paused .gt-play  { display: block; }
-
-.gallery-toggle:hover {
-  color: var(--olive);
-  border-color: var(--olive);
-}
-
-.gallery-toggle:focus-visible {
   outline: 2px solid var(--olive);
   outline-offset: 2px;
 }
 
-/* ปุ่มอยู่ในสายการ reveal ของแกลเลอรี ให้ขึ้นมาพร้อมหัวข้อ */
-.gallery-section:not(.in-view) .gallery-toggle { opacity: 0; }
-
-.gallery-section.in-view .gallery-toggle {
-  animation: sceneFade .8s ease .45s both;
-}
-
 @media (prefers-reduced-motion: reduce) {
 
-  .gallery-section:not(.in-view) .gallery-toggle { opacity: 1; }
-
   /* ไม่มีสไลด์ให้หยุด เพราะสคริปต์ไม่เริ่มเล่นตั้งแต่แรก */
-  .gallery-toggle { display: none; }
+  .cf-pause { display: none; }
 
 }
 
@@ -4385,8 +4378,11 @@ a {
   }
 
   .gallery-quote .gallery-leaf {
+    margin-bottom: 10px;
+  }
+
+  .gallery-quote .gallery-leaf svg {
     width: 24px;
-    margin-bottom: 8px;
   }
 
   .gallery-quote-text {
@@ -4400,10 +4396,6 @@ a {
 
   .cf-controls {
     margin-top: 8px;
-  }
-
-  .gallery-more {
-    margin-top: 14px;
   }
 
 }

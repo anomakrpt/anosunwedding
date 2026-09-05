@@ -21,7 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ข้อมูลงาน (ใช้ทั้งการ์ดและไฟล์ปฏิทิน) */
   const EVENT_INFO = {
     title: "งานแต่งงาน Ausamah & Mizahasan",
-    location: "ดอยหลวงเชียงดาว, เชียงใหม่",
+    /* ที่อยู่จริงตามหน้าแรก — ของเดิมเป็นข้อความค้างจากเทมเพลต
+       ถ้าปล่อยไว้ นัดในปฏิทินของแขกจะชี้ไปคนละจังหวัด */
+    location: "บ้านเลขที่ 484 ถ.ติวานนท์ ต.ท่าทราย อ.เมือง จ.นนทบุรี 11000",
     /* Nikah Day 17 ม.ค. 2027 09:00-15:00 เวลาไทย (UTC+7 → 02:00Z) */
     startUtc: "20270117T020000Z",
     endUtc: "20270117T080000Z"
@@ -123,13 +125,47 @@ document.addEventListener("DOMContentLoaded", () => {
   ============================================================ */
 
   form.addEventListener("change", (event) => {
+
     if (event.target.name !== "attending") {
       return;
     }
+
     const attending = event.target.value === "yes";
+
     if (guestsField) guestsField.hidden = !attending;
-    if (sideField) sideField.hidden = false;
+
+    /* ของเดิมเขียน hidden = false ไว้ตายตัว ช่อง "ท่านเป็นแขกฝั่งไหน"
+       จึงโผล่ขึ้นมาแม้ตอบว่ามาไม่ได้ */
+    if (sideField) {
+
+      sideField.hidden = !attending;
+
+      /* ล้างคำตอบที่เคยเลือกไว้ด้วย ไม่งั้นค่าที่ซ่อนอยู่จะถูกส่งไปพร้อมกัน */
+      if (!attending) {
+        form
+          .querySelectorAll('input[name="side"]')
+          .forEach((input) => { input.checked = false; });
+      }
+
+    }
+
+    /* บอกล่วงหน้าว่ากดแล้วจะไปไหนต่อ การเด้งไปอีกหน้าโดยไม่บอกก่อน
+       เหมือนโดนพาไปเอง ไม่ใช่ผลของสิ่งที่ผู้ใช้ตั้งใจกด */
+    setSubmitLabel(attending);
+
   });
+
+
+  /* ปุ่มส่งมีสองความหมาย: ตอบรับ กับ แจ้งว่ามาไม่ได้แล้วไปเขียนคำอวยพร */
+  function setSubmitLabel(attending) {
+
+    if (!submitBtn) return;
+
+    submitBtn.innerHTML = attending
+      ? "➤ &nbsp; ส่งคำตอบรับ"
+      : "➤ &nbsp; ส่งคำตอบ แล้วไปเขียนคำอวยพร";
+
+  }
 
 
   /* ============================================================
@@ -197,8 +233,24 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       persist(payload);
-      showConfirmation(payload);
-      showToast("ส่งคำตอบรับเรียบร้อยแล้ว ♥");
+
+      if (attending) {
+
+        showConfirmation(payload);
+        showToast("ส่งคำตอบรับเรียบร้อยแล้ว ♥");
+
+      } else {
+
+        /* การ์ดยืนยันมีไว้สำหรับคนที่มาได้ (วันงาน ปุ่มปฏิทิน)
+           คนที่มาไม่ได้ ที่ทางที่ควรอยู่คือหน้าคำอวยพร
+           หน่วงไว้ครู่หนึ่งให้ toast ทันขึ้น จะได้รู้ว่าคำตอบส่งถึงแล้ว */
+        showToast("ขอบคุณที่แจ้งให้เราทราบ ♥");
+
+        setTimeout(() => {
+          window.location.href = "wishes.html";
+        }, 1100);
+
+      }
 
     } catch (err) {
 
@@ -212,7 +264,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       clearTimeout(abortTimer);
       submitBtn.disabled = false;
-      submitBtn.innerHTML = "➤ &nbsp; ส่งคำตอบรับ";
+
+      /* คืนข้อความให้ตรงกับตัวเลือกที่ค้างอยู่ ไม่ใช่กลับไปเป็น
+         "ส่งคำตอบรับ" เสมอ — ถ้าส่งไม่ผ่านแล้วผู้ใช้กดใหม่
+         ปุ่มต้องยังบอกว่าจะพาไปเขียนคำอวยพรอยู่ */
+      setSubmitLabel(attending);
 
     }
 
@@ -285,11 +341,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* เคยตอบไว้แล้ว → แสดงการ์ดเดิมทันที */
   const saved = readSaved();
+
   if (saved && saved.fullname) {
+
     guests = Number(saved.guests) || 0;
     renderGuests();
+
     if (nameInput) nameInput.value = saved.fullname;
-    showConfirmation(saved);
+
+    if (saved.attending === "yes") {
+
+      showConfirmation(saved);
+
+    } else {
+
+      /* คนที่ตอบว่ามาไม่ได้ไม่มีการ์ด จึงต้องบอกด้วยข้อความแทน
+         ว่าคำตอบถึงแล้ว ไม่งั้นฟอร์มเปล่า ๆ จะดูเหมือนส่งไม่สำเร็จ */
+      const declined = form.querySelector('input[name="attending"][value="no"]');
+
+      if (declined) declined.checked = true;
+
+      if (guestsField) guestsField.hidden = true;
+      if (sideField) sideField.hidden = true;
+
+      setSubmitLabel(false);
+
+      showMessage("เราได้รับคำตอบของท่านแล้ว ขอบคุณที่แจ้งให้เราทราบ", "ok");
+
+    }
+
   }
 
 
@@ -393,8 +473,7 @@ document.addEventListener("DOMContentLoaded", () => {
     /* รายละเอียดงาน */
     ctx.fillStyle = "#403e31";
     ctx.font = "400 24px 'Noto Sans Thai', sans-serif";
-    ctx.fillText("16 – 17 มกราคม 2570", W / 2, 600);
-    ctx.fillText("ดอยหลวงเชียงดาว · เชียงใหม่", W / 2, 640);
+    ctx.fillText("16 – 17 มกราคม 2570", W / 2, 620);
 
     ctx.fillStyle = "#918c7e";
     ctx.font = "300 20px 'Noto Sans Thai', sans-serif";
