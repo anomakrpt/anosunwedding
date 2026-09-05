@@ -51,9 +51,9 @@
        MAIN CSS
   ========================================================== -->
 
-    <link rel="stylesheet" href="assets/css/base.css?v=20260905-101" />
-  <link rel="stylesheet" href="assets/css/components.css?v=20260905-101" />
-  <link rel="stylesheet" href="assets/css/home.css?v=20260905-101" />
+    <link rel="stylesheet" href="assets/css/base.css?v=20260905-104" />
+  <link rel="stylesheet" href="assets/css/components.css?v=20260905-104" />
+  <link rel="stylesheet" href="assets/css/home.css?v=20260905-104" />
 
 
   
@@ -79,7 +79,7 @@
     >
 
       <source
-        src="pic/cardopen.mp4?v=20260905-101"
+        src="pic/cardopen.mp4?v=20260905-104"
         type="video/mp4"
       />
 
@@ -590,9 +590,10 @@
 
 
         <!-- =================================================
-             PAIR SCENE — อินโฟกราฟิกประกอบข้อความ "เป็นคู่ ๆ"
-             เดินเข้าหากันจากสองข้าง แล้วโอบกอดตรงกลาง
-             จังหวะทั้งหมดคุมด้วย .in-view ใน home.css
+             PAIR SCENE — ภาพประกอบข้อความ "เป็นคู่ ๆ"
+             จาก storyboard รูปจริงของทั้งคู่: เดินเข้าหากันจากสองข้าง
+             พบกัน หันเข้าหากัน แล้วกอด — หัวใจผุดขึ้นทีละเฟรม
+             จังหวะทั้งหมดคุมด้วย .in-view ใน home.css (ฉาก 4)
         ================================================== -->
 
         <div
@@ -600,117 +601,101 @@
           aria-hidden="true"
         >
 
-          <!-- viewBox ครอบเฉพาะช่วงที่มีตัวละคร เพื่อให้รูปคนใหญ่พอจะเห็น
-               รายละเอียดเป้กับหมวก — ทั้งคู่จึงเดินเข้ามาจากนอกกรอบ
-               stroke ปรับลงตามอัตราส่วนที่ครอบ ให้ความหนาเส้นเท่าเดิม -->
-          <svg
-            viewBox="120 20 160 172"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="0.95"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
+          <!-- ฉากจาก storyboard รูปจริงของทั้งคู่ (pic/pairs/)
+               ตัวเดินสองคนเป็นชั้นของตัวเอง เพราะต้องเคลื่อนที่
+               ส่วนเฟรมพบกัน/กอดวางซ้อนกันที่กลางเวทีแล้วเฟดต่อกันทีละใบ
+               ขนาดและตำแหน่งของทุกเฟรมคำนวณจากไฟล์จริง — ดู home.css ฉาก 4 -->
+          <div class="pair-stage">
 
-            <!-- พื้น -->
-            <line
-              class="pair-ground"
-              x1="118"
-              y1="180"
-              x2="282"
-              y2="180"
-              stroke-width="0.6"
-            />
+            <span class="pair-ground"></span>
 
 
-            <!-- หัวใจที่ผุดขึ้นตอนกอด -->
-            <path
-              class="pair-heart"
-              d="M200 50 C194.5 44.5,191 41,191 37.5 C191 34.5,193.5 32.5,196 32.5 C197.7 32.5,199.2 33.4,200 34.8 C200.8 33.4,202.3 32.5,204 32.5 C206.5 32.5,209 34.5,209 37.5 C209 41,205.5 44.5,200 50 Z"
-              fill="currentColor"
-              stroke="none"
-            />
+            <div class="pair-walker pair-him">
+              <img
+                src="pic/pairs/walk-him.png"
+                alt=""
+                width="209"
+                height="421"
+                loading="lazy"
+                decoding="async"
+              >
+            </div>
+
+            <div class="pair-walker pair-her">
+              <img
+                src="pic/pairs/walk-her.png"
+                alt=""
+                width="243"
+                height="365"
+                loading="lazy"
+                decoding="async"
+              >
+            </div>
 
 
-            <!-- ผู้ชาย — สะพายเป้ เดินมาจากซ้าย
-                 ใช้ภาษาเส้นชุดเดียวกับอวตารนักเดินป่าในหน้าคำอวยพร -->
-            <g class="pair-figure pair-him">
+            <!-- ลำดับตาม storyboard: พบกัน → หันเข้าหากัน → กอด → หัวใจผุด -->
+            <img
+                class="pair-frame f-meet-1"
+                src="pic/pairs/meet-1.png"
+                alt=""
+                width="257"
+                height="314"
+                loading="lazy"
+                decoding="async"
+              >
 
-              <g class="fig-leg him-leg-back">
-                <path d="M176 124 L168 178" />
-              </g>
+            <img
+                class="pair-frame f-meet-2"
+                src="pic/pairs/meet-2.png"
+                alt=""
+                width="223"
+                height="317"
+                loading="lazy"
+                decoding="async"
+              >
 
-              <g class="fig-leg him-leg-front">
-                <path d="M176 124 L184 178" />
-              </g>
+            <img
+                class="pair-frame f-meet-3"
+                src="pic/pairs/meet-3.png"
+                alt=""
+                width="214"
+                height="331"
+                loading="lazy"
+                decoding="async"
+              >
 
-              <g class="fig-body">
+            <img
+                class="pair-frame f-hug-1"
+                src="pic/pairs/hug-1.png"
+                alt=""
+                width="315"
+                height="465"
+                loading="lazy"
+                decoding="async"
+              >
 
-                <rect
-                  class="fig-pack"
-                  x="155"
-                  y="84"
-                  width="16"
-                  height="25"
-                  rx="7"
-                />
+            <img
+                class="pair-frame f-hug-2"
+                src="pic/pairs/hug-2.png"
+                alt=""
+                width="304"
+                height="482"
+                loading="lazy"
+                decoding="async"
+              >
 
-                <path d="M171 88 c2.5 .8 4 1.8 5 3.5" />
-
-                <circle cx="176" cy="68" r="10.5" />
-
-                <path d="M176 61 H190" />
-
-                <path d="M176 78.5 V124" />
-
-                <path class="fig-arm him-arm-far" d="M176 90 L167 101" />
-
-                <path class="fig-arm him-arm-near" d="M176 90 L191 111" />
-
-              </g>
-
-            </g>
+            <img
+                class="pair-frame f-hug-3"
+                src="pic/pairs/hug-3.png"
+                alt=""
+                width="303"
+                height="502"
+                loading="lazy"
+                decoding="async"
+              >
 
 
-            <!-- ผู้หญิง — สะพายเป้ เดินมาจากขวา -->
-            <g class="pair-figure pair-her">
-
-              <g class="fig-leg her-leg-back">
-                <path d="M224 124 L232 178" />
-              </g>
-
-              <g class="fig-leg her-leg-front">
-                <path d="M224 124 L216 178" />
-              </g>
-
-              <g class="fig-body">
-
-                <rect
-                  class="fig-pack"
-                  x="229"
-                  y="84"
-                  width="16"
-                  height="25"
-                  rx="7"
-                />
-
-                <path d="M229 88 c-2.5 .8 -4 1.8 -5 3.5" />
-
-                <circle cx="224" cy="68" r="10.5" />
-
-                <path d="M233 61 a8 8 0 0 1 1.5 11" />
-
-                <path d="M224 78.5 V124" />
-
-                <path class="fig-arm her-arm-far" d="M224 90 L233 101" />
-
-                <path class="fig-arm her-arm-near" d="M224 90 L209 111" />
-
-              </g>
-
-            </g>
-
-          </svg>
+          </div>
 
         </div>
 
@@ -1920,11 +1905,11 @@
        JAVASCRIPT
   ========================================================== -->
 
-  <script src="assets/js/main.js?v=20260905-101"></script>
-  <script src="assets/js/config.js?v=20260905-101"></script>
-  <script src="assets/js/music.js?v=20260905-101"></script>
-  <script src="assets/js/coverflow.js?v=20260905-101"></script>
-  <script src="assets/js/home.js?v=20260905-101"></script>
+  <script src="assets/js/main.js?v=20260905-104"></script>
+  <script src="assets/js/config.js?v=20260905-104"></script>
+  <script src="assets/js/music.js?v=20260905-104"></script>
+  <script src="assets/js/coverflow.js?v=20260905-104"></script>
+  <script src="assets/js/home.js?v=20260905-104"></script>
 
 
   <script
@@ -1932,7 +1917,7 @@
   ></script>
 
 
-  <script src="assets/js/viewtoggle.js?v=20260905-101"></script>
+  <script src="assets/js/viewtoggle.js?v=20260905-104"></script>
 
 </body>
 

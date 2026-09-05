@@ -23,6 +23,7 @@
 │       ├── coverflow.js    ชั้นวางรูปสามมิติ (หน้าแรก + หน้ารูปภาพ)
 │       └── rsvp.js         แบบตอบรับ + การ์ดยืนยัน PNG + .ics
 ├── pic/                รูปภาพ (บีบอัดแล้ว; ต้นฉบับเก็บนอก repo ที่ ../originals/)
+│   └── pairs/          เฟรม storyboard ฉาก "created you in pairs"
 ├── favicon.ico / favicon-32.png / apple-touch-icon.png
 │                       สร้างจากโมโนแกรมบนการ์ด (pic/logo.png) วางบนพื้นครีม
 └── apps-script/Code.gs สำเนาอ้างอิงโค้ด backend (ดูหัวข้อ Deploy ด้านล่าง)
