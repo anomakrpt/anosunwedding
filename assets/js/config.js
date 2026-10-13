@@ -3,8 +3,11 @@
 ============================================================ */
 
 /* เพลงพื้นหลัง (YouTube) */
-const VIDEO_ID = "yIlKu9q_zJ4";
-const START_SECONDS = 95;   /* 1:35 */
+/* const VIDEO_ID = "yIlKu9q_zJ4";*/
+/* const START_SECONDS = 95; */  /* 1:35 */
+
+const VIDEO_ID = "j1Z8j-K9xmQ";
+const START_SECONDS = 20; 
 
 /* หน้าแรก: ถ้าแขกไม่กด "Enter Our Story" ภายในกี่มิลลิวินาที ให้เปิดการ์ดเอง */
 const INTRO_AUTOPLAY_MS = 5000;
